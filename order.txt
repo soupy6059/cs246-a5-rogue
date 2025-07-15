@@ -1,6 +1,1 @@
-intr/decorator.cc
-intr/component.cc
-intr/observer.cc
-intr/subject.cc
-intr/entity.cc
 main.cc

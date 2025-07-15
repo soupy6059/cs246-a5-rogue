@@ -1,12 +1,8 @@
 all:
-	./.compile.sh order.txt main 1>/dev/null
-	rm *.o
 	rm -rf gcm*
+	~/.compile order.txt main 1>/dev/null
 
 run:
 	./main
 
-test:
-	echo todo
-
-.PHONY: run test
+.PHONY: run

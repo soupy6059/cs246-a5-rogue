@@ -1,8 +1,8 @@
+import <memory>;
 import <iostream>;
-import entity;
+import <vector>;
 
 using namespace std;
 
 int main() {
-    cout << "Help" << endl;
 }
