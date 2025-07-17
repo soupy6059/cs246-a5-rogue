@@ -34,6 +34,6 @@ for x in $(cat $1); do
   $cxx $cxxflags -c $x
 done
 
-echo $cxx build/*.o $name
+echo $cxx *.o $name
 $cxx *.o $name
 

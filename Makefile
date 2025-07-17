@@ -1,6 +1,7 @@
 all:
 	rm -rf gcm*
-	~/.compile order.txt main 1>/dev/null
+	~/.compile order.txt main
+	rm *.o
 
 run:
 	./main
