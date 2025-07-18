@@ -1,6 +1,7 @@
 module grid;
 
 import <utility>;
+import <iostream>;
 
 using namespace std;
 
@@ -21,4 +22,12 @@ Grid::Grid(size_t rowCount, size_t colCount):
         toTheGrid.push_back(column);
     }
     swap(this->data->theGrid, toTheGrid);
+}
+
+void Grid::print(ostream &os) const {
+    for(const vector<Tile> &row: this->data->theGrid) {
+        for(const Tile &tile: row) {
+            os << tile.icon() << endl;
+        }
+    }
 }

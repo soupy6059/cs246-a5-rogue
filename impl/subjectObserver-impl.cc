@@ -13,3 +13,7 @@ void Subject::notifyObservers() {
     }
     return;
 }
+
+std::vector<std::shared_ptr<Observer>> &Subject::getObservers() {
+    return observers;
+}

@@ -13,6 +13,8 @@ export class Observer {
 
 class Subject {
     std::vector<std::shared_ptr<Observer>> observers;
+    protected:
+    std::vector<std::shared_ptr<Observer>> &getObservers(); // be careful
     public:
     void attach(std::shared_ptr<Observer> obs);
     void notifyObservers();
