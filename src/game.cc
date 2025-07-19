@@ -1,6 +1,8 @@
-module game;
+#include "game.h"
 
 using namespace std;
+
+#include <iostream>
 
 // static const std::size_t NUMBER_OF_LEVELS = 5;
 
@@ -16,8 +18,13 @@ using namespace std;
 Game::Game():
     levelFactory{},
     player{nullptr},
-    levels{} {
+    levels{nullptr} {
     for(size_t i{0}; i < levels.size(); ++i) {
         levels.at(i) = levelFactory.create();
     }
+}
+
+void Game::start() {
+    Level &mainLevel {*levels[0]};
+    mainLevel.getGrid().print(cout);
 }
