@@ -1,9 +1,10 @@
-module tile;
+#include "tile.h"
 
-import <exception>;
-import <stdexcept>;
-import <string>;
-import <utility>;
+#include <exception>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <cassert>
 
 using namespace std;
 
@@ -11,26 +12,28 @@ Tile::Tile(shared_ptr<Entity> entity):
     entity{entity} {}
 
 shared_ptr<Entity> Tile::moveEntity() const {
-    return exchange(entity, nullptr);
+    shared_ptr<Entity> saved = move(entity);
+    assert(entity == nullptr);
+    return saved;
 }
 
 shared_ptr<Entity> Tile::getEntity() const {
     return this->entity;
 }
 
-void Tile::setEntity(shared_ptr<Entity> toEntity) const {
+void Tile::setEntity(shared_ptr<Entity> toEntity) {
     entity = toEntity;
 }
 
-const Tile::Status &getStatus() const {
+const Tile::Status &Tile::getStatus() const {
     return *status;
 }
 
-void setStatus(const Tile::Status &toStatus) {
-    (void)exchange(status, make_shared<Tile::Status>(toStatus));
+void Tile::setStatus(const Tile::Status &toStatus) {
+    status = shared_ptr<Tile::Status>{new Tile::Status{toStatus}};
 }
 
-bool Tile::isCollidable() {
+bool Tile::isCollidable() const {
     switch(this->type) {
     case TileType::FLOOR:
     case TileType::STAIR:
@@ -46,15 +49,15 @@ bool Tile::isCollidable() {
     throw logic_error{"unreachable"};
 }
 
-void queryMovement(Entity &whoFrom) {
-    setStatus(Tile::Status::{
-        .action = Tile::Status::MOVE_OWNED_ENTITY,
+void Tile::queryMovement(Entity &whoFrom) {
+    setStatus(Tile::Status{
+        .action = Tile::Action::MOVE_OWNED_ENTITY,
         .dir = whoFrom.getStatus().dir,
     });
     notifyObservers();
 }
 
-void notify(Entity &whoFrom) {
+void Tile::notify(Entity &whoFrom) {
     switch(whoFrom.getStatus().action) {
     case Entity::Action::MOVE:
         queryMovement(whoFrom);
@@ -64,9 +67,29 @@ void notify(Entity &whoFrom) {
     }
 }
 
-bool pointingAt(const Tile &other) const {
-    // position
+const vector<Direction> &iotaDirection() {
+    static const vector<Direction> dirs { 
+        Direction::NORTHWEST,
+        Direction::NORTH,
+        Direction::NORTHEAST,
+        Direction::WEST,
+        Direction::EAST,
+        Direction::SOUTHWEST,
+        Direction::SOUTH,
+        Direction::SOUTHEAST,
+    };
+    return dirs;
+}
 
+Direction Tile::getRelativeDirection(const Tile &other) const {
+    for(const auto &dir : iotaDirection()) {
+        if(Vec2::step(*position, dir) == *other.position) return dir;
+    }
+    throw logic_error{"unreachable"};
+}
+
+bool Tile::pointingAt(const Tile &other) const {
+    return getRelativeDirection(other) == this->getStatus().dir;
 }
 
 void Tile::queryMovement(Tile &whoFrom) {
@@ -84,7 +107,7 @@ void Tile::queryMovement(Tile &whoFrom) {
     setEntity(whoFrom.moveEntity()); // done!
 }
 
-void notify(Tile &whoFrom) {
+void Tile::notify(Tile &whoFrom) {
     switch(whoFrom.getStatus().action) {
     case Tile::Action::MOVE_OWNED_ENTITY:
         queryMovement(whoFrom);
@@ -98,7 +121,7 @@ void Tile::notify(Subject &whoFrom) {
     // the "what is notifying me" function
 
     try {
-        notfiy(dynamic_cast<Entity&>(whoFrom));
+        notify(dynamic_cast<Entity&>(whoFrom));
     }
     catch(...) {}
     try{
@@ -107,16 +130,16 @@ void Tile::notify(Subject &whoFrom) {
     catch(...) {}
 }
 
-char icon() const {
+char Tile::icon() const {
     switch(this->type) {
     case TileType::FLOOR:
-        return entity? entity.icon() : '.';
+        return entity? entity->icon() : '.';
     case TileType::STAIR:
         return '<';
     case TileType::HALLWAY:
-        return entity? entity.icon() : ',';
+        return entity? entity->icon() : ',';
     case TileType::DOOR:
-        return entity? entity.icon() : '/';
+        return entity? entity->icon() : '/';
     case TileType::WALL:
         return '#';
     case TileType::VOID:

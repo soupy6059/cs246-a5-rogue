@@ -1,11 +1,12 @@
-export module subjectObserver;
+#ifndef __subjectObserver__
+#define __subjectObserver__
 
-import <vector>;
-import <memory>;
+#include <vector>
+#include <memory>
 
-export class Subject;
+class Subject;
 
-export class Observer { 
+class Observer { 
     public:
     virtual ~Observer() = default;
     virtual void notify(Subject &whoFrom) = 0; 
@@ -16,6 +17,9 @@ class Subject {
     protected:
     std::vector<std::shared_ptr<Observer>> &getObservers(); // be careful
     public:
+    virtual ~Subject() = default;
     void attach(std::shared_ptr<Observer> obs);
     void notifyObservers();
 };
+
+#endif

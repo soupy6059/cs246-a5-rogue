@@ -1,4 +1,4 @@
-module subjectObserver;
+#include "subjectObserver.h"
 
 using namespace std;
 

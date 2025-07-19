@@ -1,6 +1,6 @@
-module player;
+#include "player.h"
 
-import <iostream>;
+#include <iostream>
 
 using namespace std;
 
@@ -15,25 +15,25 @@ void Player::step() {
         case 'w':
             setStatus(Entity::Status{
                 .action = Entity::Action::MOVE,
-                .direction = Direction::NORTH,
+                .dir = Direction::NORTH,
             });
             break;
         case 's':
             setStatus(Entity::Status{
                 .action = Entity::Action::MOVE,
-                .direction = Direction::SOUTH,
+                .dir = Direction::SOUTH,
             });
             break;
         case 'a':
             setStatus(Entity::Status{
                 .action = Entity::Action::MOVE,
-                .direction = Direction::WEST,
+                .dir = Direction::WEST,
             });
             break;
         case 'd':
             setStatus(Entity::Status{
                 .action = Entity::Action::MOVE,
-                .direction = Direction::EAST,
+                .dir = Direction::EAST,
             });
             break;
         default:
