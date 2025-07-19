@@ -11,6 +11,10 @@ Entity::EntityImpl &Entity::getStats() const {
     return *data;
 }
 
+const Entity::Status &Entity::getStatus() {
+    return data->status;
+}
+
 void Entity::mainUpdate() {
     step();
 }

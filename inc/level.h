@@ -13,6 +13,7 @@ class Level {
     Level(const Level&) = delete;
     Level &operator=(Level&&); // enforced by array, you have to impl
     Level &operator=(const Level&) = delete;
+
     Grid &getGrid() const;
 };
 

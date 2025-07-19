@@ -28,8 +28,9 @@ Grid::Grid(size_t rowCount, size_t colCount):
 void Grid::print(ostream &os) const {
     for(const vector<shared_ptr<Tile>> &row: this->data->theGrid) {
         for(const shared_ptr<Tile> &tile: row) {
-            os << tile->icon() << endl;
+            os << tile->icon();
         }
+        os << endl;
     }
 }
 

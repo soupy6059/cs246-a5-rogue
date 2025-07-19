@@ -11,7 +11,7 @@ CXXFLAGS = -std=c++20 -Wall -Wextra -g -O2
 TARGET = main
 
 # Compiler and flags
-INCLUDES = -Iinc -I.
+INCLUDES = -Iinc
 
 # Directories
 SRCDIR = src
