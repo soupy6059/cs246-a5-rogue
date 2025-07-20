@@ -13,13 +13,10 @@ using namespace std;
 //    1.1) noting that they have to attach() their tile b/c entity is a subject
 //    1.2) and src/game.cc:start() has an "example" of how to do it in the ugly way
 // 2) Fix src/player.cc:step. i forgot how to properly do input so i used labels which is bad
+// 3) For some reason, Grid::notify(Tile&) is always called twice, when it shouldn't be.
 
-int main() { try {
+int main() {
     Log::initLogs();
     Game game;
     game.start();
 }
-catch(const exception &ex) {
-    cerr << ex.what() << endl;
-    return -1;
-}}

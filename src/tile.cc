@@ -123,13 +123,13 @@ void Tile::queryMovement(Tile &whoFrom) {
     }
     
     // so they're good to move. im stealing their entity!
-    setEntity(whoFrom.moveEntity()); // done!
-    setStatus({
+    whoFrom.setStatus({
         .action = Tile::Action::SWAP,
         .dir = Direction::CENTER,
-        .selfPosition = getPosition(),
-        .otherPosition = whoFrom.getPosition(),
+        .selfPosition = whoFrom.getPosition(),
+        .otherPosition = this->getPosition(),
     });
+    whoFrom.notifyObservers();
 }
 
 void Tile::notify(Tile &whoFrom) {
@@ -137,14 +137,14 @@ void Tile::notify(Tile &whoFrom) {
     case Tile::Action::MOVE_OWNED_ENTITY:
         queryMovement(whoFrom);
         break;
+    case Tile::Action::SWAP:
+        break;
     default:
         throw out_of_range{"bad enum"};
     }
 }
 
 void Tile::notify(Subject &whoFrom) {
-    // the "what is notifying me" function
-    cout << "Tile at " << getPosition() << " notified." << endl; 
     try {
         notify(dynamic_cast<Entity&>(whoFrom));
     }

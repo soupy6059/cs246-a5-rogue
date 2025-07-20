@@ -5,7 +5,8 @@
 #include "grid.h"
 
 class Level {
-    std::unique_ptr<Grid> ownedGrid;
+    std::shared_ptr<Grid> ownedGrid;
+    void attachTilesToGrid();
     public:
     Level(size_t,size_t); // idk what the params are
     virtual ~Level() = default;

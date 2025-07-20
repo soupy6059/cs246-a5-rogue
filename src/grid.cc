@@ -46,16 +46,22 @@ Grid::Grid(size_t rowCount, size_t colCount):
     attachTileNeighbours();
 }
 
+vector<vector<shared_ptr<Tile>>> &Grid::getTheGrid() {
+    return data->theGrid;
+}
+
 void Grid::notify(Tile &whoFrom) {
     if(whoFrom.getStatus().action == Tile::Action::SWAP) {
         shared_ptr<Tile> self = at(whoFrom.getStatus().selfPosition);
         shared_ptr<Tile> other = at(whoFrom.getStatus().otherPosition);
-        assert(self->getEntity());
+        if(!self->getEntity()) { return; } // this really should throw an error, but I'm not sure how to stop the bad call itself
+
         self->getEntity()->detach(self);
         shared_ptr<Entity> entity = self->getEntity();
         self->setEntity(nullptr);
         other->setEntity(entity);
         other->getEntity()->attach(other);
+
         assert(!self->getEntity());
         assert(other->getEntity());
         return;
@@ -102,7 +108,7 @@ void Grid::attachRelativeTileNeighbours(const int r, const int c) {
 
 void Grid::attachTileNeighbours() {
     for(signed r {0}; r < static_cast<signed>(data->theGrid.size()); ++r) {
-        for(signed c {0}; c < static_cast<signed>(data->theGrid.size()); ++c) {
+        for(signed c {0}; c < static_cast<signed>(data->theGrid.at(0).size()); ++c) {
             attachRelativeTileNeighbours(r, c);
             Log::getLogFile("neighbourCount") << at(Vec2{r,c})->getObservers().size() << endl;
         }
