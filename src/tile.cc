@@ -8,38 +8,46 @@
 
 using namespace std;
 
-Tile::Tile(shared_ptr<Entity> entity):
-    entity{entity} {}
+Tile::Tile(const TileImpl &data):
+    data{make_shared<TileImpl>(data)} {}
 
-shared_ptr<Entity> Tile::moveEntity() const {
-    shared_ptr<Entity> saved = move(entity);
-    assert(entity == nullptr);
+shared_ptr<Entity> Tile::moveEntity() {
+    shared_ptr<Entity> saved = getEntity();
+    setEntity(nullptr);
     return saved;
 }
 
 shared_ptr<Entity> Tile::getEntity() const {
-    return this->entity;
+    return this->data->entity;
 }
 
 void Tile::setEntity(shared_ptr<Entity> toEntity) {
-    entity = toEntity;
+    data->entity = toEntity;
 }
 
 const Tile::Status &Tile::getStatus() const {
-    return *status;
+    return data->status;
 }
 
 void Tile::setStatus(const Tile::Status &toStatus) {
-    status = shared_ptr<Tile::Status>{new Tile::Status{toStatus}};
+    data->status = toStatus;
+}
+
+const Tile::TileType &Tile::getType() const {
+    return data->type;
+}
+
+void Tile::setType(const TileType &toType) {
+    data->type = toType;
 }
 
 bool Tile::isCollidable() const {
-    switch(this->type) {
+    switch(getType()) {
     case TileType::FLOOR:
     case TileType::STAIR:
     case TileType::HALLWAY:
     case TileType::DOOR:
-        return this->entity? true : false;
+        return getEntity()? true : false;
     case TileType::WALL:
     case TileType::VOID:
         return true;
@@ -53,6 +61,8 @@ void Tile::queryMovement(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::MOVE_OWNED_ENTITY,
         .dir = whoFrom.getStatus().dir,
+        .selfPosition = {0,0},
+        .otherPosition = {0,0},
     });
     notifyObservers();
 }
@@ -81,9 +91,18 @@ const vector<Direction> &iotaDirection() {
     return dirs;
 }
 
+
+const Vec2 &Tile::getPosition() const {
+    return data->position;
+}
+
+void Tile::setPosition(const Vec2 &newPosition) {
+    data->position = newPosition;
+}
+
 Direction Tile::getRelativeDirection(const Tile &other) const {
     for(const auto &dir : iotaDirection()) {
-        if(Vec2::step(*position, dir) == *other.position) return dir;
+        if(Vec2::stepVec(getPosition(), dir) == other.getPosition()) return dir;
     }
     throw logic_error{"unreachable"};
 }
@@ -105,6 +124,12 @@ void Tile::queryMovement(Tile &whoFrom) {
     
     // so they're good to move. im stealing their entity!
     setEntity(whoFrom.moveEntity()); // done!
+    setStatus({
+        .action = Tile::Action::SWAP,
+        .dir = Direction::CENTER,
+        .selfPosition = getPosition(),
+        .otherPosition = whoFrom.getPosition(),
+    });
 }
 
 void Tile::notify(Tile &whoFrom) {
@@ -119,7 +144,7 @@ void Tile::notify(Tile &whoFrom) {
 
 void Tile::notify(Subject &whoFrom) {
     // the "what is notifying me" function
-
+    cout << "Tile at " << getPosition() << " notified." << endl; 
     try {
         notify(dynamic_cast<Entity&>(whoFrom));
     }
@@ -131,15 +156,15 @@ void Tile::notify(Subject &whoFrom) {
 }
 
 char Tile::icon() const {
-    switch(this->type) {
+    switch(getType()) {
     case TileType::FLOOR:
-        return entity? entity->icon() : '.';
+        return getEntity()? getEntity()->icon() : '.';
     case TileType::STAIR:
         return '<';
     case TileType::HALLWAY:
-        return entity? entity->icon() : ',';
+        return getEntity()? getEntity()->icon() : ',';
     case TileType::DOOR:
-        return entity? entity->icon() : '/';
+        return getEntity()? getEntity()->icon() : '/';
     case TileType::WALL:
         return '#';
     case TileType::VOID:

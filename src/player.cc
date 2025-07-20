@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "log.h"
+
 using namespace std;
 
 Player::Player(const Entity::EntityImpl &data):
@@ -9,37 +11,48 @@ Player::Player(const Entity::EntityImpl &data):
 
 void Player::step() {
     char input;
+    // PLEASE SOMEONE FIX THIS, I CANT AND GOT ANNOYED
+BADINPUT:
     cin >> input;
-    for(bool badRead = false; badRead; badRead = false) {
-        switch(input) {
-        case 'w':
-            setStatus(Entity::Status{
-                .action = Entity::Action::MOVE,
-                .dir = Direction::NORTH,
-            });
-            break;
-        case 's':
-            setStatus(Entity::Status{
-                .action = Entity::Action::MOVE,
-                .dir = Direction::SOUTH,
-            });
-            break;
-        case 'a':
-            setStatus(Entity::Status{
-                .action = Entity::Action::MOVE,
-                .dir = Direction::WEST,
-            });
-            break;
-        case 'd':
-            setStatus(Entity::Status{
-                .action = Entity::Action::MOVE,
-                .dir = Direction::EAST,
-            });
-            break;
-        default:
-            badRead = true;
-            break;
-        }
+    if(!cin) {
+        cin.clear();
+        cin.ignore();
+        goto BADINPUT;
     }
+    switch(input) {
+    case 'w':
+        setStatus(Entity::Status{
+            .action = Entity::Action::MOVE,
+            .dir = Direction::NORTH,
+        });
+        break;
+    case 's':
+        setStatus(Entity::Status{
+            .action = Entity::Action::MOVE,
+            .dir = Direction::SOUTH,
+        });
+        break;
+    case 'a':
+        setStatus(Entity::Status{
+            .action = Entity::Action::MOVE,
+            .dir = Direction::WEST,
+        });
+        break;
+    case 'd':
+        setStatus(Entity::Status{
+            .action = Entity::Action::MOVE,
+            .dir = Direction::EAST,
+        });
+        break;
+    default:
+        cout << "Do better. WASD" << endl;
+        goto BADINPUT;
+        break;
+    }
+    Log::getLogFile("bug") << "notifyObservers() called from Player::step()" << endl;
     notifyObservers();
+}
+
+char Player::icon() const {
+    return '@';
 }

@@ -8,11 +8,13 @@
 class Tile: public Observer, public Subject {
 public: // INTERNAL TYPES
     enum class Action {
-        MOVE_OWNED_ENTITY,
+        MOVE_OWNED_ENTITY, NOTHING, SWAP,
     };
     struct Status {
         Action action;
         Direction dir;
+        Vec2 selfPosition;
+        Vec2 otherPosition;
     };
     enum class TileType {
         FLOOR,
@@ -22,28 +24,37 @@ public: // INTERNAL TYPES
         VOID,
         DOOR,
     };
+    struct TileImpl {
+        std::shared_ptr<Entity> entity;
+        Status status;
+        Vec2 position;
+        TileType type;
+    };
 
 private: // DATA
-    std::shared_ptr<Entity> entity;
-    std::shared_ptr<Status> status;
-    std::shared_ptr<Vec2> position;
-    TileType type;
-
+    std::shared_ptr<TileImpl> data;
+    
 private: // PRIVATE HELPER METHODS
     void notify(Entity &);
     void notify(Tile &);
 
 public: // CTOR & DTOR
-    Tile(std::shared_ptr<Entity> entity);
+    Tile(const TileImpl &);
     virtual ~Tile() = default;
 
 public: // GETTERS AND SETTERS
     std::shared_ptr<Entity> getEntity() const;
     void setEntity(std::shared_ptr<Entity> toEntity);
-    std::shared_ptr<Entity> moveEntity() const;
+    std::shared_ptr<Entity> moveEntity();
 
     const Status &getStatus() const;
     void setStatus(const Status &);
+
+    const Vec2 &getPosition() const;
+    void setPosition(const Vec2 &);
+
+    const TileType &getType() const;
+    void setType(const TileType &);
 
 public: // VIRTUAL BEHAVIORS
     virtual void notify(Subject &whoFrom) override;

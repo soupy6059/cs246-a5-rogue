@@ -4,6 +4,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <iostream>
 
 enum class Direction {
     NORTH,
@@ -28,7 +29,7 @@ struct Vec2 {
     bool operator==(const Vec2 &other) const {
         return x == other.x && y == other.y;
     }
-    static Vec2 step(const Vec2 &v, Direction dir) {
+    static Vec2 stepVec(const Vec2 &v, Direction dir) {
         switch(dir) {
         case Direction::NORTH:     return v + Vec2{-1, 0};
         case Direction::SOUTH:     return v + Vec2{ 1, 0};
@@ -44,5 +45,8 @@ struct Vec2 {
         throw std::logic_error{"unreachable"};
     }
 };
+
+std::ostream &operator<<(std::ostream &os, const Vec2 &v);
+std::ostream &getCout();
 
 #endif

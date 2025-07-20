@@ -5,8 +5,9 @@
 #include <iostream>
 
 #include "tile.h"
+#include "util.h"
 
-class Grid {
+class Grid: public Observer {
     struct GridImpl {
         std::vector<std::vector<std::shared_ptr<Tile>>> theGrid; // *theGrid[row][col]
     };
@@ -15,7 +16,11 @@ class Grid {
     void attachTileNeighbours();
     public:
     Grid(std::size_t rowCount, std::size_t colCount);
+    std::shared_ptr<Tile> at(std::size_t row, std::size_t col) const;
+    std::shared_ptr<Tile> at(const Vec2 &) const;
     virtual ~Grid() = default;
+    virtual void notify(Subject&) override;
+    void notify(Tile&);
 
     // testing
     void print(std::ostream&) const;

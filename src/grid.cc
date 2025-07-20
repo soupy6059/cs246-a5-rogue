@@ -2,10 +2,21 @@
 
 #include <utility>
 #include <iostream>
+#include <cassert>
+
+#include "tile.h"
+#include "log.h"
 
 using namespace std;
 
-#include "tile.h"
+
+std::shared_ptr<Tile> Grid::at(std::size_t row, std::size_t col) const {
+    return data->theGrid.at(row).at(col);
+}
+
+std::shared_ptr<Tile> Grid::at(const Vec2 &location) const {
+    return at(location.x, location.y);
+}
 
 Grid::Grid(size_t rowCount, size_t colCount):
     data{nullptr} {
@@ -15,7 +26,17 @@ Grid::Grid(size_t rowCount, size_t colCount):
         vector<shared_ptr<Tile>> column;
         column.reserve(colCount);
         for(size_t c = 0; c < colCount; ++c) {
-            column.emplace_back(make_shared<Tile>(nullptr));
+            column.emplace_back(make_shared<Tile>(Tile::TileImpl{
+                .entity = nullptr,
+                .status = Tile::Status{
+                    .action = Tile::Action::NOTHING,
+                    .dir = Direction::CENTER,
+                    .selfPosition = {0,0},
+                    .otherPosition = {0,0},
+                },
+                .position = Vec2{static_cast<int>(r),static_cast<int>(c)},
+                .type = Tile::TileType::FLOOR,
+            }));
         }
         toTheGrid.push_back(column);
     }
@@ -23,6 +44,28 @@ Grid::Grid(size_t rowCount, size_t colCount):
         .theGrid = move(toTheGrid),
     }};
     attachTileNeighbours();
+}
+
+void Grid::notify(Tile &whoFrom) {
+    if(whoFrom.getStatus().action == Tile::Action::SWAP) {
+        shared_ptr<Tile> self = at(whoFrom.getStatus().selfPosition);
+        shared_ptr<Tile> other = at(whoFrom.getStatus().otherPosition);
+        assert(self->getEntity());
+        self->getEntity()->detach(self);
+        shared_ptr<Entity> entity = self->getEntity();
+        self->setEntity(nullptr);
+        other->setEntity(entity);
+        other->getEntity()->attach(other);
+        assert(!self->getEntity());
+        assert(other->getEntity());
+        return;
+    }
+    throw logic_error{"grid should only be called w/ notify observers when a Tile wants to SWAP"};
+}
+
+void Grid::notify(Subject &whoFrom) {
+    try{ notify(dynamic_cast<Tile&>(whoFrom)); }
+    catch(...) {}
 }
 
 void Grid::print(ostream &os) const {
@@ -61,6 +104,7 @@ void Grid::attachTileNeighbours() {
     for(signed r {0}; r < static_cast<signed>(data->theGrid.size()); ++r) {
         for(signed c {0}; c < static_cast<signed>(data->theGrid.size()); ++c) {
             attachRelativeTileNeighbours(r, c);
+            Log::getLogFile("neighbourCount") << at(Vec2{r,c})->getObservers().size() << endl;
         }
     }
 }

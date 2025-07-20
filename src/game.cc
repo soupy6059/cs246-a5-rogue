@@ -4,16 +4,7 @@ using namespace std;
 
 #include <iostream>
 
-// static const std::size_t NUMBER_OF_LEVELS = 5;
-
-// export class Game {
-//     LevelFactory levelFactory;
-//     std::shared_ptr<Entity> player;
-//     std::array<Level,NUMBER_OF_LEVELS> levels;
-//     public:
-//     Game();
-//     void start();
-// };
+#include "player.h"
 
 Game::Game():
     levelFactory{},
@@ -24,7 +15,29 @@ Game::Game():
     }
 }
 
+// basically our main() function
+//
+// mostly temporary for now
 void Game::start() {
     Level &mainLevel {*levels[0]};
-    mainLevel.getGrid().print(cout);
+    static const Vec2 location {0,0};
+    mainLevel.getGrid().at(location)->setEntity(make_shared<Player>(
+        Entity::EntityImpl{
+            .stats{0},
+            .status = Entity::Status {
+                .action = Entity::Action::NOTHING,
+                .dir = Direction::CENTER,
+            }
+        }
+    ));
+    player = mainLevel.getGrid().at(location)->getEntity();
+    mainLevel.getGrid().at(location)->getEntity()->attach(
+        mainLevel.getGrid().at(location)
+    );
+      
+    
+    while(true) {
+        mainLevel.getGrid().print(cout);
+        player->update();
+    }
 }

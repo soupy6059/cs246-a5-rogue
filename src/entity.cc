@@ -5,7 +5,7 @@
 using namespace std;
 
 Entity::Entity(const Entity::EntityImpl &data):
-    data{new EntityImpl{data}} {}
+    Subject{}, data{new EntityImpl{data}} {}
 
 Entity::EntityImpl &Entity::getStats() const {
     return *data;
@@ -13,6 +13,11 @@ Entity::EntityImpl &Entity::getStats() const {
 
 const Entity::Status &Entity::getStatus() {
     return data->status;
+}
+
+
+void Entity::setStatus(const Status &newStatus) {
+    data->status = newStatus; 
 }
 
 void Entity::mainUpdate() {
@@ -24,10 +29,10 @@ void Entity::update() {
 }
 
 Entity::Entity(const Entity &other):
-    data{new EntityImpl{*other.data}} {}
+    Subject{}, data{new EntityImpl{*other.data}} {}
 
 Entity::Entity(Entity &&other):
-    data{move(other.data)} {}
+    Subject{}, data{move(other.data)} {}
 
 Entity &Entity::operator=(const Entity &other) {
     data = unique_ptr<EntityImpl>{new EntityImpl{*other.data}};

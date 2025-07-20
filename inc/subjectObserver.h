@@ -14,11 +14,11 @@ class Observer {
 
 class Subject {
     std::vector<std::shared_ptr<Observer>> observers;
-    protected:
-    std::vector<std::shared_ptr<Observer>> &getObservers(); // be careful
     public:
+    std::vector<std::shared_ptr<Observer>> &getObservers(); // be careful
     virtual ~Subject() = default;
     void attach(std::shared_ptr<Observer> obs);
+    void detach(std::shared_ptr<Observer> obs);
     void notifyObservers();
 };
 

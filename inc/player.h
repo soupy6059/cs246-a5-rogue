@@ -4,11 +4,12 @@
 #include "subjectObserver.h"
 #include "entity.h"
 
-class Player: public Subject, public Entity {
+class Player: public Entity {
     virtual void step() override;
     public:
     Player(const Entity::EntityImpl &data);
     virtual ~Player() = default;
+    virtual char icon() const override;
 };
 
 #endif

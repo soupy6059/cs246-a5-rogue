@@ -2,10 +2,12 @@
 #define __entity__
 
 #include <array>
-#include "util.h"
 #include <memory>
 
-class Entity {
+#include "util.h"
+#include "subjectObserver.h"
+
+class Entity: public Subject {
 public:  // "redeclared with different access"
     struct EntityImpl;
     struct Status;

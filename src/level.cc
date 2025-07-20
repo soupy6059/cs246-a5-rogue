@@ -36,6 +36,6 @@ void LevelFactory::load(string file [[maybe_unused]]) {
 }
 
 unique_ptr<Level> LevelFactory::create() {
-    return make_unique<Level>(10,10);
+    return make_unique<Level>(3,3);
 }
 

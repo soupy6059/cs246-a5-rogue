@@ -8,15 +8,202 @@
 !_TAG_FIELD_DESCRIPTION	name	/tag name/
 !_TAG_FIELD_DESCRIPTION	pattern	/pattern/
 !_TAG_FIELD_DESCRIPTION	typeref	/Type and name of a variable or typedef/
+!_TAG_FIELD_DESCRIPTION!C++	name	/aliased names/
 !_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
 !_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_KIND_DESCRIPTION!C++	c,class	/classes/
+!_TAG_KIND_DESCRIPTION!C++	d,macro	/macro definitions/
+!_TAG_KIND_DESCRIPTION!C++	e,enumerator	/enumerators (values inside an enumeration)/
+!_TAG_KIND_DESCRIPTION!C++	f,function	/function definitions/
+!_TAG_KIND_DESCRIPTION!C++	g,enum	/enumeration names/
+!_TAG_KIND_DESCRIPTION!C++	h,header	/included header files/
+!_TAG_KIND_DESCRIPTION!C++	m,member	/class, struct, and union members/
+!_TAG_KIND_DESCRIPTION!C++	n,namespace	/namespaces/
+!_TAG_KIND_DESCRIPTION!C++	s,struct	/structure names/
+!_TAG_KIND_DESCRIPTION!C++	t,typedef	/typedefs/
+!_TAG_KIND_DESCRIPTION!C++	u,union	/union names/
+!_TAG_KIND_DESCRIPTION!C++	v,variable	/variable definitions/
+!_TAG_KIND_DESCRIPTION!Make	I,makefile	/makefiles/
+!_TAG_KIND_DESCRIPTION!Make	m,macro	/macros/
+!_TAG_KIND_DESCRIPTION!Make	t,target	/targets/
+!_TAG_KIND_DESCRIPTION!Sh	a,alias	/aliases/
+!_TAG_KIND_DESCRIPTION!Sh	f,function	/functions/
+!_TAG_KIND_DESCRIPTION!Sh	h,heredoc	/label for here document/
+!_TAG_KIND_DESCRIPTION!Sh	s,script	/script files/
 !_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
 !_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
 !_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
 !_TAG_OUTPUT_VERSION	0.0	/current.age/
+!_TAG_PARSER_VERSION!C++	1.1	/current.age/
+!_TAG_PARSER_VERSION!Make	0.0	/current.age/
+!_TAG_PARSER_VERSION!Sh	0.0	/current.age/
 !_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
 !_TAG_PROC_CWD	/home/cartera/Documents/assignments/cs246-assignments/project/	//
 !_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	6.1.0	//
+!_TAG_ROLE_DESCRIPTION!C++!header	local	/local header/
+!_TAG_ROLE_DESCRIPTION!C++!header	system	/system header/
+!_TAG_ROLE_DESCRIPTION!C++!macro	undef	/undefined/
+!_TAG_ROLE_DESCRIPTION!Make!makefile	included	/included/
+!_TAG_ROLE_DESCRIPTION!Make!makefile	optional	/optionally included/
+!_TAG_ROLE_DESCRIPTION!Sh!heredoc	endmarker	/end marker/
+!_TAG_ROLE_DESCRIPTION!Sh!script	loaded	/loaded/
+$(BUILDDIR)/%.o	Makefile	/^$(BUILDDIR)\/%.o: $(SRCDIR)\/%.cc$/;"	t
+$(TARGET)	Makefile	/^$(TARGET): $(OBJECTS)$/;"	t
+ATTACK	inc/entity.h	/^            HEALTH, ATTACK, DAMAGE, \/\/ COUNT IS ABOVE. PLEASE UPDATE$/;"	e	enum:Entity::EntityImpl::Stats
+Action	inc/entity.h	/^    enum class Action { \/\/ im using Lucas' idea$/;"	g	class:Entity
+Action	inc/tile.h	/^    enum class Action {$/;"	g	class:Tile
+BUILDDIR	Makefile	/^BUILDDIR = build$/;"	m
+CENTER	inc/util.h	/^    CENTER,$/;"	e	enum:Direction
+CXX	Makefile	/^CXX = g++$/;"	m
+DAMAGE	inc/entity.h	/^            HEALTH, ATTACK, DAMAGE, \/\/ COUNT IS ABOVE. PLEASE UPDATE$/;"	e	enum:Entity::EntityImpl::Stats
+DOOR	inc/tile.h	/^        DOOR,$/;"	e	enum:Tile::TileType
+Direction	inc/util.h	/^enum class Direction {$/;"	g
+EAST	inc/util.h	/^    EAST,$/;"	e	enum:Direction
+Entity	inc/entity.h	/^class Entity: public Subject {$/;"	c
+Entity	src/entity.cc	/^Entity::Entity(Entity &&other):$/;"	f	class:Entity
+Entity	src/entity.cc	/^Entity::Entity(const Entity &other):$/;"	f	class:Entity
+Entity	src/entity.cc	/^Entity::Entity(const Entity::EntityImpl &data):$/;"	f	class:Entity
+EntityImpl	inc/entity.h	/^    struct EntityImpl {$/;"	s	class:Entity
+FLOOR	inc/tile.h	/^        FLOOR,$/;"	e	enum:Tile::TileType
+Game	inc/game.h	/^class Game {$/;"	c
+Game	src/game.cc	/^Game::Game():$/;"	f	class:Game
+Grid	inc/grid.h	/^class Grid: public Observer {$/;"	c
+Grid	src/grid.cc	/^Grid::Grid(size_t rowCount, size_t colCount):$/;"	f	class:Grid
+GridImpl	inc/grid.h	/^    struct GridImpl {$/;"	s	class:Grid
+HALLWAY	inc/tile.h	/^        HALLWAY,$/;"	e	enum:Tile::TileType
+HEALTH	inc/entity.h	/^            HEALTH, ATTACK, DAMAGE, \/\/ COUNT IS ABOVE. PLEASE UPDATE$/;"	e	enum:Entity::EntityImpl::Stats
+INCDIR	Makefile	/^INCDIR = inc$/;"	m
+INCLUDES	Makefile	/^INCLUDES = -Iinc$/;"	m
+Level	inc/level.h	/^class Level {$/;"	c
+Level	src/level.cc	/^Level::Level(Level &&other):$/;"	f	class:Level
+Level	src/level.cc	/^Level::Level(size_t rowCount, size_t colCount):$/;"	f	class:Level
+LevelFactory	inc/level.h	/^class LevelFactory {$/;"	c
+LevelFactory	src/level.cc	/^LevelFactory::LevelFactory() {}$/;"	f	class:LevelFactory
+Log	inc/log.h	/^namespace Log {$/;"	n
+MOVE	inc/entity.h	/^        MOVE, NOTHING$/;"	e	enum:Entity::Action
+MOVE_OWNED_ENTITY	inc/tile.h	/^        MOVE_OWNED_ENTITY, NOTHING, SWAP,$/;"	e	enum:Tile::Action
+NORTH	inc/util.h	/^    NORTH,$/;"	e	enum:Direction
+NORTHEAST	inc/util.h	/^    NORTHEAST,$/;"	e	enum:Direction
+NORTHWEST	inc/util.h	/^    NORTHWEST,$/;"	e	enum:Direction
+NOTHING	inc/entity.h	/^        MOVE, NOTHING$/;"	e	enum:Entity::Action
+NOTHING	inc/tile.h	/^        MOVE_OWNED_ENTITY, NOTHING, SWAP,$/;"	e	enum:Tile::Action
+NUMBER_OF_LEVELS	inc/game.h	/^    static const std::size_t NUMBER_OF_LEVELS = 5;$/;"	m	class:Game	typeref:typename:const std::size_t
+NUMBER_OF_STATS	inc/entity.h	/^        static const std::size_t NUMBER_OF_STATS = 3;$/;"	m	struct:Entity::EntityImpl	typeref:typename:const std::size_t
+OBJECTS	Makefile	/^OBJECTS = $(SOURCES:$(SRCDIR)\/%.cc=$(BUILDDIR)\/%.o)$/;"	m
+Observer	inc/subjectObserver.h	/^class Observer { $/;"	c
+Player	inc/player.h	/^class Player: public Entity {$/;"	c
+Player	src/player.cc	/^Player::Player(const Entity::EntityImpl &data):$/;"	f	class:Player
+SOURCES	Makefile	/^SOURCES = $(wildcard $(SRCDIR)\/*.cc)$/;"	m
+SOUTH	inc/util.h	/^    SOUTH,$/;"	e	enum:Direction
+SOUTHEAST	inc/util.h	/^    SOUTHEAST,$/;"	e	enum:Direction
+SOUTHWEST	inc/util.h	/^    SOUTHWEST,$/;"	e	enum:Direction
+SRCDIR	Makefile	/^SRCDIR = src$/;"	m
+STAIR	inc/tile.h	/^        STAIR,$/;"	e	enum:Tile::TileType
+SWAP	inc/tile.h	/^        MOVE_OWNED_ENTITY, NOTHING, SWAP,$/;"	e	enum:Tile::Action
+Stats	inc/entity.h	/^        enum class Stats {$/;"	g	struct:Entity::EntityImpl
+Status	inc/entity.h	/^    struct Status {$/;"	s	class:Entity
+Status	inc/tile.h	/^    struct Status {$/;"	s	class:Tile
+Subject	inc/subjectObserver.h	/^class Subject {$/;"	c
+TARGET	Makefile	/^TARGET = main$/;"	m
+Tile	inc/tile.h	/^class Tile: public Observer, public Subject {$/;"	c
+Tile	src/tile.cc	/^Tile::Tile(const TileImpl &data):$/;"	f	class:Tile
+TileImpl	inc/tile.h	/^    struct TileImpl {$/;"	s	class:Tile
+TileType	inc/tile.h	/^    enum class TileType {$/;"	g	class:Tile
+VOID	inc/tile.h	/^        VOID,$/;"	e	enum:Tile::TileType
+Vec2	inc/util.h	/^struct Vec2 {$/;"	s
+WALL	inc/tile.h	/^        WALL,$/;"	e	enum:Tile::TileType
+WEST	inc/util.h	/^    WEST,$/;"	e	enum:Direction
+__entity__	inc/entity.h	/^#define __entity__$/;"	d
+__game__	inc/game.h	/^#define __game__$/;"	d
+__grid__	inc/grid.h	/^#define __grid__$/;"	d
+__level__	inc/level.h	/^#define __level__$/;"	d
+__log__	inc/log.h	/^#define __log__$/;"	d
+__player__	inc/player.h	/^#define __player__$/;"	d
+__subjectObserver__	inc/subjectObserver.h	/^#define __subjectObserver__$/;"	d
+__tile__	inc/tile.h	/^#define __tile__$/;"	d
+__util__	inc/util.h	/^#define __util__$/;"	d
+action	inc/entity.h	/^        Action action;$/;"	m	struct:Entity::Status	typeref:typename:Action
+action	inc/tile.h	/^        Action action;$/;"	m	struct:Tile::Status	typeref:typename:Action
+all	Makefile	/^all: $(TARGET)$/;"	t
+at	src/grid.cc	/^std::shared_ptr<Tile> Grid::at(const Vec2 &location) const {$/;"	f	class:Grid	typeref:typename:std::shared_ptr<Tile>
+at	src/grid.cc	/^std::shared_ptr<Tile> Grid::at(std::size_t row, std::size_t col) const {$/;"	f	class:Grid	typeref:typename:std::shared_ptr<Tile>
+attach	src/subjectObserver.cc	/^void Subject::attach(shared_ptr<Observer> obs) {$/;"	f	class:Subject	typeref:typename:void
+attachRelativeTileNeighbours	src/grid.cc	/^void Grid::attachRelativeTileNeighbours(const int r, const int c) {$/;"	f	class:Grid	typeref:typename:void
+attachTileNeighbours	src/grid.cc	/^void Grid::attachTileNeighbours() {$/;"	f	class:Grid	typeref:typename:void
+clean	Makefile	/^clean:$/;"	t
+create	src/level.cc	/^unique_ptr<Level> LevelFactory::create() {$/;"	f	class:LevelFactory	typeref:typename:unique_ptr<Level>
+data	inc/entity.h	/^    std::unique_ptr<EntityImpl> data; \/\/ Enabling future strong exception guarentee$/;"	m	class:Entity	typeref:typename:std::unique_ptr<EntityImpl>
+data	inc/grid.h	/^    std::unique_ptr<GridImpl> data;$/;"	m	class:Grid	typeref:typename:std::unique_ptr<GridImpl>
+data	inc/tile.h	/^    std::shared_ptr<TileImpl> data;$/;"	m	class:Tile	typeref:typename:std::shared_ptr<TileImpl>
+debug	Makefile	/^debug: $(TARGET)$/;"	t
+debug	Makefile	/^debug: CXXFLAGS += -DDEBUG -g3 -O0$/;"	t
+detach	src/subjectObserver.cc	/^void Subject::detach(shared_ptr<Observer> obs) {$/;"	f	class:Subject	typeref:typename:void
+dir	inc/entity.h	/^        Direction dir;$/;"	m	struct:Entity::Status	typeref:typename:Direction
+dir	inc/tile.h	/^        Direction dir;$/;"	m	struct:Tile::Status	typeref:typename:Direction
+entity	inc/tile.h	/^        std::shared_ptr<Entity> entity;$/;"	m	struct:Tile::TileImpl	typeref:typename:std::shared_ptr<Entity>
+getEntity	src/tile.cc	/^shared_ptr<Entity> Tile::getEntity() const {$/;"	f	class:Tile	typeref:typename:shared_ptr<Entity>
+getGrid	src/level.cc	/^Grid &Level::getGrid() const {$/;"	f	class:Level	typeref:typename:Grid &
+getLogFile	src/log.cc	/^ofstream &Log::getLogFile(string fileName) {$/;"	f	class:Log	typeref:typename:ofstream &
+getObservers	src/subjectObserver.cc	/^std::vector<std::shared_ptr<Observer>> &Subject::getObservers() {$/;"	f	class:Subject	typeref:typename:std::vector<std::shared_ptr<Observer>> &
+getPosition	src/tile.cc	/^const Vec2 &Tile::getPosition() const {$/;"	f	class:Tile	typeref:typename:const Vec2 &
+getRelativeDirection	src/tile.cc	/^Direction Tile::getRelativeDirection(const Tile &other) const {$/;"	f	class:Tile	typeref:typename:Direction
+getStats	src/entity.cc	/^Entity::EntityImpl &Entity::getStats() const {$/;"	f	class:Entity	typeref:typename:Entity::EntityImpl &
+getStatus	src/entity.cc	/^const Entity::Status &Entity::getStatus() {$/;"	f	class:Entity	typeref:typename:const Entity::Status &
+getStatus	src/tile.cc	/^const Tile::Status &Tile::getStatus() const {$/;"	f	class:Tile	typeref:typename:const Tile::Status &
+getType	src/tile.cc	/^const Tile::TileType &Tile::getType() const {$/;"	f	class:Tile	typeref:typename:const Tile::TileType &
+icon	src/player.cc	/^char Player::icon() const {$/;"	f	class:Player	typeref:typename:char
+icon	src/tile.cc	/^char Tile::icon() const {$/;"	f	class:Tile	typeref:typename:char
+initLogFile	src/log.cc	/^void initLogFile(string fileName) {$/;"	f	typeref:typename:void
+initLogs	src/log.cc	/^void Log::initLogs() {$/;"	f	class:Log	typeref:typename:void
+iotaDirection	src/tile.cc	/^const vector<Direction> &iotaDirection() {$/;"	f	typeref:typename:const vector<Direction> &
+isCollidable	src/tile.cc	/^bool Tile::isCollidable() const {$/;"	f	class:Tile	typeref:typename:bool
+levelFactory	inc/game.h	/^    LevelFactory levelFactory;$/;"	m	class:Game	typeref:typename:LevelFactory
+levels	inc/game.h	/^    std::array<std::unique_ptr<Level>,NUMBER_OF_LEVELS> levels;$/;"	m	class:Game	typeref:typename:std::array<std::unique_ptr<Level>,NUMBER_OF_LEVELS>
+load	src/level.cc	/^void LevelFactory::load(string file [[maybe_unused]]) {$/;"	f	class:LevelFactory	typeref:typename:void
+loggingFiles	src/log.cc	/^static map<string,unique_ptr<ofstream>> loggingFiles;$/;"	v	typeref:typename:map<string,unique_ptr<ofstream>>	file:
+main	src/main.cc	/^int main() { try {$/;"	f	typeref:typename:int
+mainUpdate	src/entity.cc	/^void Entity::mainUpdate() {$/;"	f	class:Entity	typeref:typename:void
+moveEntity	src/tile.cc	/^shared_ptr<Entity> Tile::moveEntity() {$/;"	f	class:Tile	typeref:typename:shared_ptr<Entity>
+notify	src/grid.cc	/^void Grid::notify(Subject &whoFrom) {$/;"	f	class:Grid	typeref:typename:void
+notify	src/grid.cc	/^void Grid::notify(Tile &whoFrom) {$/;"	f	class:Grid	typeref:typename:void
+notify	src/tile.cc	/^void Tile::notify(Entity &whoFrom) {$/;"	f	class:Tile	typeref:typename:void
+notify	src/tile.cc	/^void Tile::notify(Subject &whoFrom) {$/;"	f	class:Tile	typeref:typename:void
+notify	src/tile.cc	/^void Tile::notify(Tile &whoFrom) {$/;"	f	class:Tile	typeref:typename:void
+notifyObservers	src/subjectObserver.cc	/^void Subject::notifyObservers() {$/;"	f	class:Subject	typeref:typename:void
+observers	inc/subjectObserver.h	/^    std::vector<std::shared_ptr<Observer>> observers;$/;"	m	class:Subject	typeref:typename:std::vector<std::shared_ptr<Observer>>
+operator +	inc/util.h	/^    Vec2 operator+(const Vec2 &other) const {$/;"	f	struct:Vec2	typeref:typename:Vec2
+operator -	inc/util.h	/^    Vec2 operator-(const Vec2 &other) const {$/;"	f	struct:Vec2	typeref:typename:Vec2
+operator =	src/entity.cc	/^Entity &Entity::operator=(Entity &&other) {$/;"	f	class:Entity	typeref:typename:Entity &
+operator =	src/entity.cc	/^Entity &Entity::operator=(const Entity &other) {$/;"	f	class:Entity	typeref:typename:Entity &
+operator =	src/level.cc	/^Level &Level::operator=(Level &&other) {$/;"	f	class:Level	typeref:typename:Level &
+operator ==	inc/util.h	/^    bool operator==(const Vec2 &other) const {$/;"	f	struct:Vec2	typeref:typename:bool
+otherPosition	inc/tile.h	/^        Vec2 otherPosition;$/;"	m	struct:Tile::Status	typeref:typename:Vec2
+ownedGrid	inc/level.h	/^    std::unique_ptr<Grid> ownedGrid;$/;"	m	class:Level	typeref:typename:std::unique_ptr<Grid>
+player	inc/game.h	/^    std::shared_ptr<Entity> player;$/;"	m	class:Game	typeref:typename:std::shared_ptr<Entity>
+pointingAt	src/tile.cc	/^bool Tile::pointingAt(const Tile &other) const {$/;"	f	class:Tile	typeref:typename:bool
+position	inc/tile.h	/^        Vec2 position;$/;"	m	struct:Tile::TileImpl	typeref:typename:Vec2
+print	src/grid.cc	/^void Grid::print(ostream &os) const {$/;"	f	class:Grid	typeref:typename:void
+queryMovement	src/tile.cc	/^void Tile::queryMovement(Entity &whoFrom) {$/;"	f	class:Tile	typeref:typename:void
+queryMovement	src/tile.cc	/^void Tile::queryMovement(Tile &whoFrom) {$/;"	f	class:Tile	typeref:typename:void
+rebuild	Makefile	/^rebuild: clean all$/;"	t
+run	Makefile	/^run: $(TARGET)$/;"	t
+selfPosition	inc/tile.h	/^        Vec2 selfPosition;$/;"	m	struct:Tile::Status	typeref:typename:Vec2
+setEntity	src/tile.cc	/^void Tile::setEntity(shared_ptr<Entity> toEntity) {$/;"	f	class:Tile	typeref:typename:void
+setPosition	src/tile.cc	/^void Tile::setPosition(const Vec2 &newPosition) {$/;"	f	class:Tile	typeref:typename:void
+setStatus	src/entity.cc	/^void Entity::setStatus(const Status &newStatus) {$/;"	f	class:Entity	typeref:typename:void
+setStatus	src/tile.cc	/^void Tile::setStatus(const Tile::Status &toStatus) {$/;"	f	class:Tile	typeref:typename:void
+setType	src/tile.cc	/^void Tile::setType(const TileType &toType) {$/;"	f	class:Tile	typeref:typename:void
+start	src/game.cc	/^void Game::start() {$/;"	f	class:Game	typeref:typename:void
+stats	inc/entity.h	/^        std::array<int,NUMBER_OF_STATS> stats{0};$/;"	m	struct:Entity::EntityImpl	typeref:typename:std::array<int,NUMBER_OF_STATS>
+status	inc/entity.h	/^        Status status;$/;"	m	struct:Entity::EntityImpl	typeref:typename:Status
+status	inc/tile.h	/^        Status status;$/;"	m	struct:Tile::TileImpl	typeref:typename:Status
+step	src/player.cc	/^void Player::step() {$/;"	f	class:Player	typeref:typename:void
+stepVec	inc/util.h	/^    static Vec2 stepVec(const Vec2 &v, Direction dir) {$/;"	f	struct:Vec2	typeref:typename:Vec2
+theGrid	inc/grid.h	/^        std::vector<std::vector<std::shared_ptr<Tile>>> theGrid; \/\/ *theGrid[row][col]$/;"	m	struct:Grid::GridImpl	typeref:typename:std::vector<std::vector<std::shared_ptr<Tile>>>
+type	inc/tile.h	/^        TileType type;$/;"	m	struct:Tile::TileImpl	typeref:typename:TileType
+update	src/entity.cc	/^void Entity::update() {$/;"	f	class:Entity	typeref:typename:void
+x	inc/util.h	/^    int x,y;$/;"	m	struct:Vec2	typeref:typename:int
+y	inc/util.h	/^    int x,y;$/;"	m	struct:Vec2	typeref:typename:int
