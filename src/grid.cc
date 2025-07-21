@@ -30,9 +30,7 @@ Grid::Grid(size_t rowCount, size_t colCount):
                 .entity = nullptr,
                 .status = Tile::Status{
                     .action = Tile::Action::NOTHING,
-                    .dir = Direction::CENTER,
-                    .selfPosition = {0,0},
-                    .otherPosition = {0,0},
+                    .DUMMY = true,
                 },
                 .position = Vec2{static_cast<int>(r),static_cast<int>(c)},
                 .type = Tile::TileType::FLOOR,
@@ -47,6 +45,10 @@ Grid::Grid(size_t rowCount, size_t colCount):
 }
 
 vector<vector<shared_ptr<Tile>>> &Grid::getTheGrid() {
+    return data->theGrid;
+}
+
+const vector<vector<shared_ptr<Tile>>> &Grid::viewTheGrid() const {
     return data->theGrid;
 }
 

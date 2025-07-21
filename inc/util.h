@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <iostream>
+#include <vector>
 
 enum class Direction {
     NORTH,
@@ -46,6 +47,7 @@ struct Vec2 {
     }
 };
 
+template<typename T> std::ostream &operator<<(std::ostream &os, const std::vector<T> &v);
 std::ostream &operator<<(std::ostream &os, const Vec2 &v);
 std::ostream &getCout();
 

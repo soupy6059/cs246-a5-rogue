@@ -14,6 +14,7 @@ using namespace std;
 //    1.2) and src/game.cc:start() has an "example" of how to do it in the ugly way
 // 2) Fix src/player.cc:step. i forgot how to properly do input so i used labels which is bad
 // 3) For some reason, Grid::notify(Tile&) is always called twice, when it shouldn't be.
+// 4) movement function needs to be reworked.
 
 int main() {
     Log::initLogs();

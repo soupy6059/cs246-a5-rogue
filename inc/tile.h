@@ -12,9 +12,18 @@ public: // INTERNAL TYPES
     };
     struct Status {
         Action action;
-        Direction dir;
-        Vec2 selfPosition;
-        Vec2 otherPosition;
+        union {
+            struct {
+                bool DUMMY;
+            };
+            struct {
+                Direction dir;
+            };
+            struct {
+                Vec2 selfPosition;
+                Vec2 otherPosition;
+            };
+        };
     };
     enum class TileType {
         FLOOR,

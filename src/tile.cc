@@ -61,8 +61,6 @@ void Tile::queryMovement(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::MOVE_OWNED_ENTITY,
         .dir = whoFrom.getStatus().dir,
-        .selfPosition = {0,0},
-        .otherPosition = {0,0},
     });
     notifyObservers();
 }
@@ -125,7 +123,6 @@ void Tile::queryMovement(Tile &whoFrom) {
     // so they're good to move. im stealing their entity!
     whoFrom.setStatus({
         .action = Tile::Action::SWAP,
-        .dir = Direction::CENTER,
         .selfPosition = whoFrom.getPosition(),
         .otherPosition = this->getPosition(),
     });

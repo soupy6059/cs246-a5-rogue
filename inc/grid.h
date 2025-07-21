@@ -16,6 +16,7 @@ class Grid: public Observer {
     void attachTileNeighbours();
     public:
     std::vector<std::vector<std::shared_ptr<Tile>>> &getTheGrid();
+    const std::vector<std::vector<std::shared_ptr<Tile>>> &viewTheGrid() const;
     Grid(std::size_t rowCount, std::size_t colCount);
     std::shared_ptr<Tile> at(std::size_t row, std::size_t col) const;
     std::shared_ptr<Tile> at(const Vec2 &) const;

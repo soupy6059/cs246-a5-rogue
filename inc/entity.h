@@ -21,7 +21,11 @@ public:
     };
     struct Status {
         Action action;
-        Direction dir;
+        union {
+            struct {
+                Direction dir;
+            };
+        };
     };
     struct EntityImpl {
         static const std::size_t NUMBER_OF_STATS = 3;

@@ -7,6 +7,8 @@
 #include "level.h"
 #include "entity.h"
 
+// note that switch floors means the textDisplay has to observer a new grid
+
 class Game {
     LevelFactory levelFactory;
     std::shared_ptr<Entity> player;
