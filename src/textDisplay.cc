@@ -18,15 +18,15 @@ TextDisplay::TextDisplay(const Grid &grid):
     theDisplay(grid.viewTheGrid().size(), vector<char>(grid.viewTheGrid().at(0).size(), '.')) {}
 
 void TextDisplay::notify(Grid &grid) {
-    ranges::transform(grid.viewTheGrid(), theDisplay, theDisplay.begin(), 
-        [](const auto &tiles, const auto &display) {
-            vector<char> newDisplay(display.size());
-            ranges::transform(tiles, display, newDisplay.begin(),
-                [](const auto &tile, const auto &_[[maybe_unused]]) {
-                    return tile->icon();
-                });
-            return newDisplay;
+    ranges::transform(grid.viewTheGrid(), theDisplay.begin(),
+    [](const auto &tiles) {
+        vector<char> newDisplay;
+        ranges::transform(tiles, back_inserter(newDisplay),
+        [](const auto &tile) {
+            return tile->icon();
         });
+        return newDisplay;
+    });
 }
 
 void TextDisplay::notify(Subject &whoFrom) {
