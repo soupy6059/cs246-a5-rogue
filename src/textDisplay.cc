@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "util.h"
 #include <utility>
-
 using namespace std;
 
 ostream &operator<<(ostream &os, const TextDisplay &td) {
@@ -15,19 +14,15 @@ ostream &operator<<(ostream &os, const TextDisplay &td) {
     return os;
 }
 
-TextDisplay::TextDisplay(const Grid &grid) {
-    vector<size_t> iote(grid.viewTheGrid().size());
-    for(const size_t _[[maybe_unused]]: iote) {
-        theDisplay.emplace_back(grid.viewTheGrid().at(0).size(), '.');
-    }
-}
+TextDisplay::TextDisplay(const Grid &grid):
+    theDisplay(grid.viewTheGrid().size(), vector<char>(grid.viewTheGrid().at(0).size(), '.')) {}
 
 void TextDisplay::notify(Grid &grid) {
     ranges::transform(grid.viewTheGrid(), theDisplay, theDisplay.begin(), 
-        [](const vector<shared_ptr<Tile>> &tiles, const vector<char> &display) -> vector<char> {
+        [](const auto &tiles, const auto &display) {
             vector<char> newDisplay(display.size());
             ranges::transform(tiles, display, newDisplay.begin(),
-                [](const shared_ptr<Tile> &tile, const char &_[[maybe_unused]]) -> char {
+                [](const auto &tile, const auto &_[[maybe_unused]]) {
                     return tile->icon();
                 });
             return newDisplay;
