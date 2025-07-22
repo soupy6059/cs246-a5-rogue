@@ -19,6 +19,7 @@ enum class Direction {
     CENTER,
 };
 
+
 struct Vec2 {
     int x,y;
     Vec2 operator+(const Vec2 &other) const {

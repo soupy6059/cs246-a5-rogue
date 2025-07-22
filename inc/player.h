@@ -7,6 +7,11 @@
 class Player: public Entity {
     int gold = 0;
     virtual void step() override;
+    protected:
+    struct defaultStats {
+        int atk, def, hp, acc;
+    };
+    defaultStats defaults;
     public:
     Player(const Entity::EntityImpl &data);
     virtual ~Player() = default;
