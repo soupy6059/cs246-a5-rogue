@@ -15,7 +15,7 @@ class Game {
     static const std::size_t NUMBER_OF_LEVELS = 5;
     std::array<std::unique_ptr<Level>,NUMBER_OF_LEVELS> levels;
     public:
-    Game();
+    Game(int seed = 0);
     virtual ~Game() = default;
     void start();
 };

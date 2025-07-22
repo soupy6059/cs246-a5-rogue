@@ -2,16 +2,18 @@
 #include <cstdlib>
 #include <ctime>
 #include <memory>
+#include <cassert>
 
-RNGenerator::RNGenerator(int n): seed{n} {srand(n);}
-
-void RNGenerator::init() {
-    time_t t;
-    time(&t);
-    srand(t);
+int getRand(int l, int u) {
+    assert(u >= l);
+    return (rand() % (u - l)) + l;
 }
 
-int RNGenerator::getRand(int l, int u) {
-    int n = rand() % (u - l + 1) + l;
-    return n;
+size_t getRand(size_t l, size_t u) {
+    assert(u >= l);
+    return static_cast<size_t>((rand() % (u - l)) + l);
+}
+
+void initRand(int seed) {
+    srand(seed);
 }

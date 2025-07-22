@@ -4,13 +4,15 @@
 
 #include "player.h"
 #include "gold.h"
+#include "rng.h"
 
 using namespace std;
 
-Game::Game():
+Game::Game(int seed):
     levelFactory{},
     player{nullptr},
     levels{nullptr} {
+    initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
         levels.at(i) = levelFactory.create();
     }
