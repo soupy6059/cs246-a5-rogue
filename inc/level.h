@@ -6,7 +6,7 @@
 #include <string>
 #include "grid.h"
 
-static const size_t FLOOR_HEIGHT = 30;
+static const size_t FLOOR_HEIGHT = 25;
 static const size_t FLOOR_WIDTH = 79;
 
 class Level {

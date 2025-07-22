@@ -2,9 +2,11 @@
 #include "grid.h"
 #include "tile.h"
 
+
 #include <utility>
 #include <exception>
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -51,15 +53,16 @@ unique_ptr<Level> LevelFactory::create() {
     auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
     auto theGrid = level->getGrid().getTheGrid();
 
-    for (int r = 0; r < FLOOR_HEIGHT; ++r) {
+    for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
         string line;
-        if (!getline(*leveldata, line)) throw logic_error("bad file");
-        if (line.size() < FLOOR_WIDTH) throw logic_error("bad file");
-        for (int c = 0; c < FLOOR_WIDTH; ++c) {
+        if (!getline(*leveldata, line)) throw logic_error("bad file: not enough lines");
+        if (line.size() < FLOOR_WIDTH) throw logic_error("bad file: line too short");
+        for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
             theGrid[r][c]->setType(fromChar(line[c]));
         }
     }
 
+    load("assets/level-empty.txt");
     // TODO: Generate items and entities
 
     return level;

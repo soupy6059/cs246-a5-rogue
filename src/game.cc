@@ -19,7 +19,7 @@ Game::Game():
 // mostly temporary for now
 void Game::start() {
     Level &mainLevel {*levels[0]};
-    static const Vec2 location {0,0};
+    static const Vec2 location {3,3};
     mainLevel.getGrid().at(location)->setEntity(make_shared<Player>(
         Entity::EntityImpl{
             .stats{0},
