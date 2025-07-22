@@ -1,9 +1,12 @@
 #include "level.h"
+#include "grid.h"
+#include "tile.h"
+
 
 #include <utility>
 #include <exception>
 #include <stdexcept>
-#include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -39,13 +42,26 @@ Grid &Level::getGrid() const {
     return *ownedGrid;
 }
 
-LevelFactory::LevelFactory() {}
-
-void LevelFactory::load(string file [[maybe_unused]]) {
-    throw logic_error{"todo"};
-}
+LevelFactory::LevelFactory(const string &file):
+    file{file} {}
 
 unique_ptr<Level> LevelFactory::create() {
-    return make_unique<Level>(3,5);
+    ifstream in{file};
+    if (!in) throw logic_error("bad file: file not found");
+    auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
+    auto theGrid = level->getGrid().getTheGrid();
+
+    for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
+        string line;
+        if (!getline(in, line)) throw logic_error("bad file: not enough lines");
+        if (line.size() < FLOOR_WIDTH) throw logic_error("bad file: line too short");
+        for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
+            theGrid[r][c]->setType(fromChar(line[c]));
+        }
+    }
+
+    // TODO: Generate items and entities
+
+    return level;
 }
 

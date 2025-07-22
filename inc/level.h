@@ -2,7 +2,12 @@
 #define __level__
 
 #include <memory>
+#include <fstream>
+#include <string>
 #include "grid.h"
+
+static const size_t FLOOR_HEIGHT = 25;
+static const size_t FLOOR_WIDTH = 79;
 
 class Level {
     std::shared_ptr<Grid> ownedGrid;
@@ -19,10 +24,10 @@ class Level {
 };
 
 class LevelFactory {
+    const std::string file;
     public:
-    LevelFactory(); // loads "default.level"
+    LevelFactory(const std::string &file = "assets/level-empty.txt"); // loads "default.level"
     virtual ~LevelFactory() = default;
-    void load(std::string file); // reloads "file"
     std::unique_ptr<Level> create();
 };
 

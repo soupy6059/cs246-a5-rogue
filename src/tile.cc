@@ -50,7 +50,8 @@ bool Tile::isCollidable() const {
     case TileType::HALLWAY:
     case TileType::DOOR:
         return getEntity()? true : false;
-    case TileType::WALL:
+    case TileType::HORIZONTAL_WALL:
+    case TileType::VERTICAL_WALL:
     case TileType::VOID:
         return true;
     default:
@@ -188,12 +189,35 @@ char Tile::icon() const {
         return getEntity()? getEntity()->icon() : ',';
     case TileType::DOOR:
         return getEntity()? getEntity()->icon() : '/';
-    case TileType::WALL:
-        return '#';
+    case TileType::VERTICAL_WALL:
+        return '|';
+    case TileType::HORIZONTAL_WALL:
+        return '-';
     case TileType::VOID:
         return ' ';
     default:
        throw out_of_range{"bad enum"};
     }
     throw logic_error{"unreachable"};
+}
+
+Tile::TileType fromChar(char c) {
+    switch (c) {
+        case '.': 
+            return Tile::TileType::FLOOR;
+        case '|':
+            return Tile::TileType::VERTICAL_WALL;
+        case '-': 
+            return Tile::TileType::HORIZONTAL_WALL;
+        case '#':
+            return Tile::TileType::HALLWAY;
+        case '+':
+            return Tile::TileType::DOOR;
+        case '/':
+            return Tile::TileType::STAIR;
+        case ' ':
+            return Tile::TileType::VOID;
+        default:
+            return Tile::TileType::FLOOR; // Potentially an entity
+    }
 }
