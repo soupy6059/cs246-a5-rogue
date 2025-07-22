@@ -43,5 +43,17 @@ void Enemy::step() {
         break;
     }
     //set status
+    setStatus(Entity::Status{
+            .action = Entity::Action::MOVE,
+            .dir = dir,
+    });
     // notify observers
+    notifyObservers();
 }
+
+int Enemy::getLoot() {return droppableLoot;}
+
+void Enemy::setLoot(int n) {droppableLoot = n;}
+
+Enemy::Enemy(EntityImpl data, int atk, int def, int hp, int acc, int loot):
+    Character(data, atk, def, hp, acc), droppableLoot{loot} {}
