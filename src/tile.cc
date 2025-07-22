@@ -178,16 +178,6 @@ char Tile::icon() const {
 Tile::TileType fromChar(char c) {
     switch (c) {
         case '.': 
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
             return Tile::TileType::FLOOR;
         case '|':
             return Tile::TileType::VERTICAL_WALL;
@@ -202,6 +192,6 @@ Tile::TileType fromChar(char c) {
         case ' ':
             return Tile::TileType::VOID;
         default:
-            return Tile::TileType::VOID; // change if necessary
+            return Tile::TileType::FLOOR; // Potentially an entity
     }
 }
