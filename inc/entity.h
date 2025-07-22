@@ -23,6 +23,9 @@ public:
         Action action;
         union {
             struct {
+                bool DUMMY;
+            };
+            struct {
                 Direction dir;
             };
         };

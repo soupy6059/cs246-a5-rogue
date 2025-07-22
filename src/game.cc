@@ -1,7 +1,9 @@
 #include "game.h"
-#include "player.h"
 
 #include <iostream>
+
+#include "player.h"
+#include "gold.h"
 
 using namespace std;
 
@@ -24,7 +26,7 @@ void Game::start() {
         Entity::EntityImpl{
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
-                .dir = Direction::CENTER,
+                .DUMMY = true,
             }
         }
     ));
@@ -32,10 +34,24 @@ void Game::start() {
     mainLevel.getGrid().at(location)->getEntity()->attach(
         mainLevel.getGrid().at(location)
     );
-      
+
+    static const Vec2 coinLocal {5,5};
+    mainLevel.getGrid().at(coinLocal)->setEntity(make_shared<Gold>(
+        Entity::EntityImpl{
+            .status = Entity::Status {
+                .action = Entity::Action::NOTHING,
+                .DUMMY = true,
+            }
+        },
+        2 // value
+    ));
+    mainLevel.getGrid().at(coinLocal)->getEntity()->attach(
+        mainLevel.getGrid().at(coinLocal)
+    );
     
     while(true) {
         mainLevel.getGrid().print(cout);
         player->update();
+        getCout() << dynamic_pointer_cast<Player>(player)->getGold() << endl;
     }
 }

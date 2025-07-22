@@ -70,15 +70,6 @@ void Tile::queryInteraction(Tile &whoFrom) {
      if(shared_ptr<Item> item = dynamic_pointer_cast<Item>(this->getEntity()); item) {
          item->affect(*whoFrom.getEntity());
      }
-     else if(shared_ptr<Gold> gold = dynamic_pointer_cast<Gold>(this->getEntity()); gold) {
-         if(shared_ptr<DragonHoard> dragonHoard = dynamic_pointer_cast<DragonHoard>(this->getEntity()); dragonHoard) {
-             if(dragonHoard->hasDragon()) return;
-         }
-         // sanity check
-         shared_ptr<Player> player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
-         assert(player);
-         player->setGold(player->getGold() + gold->getValue());
-     }
 }
 
 void Tile::queryInteraction(Entity &whoFrom) {
