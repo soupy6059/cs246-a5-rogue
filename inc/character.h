@@ -10,7 +10,6 @@ class Character : public Entity {
     int atk, def, hp, acc;
   public:
     virtual void attack(Tile& target);
-    virtual void step() override;
 
     // getters
     int getATK();
