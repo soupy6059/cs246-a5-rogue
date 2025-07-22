@@ -7,8 +7,10 @@
 class Enemy : public Character {
     int droppableLoot;
   public:
-    virtual void attack(Tile& target) override = 0;
+    virtual void attack(Tile& target) override;
     void step() override;
+    void setLoot();
+    int getLoot();
 };
 
 #endif

@@ -21,12 +21,10 @@ void Vampire::attack(Tile& target) {
     c->setHP(c->getHP() - damage); // do damage
     if (d != nullptr) {
         c->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
-    } 
-    if (c->getHP() <= 0) {
-        target.setEntity(nullptr);
-        return;
-    } // kill if dead
-    c->setHP(c->getHP() + DWARF_DAMAGE);
+    } else {
+        c->setHP(c->getHP() + DWARF_DAMAGE);
+    }
+    if (c->getHP() <= 0) { target.setEntity(nullptr);} // kill if dead
 }
 
 void Troll::setHP(int n) {
