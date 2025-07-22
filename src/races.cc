@@ -1,5 +1,6 @@
 #include "races.h"
 #include <memory>
+#include <cmath>
 
 void Shade::setHP(int n) {
     if (n > defaults.hp) hp = defaults.hp;
