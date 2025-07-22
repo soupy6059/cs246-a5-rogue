@@ -171,3 +171,23 @@ char Tile::icon() const {
     }
     throw logic_error{"unreachable"};
 }
+
+Tile::TileType fromChar(char c) {
+    switch (c) {
+        case '.': 
+            return Tile::TileType::FLOOR;
+        case '|':
+        case '-': 
+            return Tile::TileType::WALL;
+        case '#':
+            return Tile::TileType::HALLWAY;
+        case '+':
+            return Tile::TileType::DOOR;
+        case '/':
+            return Tile::TileType::STAIR;
+        case ' ':
+            return Tile::TileType::VOID;
+        default:
+            return Tile::TileType::VOID; // change if necessary
+    }
+}

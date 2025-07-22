@@ -46,6 +46,9 @@ void LevelFactory::load(string file [[maybe_unused]]) {
 }
 
 unique_ptr<Level> LevelFactory::create() {
-    return make_unique<Level>(3,5);
+    auto level = make_unique<Level>(30,79);
+    auto theGrid = level->getGrid().getTheGrid();
+
+    return level;
 }
 

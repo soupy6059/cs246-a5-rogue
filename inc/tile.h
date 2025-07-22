@@ -76,4 +76,6 @@ public: // METHODS
     bool isCollidable() const;
     char icon() const; // testing (i believe this will be handled in textDisplay, ask ian)
 };
+
+Tile::TileType fromChar(char c);
 #endif
