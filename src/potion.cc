@@ -79,7 +79,7 @@ void WeakPotion::affect(Entity &e) {
 }
 
 
-void WeakPotion::affect(Entity &e) {
+void BrittlePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setDEF(max(0, character.getATK() - 5));

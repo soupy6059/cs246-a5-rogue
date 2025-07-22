@@ -1,2 +1,4 @@
 gcm.cache
 main
+log/*
+build/*

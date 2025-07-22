@@ -59,14 +59,22 @@ bool Tile::isCollidable() const {
     throw logic_error{"unreachable"};
 }
 
-void queryInteraction(Entity &whoFrom) {
-    if(!whoFrom.pointingAt(*this)) return;
-    // they want to interact with me.
-    shared_ptr<Item> item = dynamic_pointer_cast<Item>(this->getEntity());
-    if(!item) {
-        return; // i don't own an item lol
-    }
-    item.affect(whoFrom);
+void Tile::queryInteraction(Tile &whoFrom) {
+     if(!whoFrom.pointingAt(*this)) return;
+     // they want to interact with me.
+     shared_ptr<Item> item = dynamic_pointer_cast<Item>(this->getEntity());
+     if(!item) {
+         return; // i don't own an item lol
+     }
+     item->affect(*whoFrom.getEntity());
+}
+
+void Tile::queryInteraction(Entity &whoFrom) {
+    setStatus(Tile::Status{
+        .action = Tile::Action::INTERACT,
+        .dir = whoFrom.getStatus().dir,
+    });
+    notifyObservers();
 }
 
 void Tile::queryMovement(Entity &whoFrom) {
@@ -150,6 +158,9 @@ void Tile::notify(Tile &whoFrom) {
         queryMovement(whoFrom);
         break;
     case Tile::Action::SWAP:
+        break;
+    case Tile::Action::INTERACT:
+        queryInteraction(whoFrom);
         break;
     default:
         throw out_of_range{"bad enum"};

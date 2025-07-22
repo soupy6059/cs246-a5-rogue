@@ -10,7 +10,6 @@ class Character : public Entity {
   public:
     virtual void attack(Tile& target);
     virtual void step() override;
-    virtual void interact(Tile& target);
 
 
     // getters
@@ -26,7 +25,6 @@ class Character : public Entity {
     void setACC(int new_acc);
     
     Character(Entity::EntityImpl ent_info, int atk, int def, int hp, int acc);
-    virtual void mainUpdate() override;
 
     char icon() const = 0;
 

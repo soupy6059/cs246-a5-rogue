@@ -24,3 +24,4 @@ void Character::attack(Tile& target) {
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
+void Character::step() {}

@@ -16,8 +16,8 @@ private:
     virtual void step() = 0;
     virtual void mainUpdate();
 public:
-    enum class Action { // im using Lucas' idea
-        MOVE, NOTHING
+    enum class Action { // im using Luke's idea
+        MOVE, NOTHING, INTERACT,
     };
     struct Status {
         Action action;
@@ -28,11 +28,6 @@ public:
         };
     };
     struct EntityImpl {
-        static const std::size_t NUMBER_OF_STATS = 3;
-        enum class Stats {
-            HEALTH, ATTACK, DAMAGE, // COUNT IS ABOVE. PLEASE UPDATE
-        };
-        std::array<int,NUMBER_OF_STATS> stats{0};
         Status status;
     };
     Entity(const EntityImpl &data);

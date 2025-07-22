@@ -8,7 +8,7 @@
 class Tile: public Observer, public Subject {
 public: // INTERNAL TYPES
     enum class Action {
-        MOVE_OWNED_ENTITY, NOTHING, SWAP,
+        MOVE_OWNED_ENTITY, NOTHING, SWAP, INTERACT
     };
     struct Status {
         Action action;
@@ -72,6 +72,7 @@ public: // METHODS
     void queryMovement(Tile &whoFrom);
     void queryMovement(Entity &whoFrom);
     void queryInteraction(Entity &whoFrom);
+    void queryInteraction(Tile &whoFrom);
     Direction getRelativeDirection(const Tile &) const;
     bool pointingAt(const Tile &) const;
     bool isCollidable() const;

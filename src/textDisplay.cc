@@ -17,6 +17,8 @@ ostream &operator<<(ostream &os, const TextDisplay &td) {
 TextDisplay::TextDisplay(const Grid &grid):
     theDisplay(grid.viewTheGrid().size(), vector<char>(grid.viewTheGrid().at(0).size(), '.')) {}
 
+// maps theDisplay to grid's icons.
+// i think this function works.
 void TextDisplay::notify(Grid &grid) {
     ranges::transform(grid.viewTheGrid(), theDisplay.begin(),
     [](const auto &tiles) {
