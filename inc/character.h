@@ -1,0 +1,35 @@
+#ifndef __character__
+#define __character__
+
+#include "entity.h"
+#include "util.h"
+#include "tile.h"
+
+class Character : public Entity {
+    int atk, def, hp, acc;
+  public:
+    virtual void attack(Tile& target);
+    virtual void step() override;
+    virtual void interact(Tile& target);
+
+
+    // getters
+    int getATK();
+    int getDEF();
+    int getHP();
+    int getACC();
+
+    // setters
+    void setATK(int new_atk);
+    void setDEF(int new_def);
+    virtual void setHP(int new_hp); // to maintain maximums
+    void setACC(int new_acc);
+    
+    Character(Entity::EntityImpl ent_info, int atk, int def, int hp, int acc);
+    virtual void mainUpdate() override;
+
+    char icon() const = 0;
+
+};
+
+#endif
