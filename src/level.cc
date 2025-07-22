@@ -81,14 +81,18 @@ unique_ptr<Level> LevelFactory::create() {
     auto rooms = getRooms(*level);
 
     size_t playerRoom = getRand(0,rooms.size());
-    level->setSpawnLocation(rooms[playerRoom][getRand(0,rooms[playerRoom].size())]);
+    size_t idx = getRand(0,rooms[playerRoom].size());
+    level->setSpawnLocation(rooms[playerRoom][idx]);
+    rooms[playerRoom].erase(rooms[playerRoom].begin() + idx);
 
     size_t stairsRoom = getRand(0,rooms.size());
     if (stairsRoom == playerRoom && rooms.size() > 1)
         while (stairsRoom == playerRoom) 
             stairsRoom = getRand(0,rooms.size());
 
-    Vec2 stairsLocation = rooms[stairsRoom][getRand(0,rooms[stairsRoom].size())];
+    idx = getRand(0,rooms[stairsRoom].size());
+    Vec2 stairsLocation = rooms[stairsRoom][idx];
+    rooms[stairsRoom].erase(rooms[stairsRoomm].begin() + idx);
 
     theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
 
