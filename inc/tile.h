@@ -13,13 +13,13 @@ public: // INTERNAL TYPES
     struct Status {
         Action action;
         union {
-            struct {
+            struct { // NOTHING
                 bool DUMMY;
             };
-            struct {
+            struct { // MOVE_OWNED_ENTITY
                 Direction dir;
             };
-            struct {
+            struct { // SWAP
                 Vec2 selfPosition;
                 Vec2 otherPosition;
             };
@@ -71,6 +71,7 @@ public: // VIRTUAL BEHAVIORS
 public: // METHODS
     void queryMovement(Tile &whoFrom);
     void queryMovement(Entity &whoFrom);
+    void queryInteraction(Entity &whoFrom);
     Direction getRelativeDirection(const Tile &) const;
     bool pointingAt(const Tile &) const;
     bool isCollidable() const;

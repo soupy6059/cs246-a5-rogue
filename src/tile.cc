@@ -6,6 +6,8 @@
 #include <utility>
 #include <cassert>
 
+#include "item.h"
+
 using namespace std;
 
 Tile::Tile(const TileImpl &data):
@@ -57,6 +59,16 @@ bool Tile::isCollidable() const {
     throw logic_error{"unreachable"};
 }
 
+void queryInteraction(Entity &whoFrom) {
+    if(!whoFrom.pointingAt(*this)) return;
+    // they want to interact with me.
+    shared_ptr<Item> item = dynamic_pointer_cast<Item>(this->getEntity());
+    if(!item) {
+        return; // i don't own an item lol
+    }
+    item.affect(whoFrom);
+}
+
 void Tile::queryMovement(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::MOVE_OWNED_ENTITY,
@@ -69,6 +81,9 @@ void Tile::notify(Entity &whoFrom) {
     switch(whoFrom.getStatus().action) {
     case Entity::Action::MOVE:
         queryMovement(whoFrom);
+        break;
+    case Entity::Action::INTERACT:
+        queryInteraction(whoFrom);
         break;
     default:
         throw out_of_range{"bad enum"};
