@@ -19,10 +19,7 @@ using namespace std;
 
 int main(int argc, char **argv) {
     vector<string> args;
-    for(int i{0}; i < argc; ++i) {
-        args.push_back(string{argv[i]});
-        cout << args[i] << endl;
-    }
+    for(int i{0}; i < argc; ++i) args.push_back(string{argv[i]});
 
     Log::initLogs();
     
