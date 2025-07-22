@@ -6,12 +6,13 @@
 #include <string>
 #include "grid.h"
 
+static const size_t FLOOR_HEIGHT = 30;
+static const size_t FLOOR_WIDTH = 79;
+
 class Level {
     std::shared_ptr<Grid> ownedGrid;
     void attachTilesToGrid();
     public:
-    static const int FLOOR_HEIGHT = 30;
-    static const int FLOOR_WIDTH = 79;
     Level(size_t,size_t); // idk what the params are
     virtual ~Level() = default;
     Level(Level&&); // enforced by array

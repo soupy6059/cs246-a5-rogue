@@ -41,21 +41,21 @@ Grid &Level::getGrid() const {
 }
 
 LevelFactory::LevelFactory():
-    leveldata{make_unique<ifstream>(ifstream{"level-empty.txt"})} {}
+    leveldata{make_unique<ifstream>(ifstream{"assets/level-empty.txt"})} {}
 
 void LevelFactory::load(string file) {
     leveldata = make_unique<ifstream>(ifstream{file});
 }
 
 unique_ptr<Level> LevelFactory::create() {
-    auto level = make_unique<Level>(Level::FLOOR_HEIGHT, Level::FLOOR_WIDTH);
+    auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
     auto theGrid = level->getGrid().getTheGrid();
 
-    for (int r = 0; r < Level::FLOOR_HEIGHT; ++r) {
+    for (int r = 0; r < FLOOR_HEIGHT; ++r) {
         string line;
         if (!getline(*leveldata, line)) throw logic_error("bad file");
-        if (line.size() < Level::FLOOR_WIDTH) throw logic_error("bad file");
-        for (int c = 0; c < Level::FLOOR_WIDTH; ++c) {
+        if (line.size() < FLOOR_WIDTH) throw logic_error("bad file");
+        for (int c = 0; c < FLOOR_WIDTH; ++c) {
             theGrid[r][c]->setType(fromChar(line[c]));
         }
     }
