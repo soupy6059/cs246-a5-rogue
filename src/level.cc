@@ -42,27 +42,24 @@ Grid &Level::getGrid() const {
     return *ownedGrid;
 }
 
-LevelFactory::LevelFactory():
-    leveldata{make_unique<ifstream>(ifstream{"assets/level-empty.txt"})} {}
-
-void LevelFactory::load(string file) {
-    leveldata = make_unique<ifstream>(ifstream{file});
-}
+LevelFactory::LevelFactory(const string &file):
+    file{file} {}
 
 unique_ptr<Level> LevelFactory::create() {
+    ifstream in{file};
+    if (!in) throw logic_error("bad file: file not found");
     auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
     auto theGrid = level->getGrid().getTheGrid();
 
     for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
         string line;
-        if (!getline(*leveldata, line)) throw logic_error("bad file: not enough lines");
+        if (!getline(in, line)) throw logic_error("bad file: not enough lines");
         if (line.size() < FLOOR_WIDTH) throw logic_error("bad file: line too short");
         for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
             theGrid[r][c]->setType(fromChar(line[c]));
         }
     }
 
-    load("assets/level-empty.txt");
     // TODO: Generate items and entities
 
     return level;

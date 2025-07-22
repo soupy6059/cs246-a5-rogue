@@ -24,11 +24,10 @@ class Level {
 };
 
 class LevelFactory {
-    std::unique_ptr<std::istream> leveldata;
+    const std::string file;
     public:
-    LevelFactory(); // loads "default.level"
+    LevelFactory(const std::string &file = "assets/level-empty.txt"); // loads "default.level"
     virtual ~LevelFactory() = default;
-    void load(std::string file); // reloads "file"
     std::unique_ptr<Level> create();
 };
 
