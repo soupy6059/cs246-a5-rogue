@@ -22,7 +22,6 @@ void Game::start() {
     static const Vec2 location {3,3};
     mainLevel.getGrid().at(location)->setEntity(make_shared<Player>(
         Entity::EntityImpl{
-            .stats{0},
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
                 .dir = Direction::CENTER,
