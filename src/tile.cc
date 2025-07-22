@@ -149,6 +149,18 @@ void Tile::queryMovement(Tile &whoFrom) {
     if(!whoFrom.pointingAt(*this)) return;
     // so a tile wants to move, to me!
 
+    // YAY HERES A SUPER SPECIFIC CASE!!!!
+    // if(whoFrom.getEntity() is Player && this->getEntity() is Gold) {
+    //     player.setGold(player->getGold() + gold->getValue());
+    //     this->setEntity(nullptr); // kill gold
+    // }
+    shared_ptr<Player> player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
+    shared_ptr<Gold> gold = dynamic_pointer_cast<Gold>(this->getEntity());
+    if(player && gold) {
+        player->setGold(player->getGold() + gold->getValue());
+        this->setEntity(nullptr);
+    }
+
     // am i collidable?
     if(isCollidable()) {
         // if i am, do nothing.
