@@ -2,12 +2,16 @@
 #define __level__
 
 #include <memory>
+#include <fstream>
+#include <string>
 #include "grid.h"
 
 class Level {
     std::shared_ptr<Grid> ownedGrid;
     void attachTilesToGrid();
     public:
+    static const int FLOOR_HEIGHT = 30;
+    static const int FLOOR_WIDTH = 79;
     Level(size_t,size_t); // idk what the params are
     virtual ~Level() = default;
     Level(Level&&); // enforced by array
@@ -19,6 +23,7 @@ class Level {
 };
 
 class LevelFactory {
+    std::unique_ptr<std::istream> leveldata;
     public:
     LevelFactory(); // loads "default.level"
     virtual ~LevelFactory() = default;

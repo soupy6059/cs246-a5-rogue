@@ -1,10 +1,9 @@
 #include "game.h"
-
-using namespace std;
+#include "player.h"
 
 #include <iostream>
 
-#include "player.h"
+using namespace std;
 
 Game::Game():
     levelFactory{},
