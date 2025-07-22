@@ -5,8 +5,9 @@
 #include "util.h"
 
 class Enemy : public Character {
+    int droppableLoot;
   public:
-    virtual void attack(Tile& target) = 0;
+    virtual void attack(Tile& target) override = 0;
     void step() override;
 };
 
