@@ -13,6 +13,7 @@ static const size_t FLOOR_WIDTH = 79;
 
 class Level {
     std::shared_ptr<Grid> ownedGrid;
+    Vec2 playerSpawnLocation;
     void attachTilesToGrid();
     public:
     Level(size_t,size_t); // idk what the params are
@@ -23,6 +24,12 @@ class Level {
     Level &operator=(const Level&) = delete;
 
     Grid &getGrid() const;
+
+    void setSpawnLocation(Vec2 loc);
+
+    void spawnAt(const std::shared_ptr<Entity> entity, Vec2 loc);
+
+    void setActiveLevel(const std::shared_ptr<Player> player);
 };
 
 class LevelFactory {
@@ -31,7 +38,7 @@ class LevelFactory {
     public:
     LevelFactory(const std::string &file = "assets/level-empty.txt"); // loads "default.level"
     virtual ~LevelFactory() = default;
-    std::unique_ptr<Level> create(std::shared_ptr<Player> player);
+    std::unique_ptr<Level> create();
 };
 
 #endif

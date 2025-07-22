@@ -21,7 +21,7 @@ Game::Game(int seed):
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
-        levels.at(i) = levelFactory.create(player);
+        levels.at(i) = levelFactory.create();
     }
 }
 
@@ -30,11 +30,12 @@ Game::Game(int seed):
 // mostly temporary for now
 void Game::start() {
     Level &mainLevel {*levels[0]};
-    static const Vec2 location {3,3};
-    mainLevel.getGrid().at(location)->setEntity(player);
-    mainLevel.getGrid().at(location)->getEntity()->attach(
-        mainLevel.getGrid().at(location)
-    );
+    mainLevel.setActiveLevel(player);
+    // static const Vec2 location {3,3};
+    // mainLevel.getGrid().at(location)->setEntity(player);
+    // mainLevel.getGrid().at(location)->getEntity()->attach(
+    //     mainLevel.getGrid().at(location)
+    // );
 
     static const Vec2 coinLocal {5,5};
     mainLevel.getGrid().at(coinLocal)->setEntity(make_shared<Gold>(
