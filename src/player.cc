@@ -9,6 +9,13 @@ using namespace std;
 Player::Player(const Entity::EntityImpl &data):
     Entity{data} {}
 
+void Player::setGold(int newGoldCount) {
+    gold = newGoldCount;
+}
+int Player::getGold() const {
+    return gold;
+}
+
 void Player::step() {
     char input;
     // PLEASE SOMEONE FIX THIS, I CANT AND GOT ANNOYED

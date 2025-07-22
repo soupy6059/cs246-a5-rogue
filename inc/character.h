@@ -10,7 +10,6 @@ class Character : public Entity {
   public:
     virtual void attack(Tile& target);
 
-
     // getters
     int getATK();
     int getDEF();

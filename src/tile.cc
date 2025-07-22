@@ -7,6 +7,8 @@
 #include <cassert>
 
 #include "item.h"
+#include "gold.h"
+#include "player.h"
 
 using namespace std;
 
@@ -67,11 +69,11 @@ bool Tile::isFloor() const {
 void Tile::queryInteraction(Tile &whoFrom) {
      if(!whoFrom.pointingAt(*this)) return;
      // they want to interact with me.
-     shared_ptr<Item> item = dynamic_pointer_cast<Item>(this->getEntity());
-     if(!item) {
-         return; // i don't own an item lol
+
+     
+     if(shared_ptr<Item> item = dynamic_pointer_cast<Item>(this->getEntity()); item) {
+         item->affect(*whoFrom.getEntity());
      }
-     item->affect(*whoFrom.getEntity());
 }
 
 void Tile::queryInteraction(Entity &whoFrom) {
@@ -142,6 +144,18 @@ void Tile::queryMovement(Tile &whoFrom) {
     if(!whoFrom.pointingAt(*this)) return;
     // so a tile wants to move, to me!
 
+    // YAY HERES A SUPER SPECIFIC CASE!!!!
+    // if(whoFrom.getEntity() is Player && this->getEntity() is Gold) {
+    //     player.setGold(player->getGold() + gold->getValue());
+    //     this->setEntity(nullptr); // kill gold
+    // }
+    shared_ptr<Player> player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
+    shared_ptr<Gold> gold = dynamic_pointer_cast<Gold>(this->getEntity());
+    if(player && gold) {
+        player->setGold(player->getGold() + gold->getValue());
+        this->setEntity(nullptr);
+    }
+
     // am i collidable?
     if(isCollidable()) {
         // if i am, do nothing.
@@ -188,11 +202,11 @@ char Tile::icon() const {
     case TileType::FLOOR:
         return getEntity()? getEntity()->icon() : '.';
     case TileType::STAIR:
-        return '<';
+        return '/';
     case TileType::HALLWAY:
-        return getEntity()? getEntity()->icon() : ',';
+        return getEntity()? getEntity()->icon() : '#';
     case TileType::DOOR:
-        return getEntity()? getEntity()->icon() : '/';
+        return getEntity()? getEntity()->icon() : '+';
     case TileType::VERTICAL_WALL:
         return '|';
     case TileType::HORIZONTAL_WALL:

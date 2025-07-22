@@ -5,8 +5,9 @@
 
 // interactable
 class Item: public Entity {
+    bool autoPickup = false;
 public:
-    Item(const Entity::EntityImpl &data); 
+    Item(const Entity::EntityImpl &data, bool autoPickup = false); 
     virtual ~Item() = default;
     virtual char icon() const override;
     virtual void affect(Entity&) = 0;
