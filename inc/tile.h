@@ -28,7 +28,8 @@ public: // INTERNAL TYPES
     enum class TileType {
         FLOOR,
         STAIR,
-        WALL,
+        HORIZONTAL_WALL,
+        VERTICAL_WALL,
         HALLWAY,
         VOID,
         DOOR,

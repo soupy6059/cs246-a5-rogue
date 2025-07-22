@@ -48,7 +48,8 @@ bool Tile::isCollidable() const {
     case TileType::HALLWAY:
     case TileType::DOOR:
         return getEntity()? true : false;
-    case TileType::WALL:
+    case TileType::HORIZONTAL_WALL:
+    case TileType::VERTICAL_WALL:
     case TileType::VOID:
         return true;
     default:
@@ -162,8 +163,10 @@ char Tile::icon() const {
         return getEntity()? getEntity()->icon() : ',';
     case TileType::DOOR:
         return getEntity()? getEntity()->icon() : '/';
-    case TileType::WALL:
-        return '#';
+    case TileType::VERTICAL_WALL:
+        return '|';
+    case TileType::HORIZONTAL_WALL:
+        return '-';
     case TileType::VOID:
         return ' ';
     default:
@@ -175,10 +178,21 @@ char Tile::icon() const {
 Tile::TileType fromChar(char c) {
     switch (c) {
         case '.': 
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
             return Tile::TileType::FLOOR;
         case '|':
+            return Tile::TileType::VERTICAL_WALL;
         case '-': 
-            return Tile::TileType::WALL;
+            return Tile::TileType::HORIZONTAL_WALL;
         case '#':
             return Tile::TileType::HALLWAY;
         case '+':
