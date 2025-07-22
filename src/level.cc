@@ -92,7 +92,7 @@ unique_ptr<Level> LevelFactory::create() {
 
     idx = getRand(0,rooms[stairsRoom].size());
     Vec2 stairsLocation = rooms[stairsRoom][idx];
-    rooms[stairsRoom].erase(rooms[stairsRoomm].begin() + idx);
+    rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
 
     theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
 
