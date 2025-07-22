@@ -6,6 +6,7 @@
 #include <string>
 #include "grid.h"
 #include "util.h"
+#include "player.h"
 
 static const size_t FLOOR_HEIGHT = 25;
 static const size_t FLOOR_WIDTH = 79;
@@ -30,7 +31,7 @@ class LevelFactory {
     public:
     LevelFactory(const std::string &file = "assets/level-empty.txt"); // loads "default.level"
     virtual ~LevelFactory() = default;
-    std::unique_ptr<Level> create();
+    std::unique_ptr<Level> create(std::shared_ptr<Player> player);
 };
 
 #endif

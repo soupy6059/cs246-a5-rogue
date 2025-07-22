@@ -1,6 +1,7 @@
 #include "level.h"
 #include "grid.h"
 #include "tile.h"
+#include "rng.h"
 
 
 #include <utility>
@@ -45,7 +46,7 @@ Grid &Level::getGrid() const {
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
 
-unique_ptr<Level> LevelFactory::create() {
+unique_ptr<Level> LevelFactory::create(shared_ptr<Player> player) {
     ifstream in{file};
     if (!in) throw logic_error("bad file: file not found");
     auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
@@ -61,6 +62,9 @@ unique_ptr<Level> LevelFactory::create() {
     }
 
     auto rooms = getRooms(*level);
+
+    size_t playerRoom = getRand(0,rooms.size());
+    Vec2 playerLocation = rooms[playerRoom][getRand(0,rooms[playerRoom].size())];
 
     // TODO: Generate items and entities
 

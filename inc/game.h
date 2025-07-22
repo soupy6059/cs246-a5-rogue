@@ -11,7 +11,7 @@
 
 class Game {
     LevelFactory levelFactory;
-    std::shared_ptr<Entity> player;
+    std::shared_ptr<Player> player;
     static const std::size_t NUMBER_OF_LEVELS = 5;
     std::array<std::unique_ptr<Level>,NUMBER_OF_LEVELS> levels;
     public:

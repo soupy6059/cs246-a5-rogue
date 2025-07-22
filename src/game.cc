@@ -10,11 +10,18 @@ using namespace std;
 
 Game::Game(int seed):
     levelFactory{},
-    player{nullptr},
+    player{make_shared<Player>(
+        Entity::EntityImpl{
+            .status = Entity::Status {
+                .action = Entity::Action::NOTHING,
+                .DUMMY = true,
+            }
+        }
+    )},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
-        levels.at(i) = levelFactory.create();
+        levels.at(i) = levelFactory.create(player);
     }
 }
 
@@ -24,15 +31,7 @@ Game::Game(int seed):
 void Game::start() {
     Level &mainLevel {*levels[0]};
     static const Vec2 location {3,3};
-    mainLevel.getGrid().at(location)->setEntity(make_shared<Player>(
-        Entity::EntityImpl{
-            .status = Entity::Status {
-                .action = Entity::Action::NOTHING,
-                .DUMMY = true,
-            }
-        }
-    ));
-    player = mainLevel.getGrid().at(location)->getEntity();
+    mainLevel.getGrid().at(location)->setEntity(player);
     mainLevel.getGrid().at(location)->getEntity()->attach(
         mainLevel.getGrid().at(location)
     );
