@@ -3,6 +3,7 @@
 
 #include <array>
 #include <memory>
+#include <string>
 
 #include "level.h"
 #include "entity.h"
@@ -15,7 +16,7 @@ class Game {
     static const std::size_t NUMBER_OF_LEVELS = 5;
     std::array<std::unique_ptr<Level>,NUMBER_OF_LEVELS> levels;
     public:
-    Game(int seed = 0);
+    Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0);
     virtual ~Game() = default;
     void start();
 };

@@ -17,8 +17,21 @@ using namespace std;
 //    3.1) NOTE: this isn't a bug per se, just weird. "seemingly" everything is fine
 // 4) TextDisplay is completely bugged to shit
 
-int main() {
+int main(int argc, char **argv) {
+    vector<string> args;
+    for(int i{0}; i < argc; ++i) {
+        args.push_back(string{argv[i]});
+        cout << args[i] << endl;
+    }
+
     Log::initLogs();
-    Game game;
-    game.start();
+    
+    try{
+        Game game{args.at(1)};
+        game.start();
+    }
+    catch(...) {
+        Game game;
+        game.start();
+    }
 }

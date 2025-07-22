@@ -8,8 +8,8 @@
 
 using namespace std;
 
-Game::Game(int seed):
-    levelFactory{},
+Game::Game(string levelFileName, int seed):
+    levelFactory{levelFileName},
     player{make_shared<Player>(
         Entity::EntityImpl{
             .status = Entity::Status {
