@@ -60,6 +60,10 @@ bool Tile::isCollidable() const {
     throw logic_error{"unreachable"};
 }
 
+bool Tile::isFloor() const {
+    return getType() == TileType::FLOOR;
+}
+
 void Tile::queryInteraction(Tile &whoFrom) {
      if(!whoFrom.pointingAt(*this)) return;
      // they want to interact with me.

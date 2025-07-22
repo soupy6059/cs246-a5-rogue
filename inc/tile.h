@@ -77,6 +77,7 @@ public: // METHODS
     Direction getRelativeDirection(const Tile &) const;
     bool pointingAt(const Tile &) const;
     bool isCollidable() const;
+    bool isFloor() const;
     char icon() const; // testing (i believe this will be handled in textDisplay, ask ian)
 };
 

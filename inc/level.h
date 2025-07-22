@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include "grid.h"
+#include "util.h"
 
 static const size_t FLOOR_HEIGHT = 25;
 static const size_t FLOOR_WIDTH = 79;
@@ -25,6 +26,7 @@ class Level {
 
 class LevelFactory {
     const std::string file;
+    std::vector<std::vector<Vec2>> getRooms(const Level &level);
     public:
     LevelFactory(const std::string &file = "assets/level-empty.txt"); // loads "default.level"
     virtual ~LevelFactory() = default;

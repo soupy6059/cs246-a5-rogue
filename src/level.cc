@@ -60,8 +60,56 @@ unique_ptr<Level> LevelFactory::create() {
         }
     }
 
+    auto rooms = getRooms(*level);
+
+    cout << "# of rooms: " << rooms.size() << endl;
+    for (int i = 0; i < rooms.size(); ++i) {
+        cout << i << " has size " << rooms[i].size() << " and contains location " << rooms[i].back() << endl;
+    }
+
     // TODO: Generate items and entities
 
     return level;
 }
 
+vector<vector<Vec2>> LevelFactory::getRooms(const Level &level) { // LeetCode 200
+    vector<vector<bool>> visited(FLOOR_HEIGHT, vector(FLOOR_WIDTH, false));
+    vector<vector<Vec2>> rooms{};
+
+    auto grid = level.getGrid().viewTheGrid();
+
+    for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
+        for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
+            if (visited[r][c] || !grid[r][c]->isFloor()) continue;
+
+            rooms.push_back(vector<Vec2>{});
+            rooms.back().emplace_back(r,c);
+            visited[r][c] = true;
+            for (int i = 0; i < rooms.back().size(); ++i) {
+                Vec2 pos = rooms.back()[i];
+                if (pos.x > 0 && !visited[pos.x-1][pos.y]
+                    && grid[pos.x-1][pos.y]->isFloor()) {
+                    rooms.back().push_back(Vec2{pos.x-1,pos.y});
+                    visited[pos.x-1][pos.y] = true;
+                }
+                if (pos.x < FLOOR_HEIGHT-1 && !visited[pos.x+1][pos.y]
+                    && grid[pos.x+1][pos.y]->isFloor()) {
+                    rooms.back().push_back(Vec2{pos.x+1,pos.y});
+                    visited[pos.x+1][pos.y] = true;
+                }
+                if (pos.y > 0 && !visited[pos.x][pos.y-1]
+                    && grid[pos.x][pos.y-1]->isFloor()) {
+                    rooms.back().push_back(Vec2{pos.x,pos.y-1});
+                    visited[pos.x][pos.y-1] = true;
+                }
+                if (pos.y < FLOOR_WIDTH-1 && !visited[pos.x][pos.y+1]
+                    && grid[pos.x][pos.y+1]->isFloor()) {
+                    rooms.back().push_back(Vec2{pos.x,pos.y+1});
+                    visited[pos.x][pos.y+1] = true;
+                }
+            }
+        }
+    }
+
+    return rooms;
+}
