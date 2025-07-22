@@ -3,7 +3,7 @@
 #include <ctime>
 #include <memory>
 
-RNGenerator::RNGenerator(int n = 0): seed{n} {srand(n);}
+RNGenerator::RNGenerator(int n): seed{n} {srand(n);}
 
 void RNGenerator::init() {
     time_t t;
