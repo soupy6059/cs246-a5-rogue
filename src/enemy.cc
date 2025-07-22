@@ -43,5 +43,10 @@ void Enemy::step() {
         break;
     }
     //set status
+    setStatus(Entity::Status{
+            .action = Entity::Action::MOVE,
+            .dir = dir,
+    });
     // notify observers
+    notifyObservers();
 }
