@@ -10,7 +10,7 @@ class Enemy : public Character {
     virtual void attack(Tile& target) override;
     Enemy(EntityImpl data, int atk, int def, int hp, int acc, int loot);
     void step() override;
-    void setLoot();
+    void setLoot(int n);
     int getLoot();
 };
 
