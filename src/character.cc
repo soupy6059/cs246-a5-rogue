@@ -1,5 +1,6 @@
 #include "character.h"
 #include <memory>
+#include "potion.h"
 
 int Character::getATK() { return atk; }
 int Character::getDEF() { return def; }
@@ -24,4 +25,3 @@ void Character::attack(Tile& target) {
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
-void Character::step() {}
