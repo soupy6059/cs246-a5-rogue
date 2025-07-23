@@ -10,7 +10,12 @@
 
 using namespace std;
 
-Player::Player(CharacterDefaults d): Character{d} {}
+Player::Player(CharacterDefaults d): Character{d} {
+    defaults.atk = d.atk;
+    defaults.def = d.def;
+    defaults.hp = d.hp;
+    defaults.acc = d.hp;
+}
 
 
 void Player::appendVerb(Verb::Status newStatus) {
