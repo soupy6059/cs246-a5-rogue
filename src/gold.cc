@@ -9,8 +9,8 @@
 
 using namespace std;
 
-Gold::Gold(const Entity::EntityImpl &data, int value):
-    Item{data}, value{value} {}
+Gold::Gold(int value):
+    Item{}, value{value} {}
 
 char Gold::icon() const {
     return 'G';
@@ -33,8 +33,8 @@ void Gold::affect(Entity& e) {
     catch(const bad_cast &ex) {}
 }
 
-DragonHoard::DragonHoard(const Entity::EntityImpl &data, int value):
-    Gold{data, value} {}
+DragonHoard::DragonHoard(int value):
+    Gold{value} {}
 
 bool DragonHoard::hasDragon() const { return false; } // TODO
 

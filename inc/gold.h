@@ -6,7 +6,7 @@
 class Gold: public Item {
     int value;
     public:
-    Gold(const Entity::EntityImpl &data, int value);
+    Gold(int value);
     int getValue();
     virtual ~Gold() = default;
     virtual char icon() const override;
@@ -16,7 +16,7 @@ class Gold: public Item {
 
 class DragonHoard: public Gold {
     public:
-    DragonHoard(const Entity::EntityImpl &data,int);
+    DragonHoard(int);
     virtual ~DragonHoard() = default;
     bool hasDragon() const;
 };

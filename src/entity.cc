@@ -11,6 +11,16 @@ Entity::EntityImpl &Entity::getStats() const {
     return *data;
 }
 
+Entity::EntityImpl Entity::EntityImpl::makeDefault() {
+    return Entity::EntityImpl{
+        .status = Entity::Status {
+            .action = Entity::Action::NOTHING,
+            .data = monostate{},
+        },
+        .doubleRisk = false,
+    };
+}
+
 const Entity::Status &Entity::getStatus() {
     return data->status;
 }

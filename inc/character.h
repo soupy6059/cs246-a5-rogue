@@ -23,7 +23,7 @@ class Character : public Entity {
     virtual void setHP(int new_hp); // to maintain maximums
     void setACC(int new_acc);
     
-    Character(Entity::EntityImpl ent_info, int atk, int def, int hp, int acc);
+    Character(int atk, int def, int hp, int acc);
     virtual ~Character() = default;
     char icon() const override = 0;
 };

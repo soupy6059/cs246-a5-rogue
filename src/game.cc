@@ -10,19 +10,11 @@ using namespace std;
 
 Game::Game(string levelFileName, int seed):
     levelFactory{levelFileName},
-    player{make_shared<Player>(
-        Entity::EntityImpl{
-            .status = Entity::Status {
-                .action = Entity::Action::NOTHING,
-                .data = monostate{},
-            },
-            .doubleRisk = false,
-        }, 100, 100, 100, 100
-    )},
+    player{make_shared<Player>(0, 0, 0, 0)},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
-        levels.at(i) = levelFactory.create(player);
+        levels.at(i) = levelFactory.create();
     }
 }
 
@@ -62,23 +54,15 @@ Level &Game::refCurrentLevel() {
 // mostly temporary for now
 void Game::start() {
     Level &mainLevel {*levels[0]};
-    static const Vec2 location {3,3};
-    mainLevel.getGrid().at(location)->setEntity(player);
-    mainLevel.getGrid().at(location)->getEntity()->attach(
-        mainLevel.getGrid().at(location)
-    );
+    mainLevel.setActiveLevel(player);
+    // static const Vec2 location {3,3};
+    // mainLevel.getGrid().at(location)->setEntity(player);
+    // mainLevel.getGrid().at(location)->getEntity()->attach(
+    //     mainLevel.getGrid().at(location)
+    // );
 
     static const Vec2 coinLocal {5,5};
-    mainLevel.getGrid().at(coinLocal)->setEntity(make_shared<Gold>(
-        Entity::EntityImpl{
-            .status = Entity::Status {
-                .action = Entity::Action::NOTHING,
-                .data = monostate{},
-            },
-            .doubleRisk = false,
-        },
-        2 // value
-    ));
+    mainLevel.getGrid().at(coinLocal)->setEntity(make_shared<Gold>(2));
     mainLevel.getGrid().at(coinLocal)->getEntity()->attach(
         mainLevel.getGrid().at(coinLocal)
     );

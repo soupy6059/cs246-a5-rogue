@@ -240,7 +240,7 @@ char Tile::icon() const {
     case TileType::FLOOR:
         return getEntity()? getEntity()->icon() : '.';
     case TileType::STAIR:
-        return '/';
+        return '\\';
     case TileType::HALLWAY:
         return getEntity()? getEntity()->icon() : '#';
     case TileType::DOOR:
@@ -269,7 +269,7 @@ Tile::TileType fromChar(char c) {
             return Tile::TileType::HALLWAY;
         case '+':
             return Tile::TileType::DOOR;
-        case '/':
+        case '\\':
             return Tile::TileType::STAIR;
         case ' ':
             return Tile::TileType::VOID;

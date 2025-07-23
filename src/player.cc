@@ -10,8 +10,8 @@
 
 using namespace std;
 
-Player::Player(const Entity::EntityImpl data, int atk, int def, int hp, int acc):
-    Character{data, atk, def, hp, acc} {
+Player::Player(int atk, int def, int hp, int acc):
+    Character{atk, def, hp, acc} {
         defaults.atk = atk;
         defaults.def = def;
         defaults.hp = hp;
