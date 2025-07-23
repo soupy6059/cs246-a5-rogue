@@ -44,5 +44,4 @@ public:
     void setDoubleRisk(bool);
 };
 
-
 #endif

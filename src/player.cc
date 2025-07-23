@@ -10,8 +10,8 @@
 
 using namespace std;
 
-Player::Player(CharacterDefaults d):
-    Character{d} {}
+Player::Player(CharacterDefaults d): Character{d} {}
+
 
 static const map<string,Direction> dirNameToDir {
     {"no",Direction::NORTH},

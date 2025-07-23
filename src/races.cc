@@ -29,7 +29,11 @@ void Vampire::attack(Tile& target) {
     if (c->getHP() <= 0) { target.setEntity(nullptr);} // kill if dead
 }
 
+// TROLL
+Troll::Troll(CharacterDefaults d): {d} {}
 // NEED TO DO SOMETHING ABOUT THE FUCKING +5 HP EVERY TURN
+
+// GOBLIN
 
 // TROLL
 Troll::Troll(CharacterDefaults d): Player{d} {}

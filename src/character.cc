@@ -16,7 +16,7 @@ void Character::setACC(int new_acc) {acc = new_acc;}
 void Character::setGold(int new_gold) {gold = new_gold;}
 
 Character::Character(CharacterDefaults d):
-    Entity(), atk{d.atk}, def{d.def}, hp{d.hp}, acc{d.acc} {}
+    Entity(), atk{d.atk}, def{d.def}, hp{d.hp}, acc{d.acc}, gold{d.gold} {}
 
 void Character::attack(Tile& target) {
     // get information about the entity being attacked
