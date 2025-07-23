@@ -25,6 +25,6 @@ void Character::attack(Tile& target) {
     if (!c) return; // not a character
     int damage = ceil((100/(100 + c->getDEF())) * atk);
     c->setHP(c->getHP() - damage); // do damage
-    if (t->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
+    if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
