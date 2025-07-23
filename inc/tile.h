@@ -4,6 +4,7 @@
 #include "subjectObserver.h"
 #include "entity.h"
 #include "util.h"
+#include "gold.h"
 
 class Tile: public Observer, public Subject {
 public: // INTERNAL TYPES
@@ -16,7 +17,7 @@ public: // INTERNAL TYPES
             struct { // NOTHING
                 bool DUMMY;
             };
-            struct { // MOVE_OWNED_ENTITY
+            struct { // MOVE_OWNED_ENTITY, INTERACT, (ATTACK?)
                 Direction dir;
             };
             struct { // SWAP
@@ -36,6 +37,7 @@ public: // INTERNAL TYPES
     };
     struct TileImpl {
         std::shared_ptr<Entity> entity;
+        std::shared_ptr<Entity> goldStorage;
         Status status;
         Vec2 position;
         TileType type;

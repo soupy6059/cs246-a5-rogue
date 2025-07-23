@@ -17,7 +17,8 @@ Tile::Tile(const TileImpl &data):
 
 shared_ptr<Entity> Tile::moveEntity() {
     shared_ptr<Entity> saved = getEntity();
-    setEntity(nullptr);
+    data->entity = data->goldStorage;
+    data->goldStorage = nullptr;
     return saved;
 }
 
@@ -25,8 +26,32 @@ shared_ptr<Entity> Tile::getEntity() const {
     return this->data->entity;
 }
 
+// small vector?
+// 
+// override on not gold,
+// push on gold
+//
+// on move,
+// if gold, nothing -> nothing | gold
+// if entity, nothing -> nothing | entity
+// if entity, gold -> gold | entity
+
 void Tile::setEntity(shared_ptr<Entity> toEntity) {
-    data->entity = toEntity;
+    if(dynamic_pointer_cast<Gold>(toEntity) && dynamic_pointer_cast<Gold>(data->entity)) {
+        throw logic_error{"spawing double gold"};
+    }
+
+    if(!toEntity) {
+        data->entity = data->goldStorage;
+        return;
+    }
+
+    if(dynamic_pointer_cast<Gold>(data->entity)) {
+        data->goldStorage = data->entity;
+        data->entity = toEntity;
+    } else {
+        data->entity = toEntity;
+    }
 }
 
 const Tile::Status &Tile::getStatus() const {
