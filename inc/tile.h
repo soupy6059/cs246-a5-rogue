@@ -1,9 +1,13 @@
 #ifndef __tile__
 #define __tile__
 
+#include <variant>
+#include <utility>
+
 #include "subjectObserver.h"
 #include "entity.h"
 #include "util.h"
+#include "gold.h"
 
 class Tile: public Observer, public Subject {
 public: // INTERNAL TYPES
@@ -12,18 +16,7 @@ public: // INTERNAL TYPES
     };
     struct Status {
         Action action;
-        union {
-            struct { // NOTHING
-                bool DUMMY;
-            };
-            struct { // MOVE_OWNED_ENTITY
-                Direction dir;
-            };
-            struct { // SWAP
-                Vec2 selfPosition;
-                Vec2 otherPosition;
-            };
-        };
+        std::variant<std::monostate,Direction,std::pair<Vec2,Vec2>> data;
     };
     enum class TileType {
         FLOOR,
@@ -36,6 +29,7 @@ public: // INTERNAL TYPES
     };
     struct TileImpl {
         std::shared_ptr<Entity> entity;
+        std::shared_ptr<Entity> goldStorage;
         Status status;
         Vec2 position;
         TileType type;

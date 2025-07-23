@@ -28,6 +28,14 @@ void Entity::update() {
     mainUpdate();
 }
 
+bool Entity::getDoubleRisk() {
+    return data->doubleRisk;
+}
+
+void Entity::setDoubleRisk(bool newRisk) {
+    data->doubleRisk = newRisk;
+}
+
 Entity::Entity(const Entity &other):
     Subject{}, data{new EntityImpl{*other.data}} {}
 

@@ -17,7 +17,8 @@ Tile::Tile(const TileImpl &data):
 
 shared_ptr<Entity> Tile::moveEntity() {
     shared_ptr<Entity> saved = getEntity();
-    setEntity(nullptr);
+    data->entity = data->goldStorage;
+    data->goldStorage = nullptr;
     return saved;
 }
 
@@ -25,8 +26,32 @@ shared_ptr<Entity> Tile::getEntity() const {
     return this->data->entity;
 }
 
+// small vector?
+// 
+// override on not gold,
+// push on gold
+//
+// on move,
+// if gold, nothing -> nothing | gold
+// if entity, nothing -> nothing | entity
+// if entity, gold -> gold | entity
+
 void Tile::setEntity(shared_ptr<Entity> toEntity) {
-    data->entity = toEntity;
+    if(dynamic_pointer_cast<Gold>(toEntity) && dynamic_pointer_cast<Gold>(data->entity)) {
+        throw logic_error{"spawing double gold"};
+    }
+
+    if(!toEntity) {
+        data->entity = data->goldStorage;
+        return;
+    }
+
+    if(dynamic_pointer_cast<Gold>(data->entity)) {
+        data->goldStorage = data->entity;
+        data->entity = toEntity;
+    } else {
+        data->entity = toEntity;
+    }
 }
 
 const Tile::Status &Tile::getStatus() const {
@@ -79,7 +104,7 @@ void Tile::queryInteraction(Tile &whoFrom) {
 void Tile::queryInteraction(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::INTERACT,
-        .dir = whoFrom.getStatus().dir,
+        .data = get<Direction>(whoFrom.getStatus().data),
     });
     notifyObservers();
 }
@@ -87,7 +112,7 @@ void Tile::queryInteraction(Entity &whoFrom) {
 void Tile::queryMovement(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::MOVE_OWNED_ENTITY,
-        .dir = whoFrom.getStatus().dir,
+        .data = get<Direction>(whoFrom.getStatus().data),
     });
     notifyObservers();
 }
@@ -136,7 +161,7 @@ Direction Tile::getRelativeDirection(const Tile &other) const {
 }
 
 bool Tile::pointingAt(const Tile &other) const {
-    return getRelativeDirection(other) == this->getStatus().dir;
+    return getRelativeDirection(other) == get<Direction>(this->getStatus().data);
 }
 
 void Tile::queryMovement(Tile &whoFrom) {
@@ -161,12 +186,22 @@ void Tile::queryMovement(Tile &whoFrom) {
         // if i am, do nothing.
         return;
     }
+
+    // doubleRisk management
+    switch(get<Direction>(whoFrom.getStatus().data)) {
+        case Direction::SOUTHWEST:
+        case Direction::SOUTH:
+        case Direction::SOUTHEAST:
+        case Direction::EAST:
+            whoFrom.getEntity()->setDoubleRisk(true);
+        default:
+            break;
+    }
     
     // so they're good to move. im stealing their entity!
     whoFrom.setStatus({
         .action = Tile::Action::SWAP,
-        .selfPosition = whoFrom.getPosition(),
-        .otherPosition = this->getPosition(),
+        .data = pair<Vec2,Vec2>(whoFrom.getPosition(),this->getPosition()),
     });
     whoFrom.notifyObservers();
 }

@@ -8,20 +8,40 @@
 
 using namespace std;
 
-Game::Game(int seed):
-    levelFactory{},
+Game::Game(string levelFileName, int seed):
+    levelFactory{levelFileName},
     player{make_shared<Player>(
         Entity::EntityImpl{
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
-                .DUMMY = true,
-            }
-        }
+                .data = monostate{},
+            },
+            .doubleRisk = false,
+        }, 100, 100, 100, 100
     )},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
         levels.at(i) = levelFactory.create();
+    }
+}
+
+void Game::updateScan(Level &level) {
+    Grid &grid = level.getGrid();
+    for(auto &tiles: grid.getTheGrid()) {
+        for(auto &tilePtr: tiles) {
+            if(auto entityPtr {tilePtr->getEntity()}; entityPtr) {
+                if(entityPtr->getDoubleRisk()) entityPtr->setDoubleRisk(false);
+                else entityPtr->update();
+            }
+        }
+    }
+}
+
+void Game::updateLoop() {
+    while(run) {
+        levels[currentLevelIndex]->getGrid().print(cout);
+        updateScan(*levels[currentLevelIndex]);
     }
 }
 
@@ -42,18 +62,14 @@ void Game::start() {
         Entity::EntityImpl{
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
-                .DUMMY = true,
-            }
+                .data = monostate{},
+            },
+            .doubleRisk = false,
         },
         2 // value
     ));
     mainLevel.getGrid().at(coinLocal)->getEntity()->attach(
         mainLevel.getGrid().at(coinLocal)
     );
-    
-    while(true) {
-        mainLevel.getGrid().print(cout);
-        player->update();
-        getCout() << dynamic_pointer_cast<Player>(player)->getGold() << endl;
-    }
+    updateLoop();
 }

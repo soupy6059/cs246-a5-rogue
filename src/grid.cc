@@ -28,9 +28,10 @@ Grid::Grid(size_t rowCount, size_t colCount):
         for(size_t c = 0; c < colCount; ++c) {
             column.emplace_back(make_shared<Tile>(Tile::TileImpl{
                 .entity = nullptr,
+                .goldStorage = nullptr,
                 .status = Tile::Status{
                     .action = Tile::Action::NOTHING,
-                    .DUMMY = true,
+                    .data = monostate{},
                 },
                 .position = Vec2{static_cast<int>(r),static_cast<int>(c)},
                 .type = Tile::TileType::FLOOR,
@@ -54,8 +55,8 @@ const vector<vector<shared_ptr<Tile>>> &Grid::viewTheGrid() const {
 
 void Grid::notify(Tile &whoFrom) {
     if(whoFrom.getStatus().action == Tile::Action::SWAP) {
-        shared_ptr<Tile> self = at(whoFrom.getStatus().selfPosition);
-        shared_ptr<Tile> other = at(whoFrom.getStatus().otherPosition);
+        shared_ptr<Tile> self = at(get<pair<Vec2,Vec2>>(whoFrom.getStatus().data).first);
+        shared_ptr<Tile> other = at(get<pair<Vec2,Vec2>>(whoFrom.getStatus().data).second);
         if(!self->getEntity()) { return; } // this really should throw an error, but I'm not sure how to stop the bad call itself
 
         self->getEntity()->detach(self);
