@@ -22,14 +22,14 @@ void Vampire::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Dwarf> d = std::dynamic_pointer_cast<Dwarf>(c);
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
-    c->setHP(c->getHP() - damage); // do damage
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (d != nullptr) {
         c->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
     } else {
         c->setHP(c->getHP() + DWARF_DAMAGE);
     }
-    if (c->getHP() <= 0) { target.setEntity(nullptr);} // kill if dead
+    if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
 //Troll
@@ -47,8 +47,8 @@ void Goblin::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(c);
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
-    c->setHP(c->getHP() - damage); // do damage
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {
         target.setEntity(nullptr);
         setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
@@ -76,8 +76,8 @@ void Elf::attack(Tile& target) {
     int atk_count = (!d) ? 2 : 1;
     for (int i = 0; i < atk_count; ++i) {
         if (!c) return; // not a character
-        int damage = ceil((100/(100 + c->getDEF())) * atk);
-        c->setHP(c->getHP() - damage); // do damage
+        float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+        c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
         if (c->getHP() <= 0) {target.setEntity(nullptr);}
     }
 }
@@ -91,12 +91,12 @@ void Orc::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Goblin> g = std::dynamic_pointer_cast<Goblin>(c);
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
     if (!g) {
         damage += damage / 2;
     }
-    c->setHP(c->getHP() - damage); // do damage
-    if (c->getHP() <= 0) {target.setEntity(nullptr);}
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
+    if (c->getHP() <= 0) {target.setEntity(nullptr);} // unprecdented murder
 }
 
 // MERCHANT
