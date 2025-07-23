@@ -30,11 +30,23 @@ void Game::updateScan(Level &level) {
     }
 }
 
+shared_ptr<Player> Game::getPlayer() {
+    return player;
+}
+
+size_t Game::getCurrentLevelIndex() {
+    return currentLevelIndex;
+}
+
 void Game::updateLoop() {
     while(run) {
-        levels[currentLevelIndex]->getGrid().print(cout);
-        updateScan(*levels[currentLevelIndex]);
+        notifyObservers();
+        updateScan(refCurrentLevel());
     }
+}
+
+Level &Game::refCurrentLevel() {
+    return *levels[currentLevelIndex];
 }
 
 // basically our main() function

@@ -1,41 +1,22 @@
 #include "textDisplay.h"
 
-#include <numeric>
-#include <algorithm>
-#include "util.h"
-#include <utility>
+#include <iostream>
+#include <iomanip>
+
+#include "game.h"
+#include "level.h"
+
 using namespace std;
 
-ostream &operator<<(ostream &os, const TextDisplay &td) {
-    for(auto &$0: td.theDisplay) {
-        for(const auto &ch: $0) os << ch;
-        os << '\n'; // no flush
-    }
-    return os;
-}
-
-TextDisplay::TextDisplay(const Grid &grid):
-    theDisplay(grid.viewTheGrid().size(), vector<char>(grid.viewTheGrid().at(0).size(), '.')) {}
-
-// maps theDisplay to grid's icons.
-// i think this function works.
-void TextDisplay::notify(Grid &grid) {
-    ranges::transform(grid.viewTheGrid(), theDisplay.begin(),
-    [](const auto &tiles) {
-        vector<char> newDisplay;
-        ranges::transform(tiles, back_inserter(newDisplay),
-        [](const auto &tile) {
-            return tile->icon();
-        });
-        return newDisplay;
-    });
-}
-
 void TextDisplay::notify(Subject &whoFrom) {
-    try{
-        notify(dynamic_cast<Grid&>(whoFrom));
-        return;
-    }
-    catch(...) {}
-    throw logic_error{"bad TextDisplay::notify() call"};
+    Game &game = dynamic_cast<Game&>(whoFrom);
+    game.refCurrentLevel().getGrid().print(cout);
+    string race = "DEFAULT";
+    string _ = "Race: "s + race + " \033[33;1mGold\033[0m: "s + to_string(game.getPlayer()->getGold());
+    cout << setw(FLOOR_WIDTH - 10) << left << _
+         << "Floor "s << game.getCurrentLevelIndex()
+         << endl;
+    cout << "\033[32;1mHP\033[0m: "s << game.getPlayer()->getHP() << endl;
+    cout << "\033[31;1mATK\033[0m: "s << game.getPlayer()->getATK() << endl;
+    cout << "\033[94;1mDEF\033[0m: "s << game.getPlayer()->getDEF() << endl;
 }

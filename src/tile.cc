@@ -125,6 +125,9 @@ void Tile::notify(Entity &whoFrom) {
     case Entity::Action::INTERACT:
         queryInteraction(whoFrom);
         break;
+    case Entity::Action::KILL_ME:
+        setEntity(nullptr);
+        break;
     default:
         throw out_of_range{"bad enum"};
     }

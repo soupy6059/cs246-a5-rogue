@@ -8,10 +8,11 @@
 #include "level.h"
 #include "entity.h"
 #include "util.h"
+#include "subjectObserver.h"
 
 // note that switch floors means the textDisplay has to observer a new grid
 
-class Game {
+class Game: public Subject {
     LevelFactory levelFactory;
     std::shared_ptr<Player> player;
     static const std::size_t NUMBER_OF_LEVELS = 5;
@@ -24,6 +25,9 @@ class Game {
     Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0);
     virtual ~Game() = default;
     void start();
+    Level &refCurrentLevel();
+    size_t getCurrentLevelIndex();
+    std::shared_ptr<Player> getPlayer();
 };
 
 #endif
