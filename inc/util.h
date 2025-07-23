@@ -69,7 +69,7 @@ std::ostream &operator<<(std::ostream &os, const Vec2 &v);
 std::ostream &getCout();
 
 struct CharacterDefaults {
-    int atk, def, hp, acc, gold;
+    int hp, atk, def, acc, gold;
 };
 
 #endif
