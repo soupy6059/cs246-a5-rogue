@@ -2,15 +2,16 @@
 #include <memory>
 #include <cmath>
 
-void Shade::setHP(int n) {
-    if (n > defaults.hp) hp = defaults.hp;
-}
-
-void Drow::setHP(int n) {
-    if (n > defaults.hp) hp = defaults.hp;
-}
 
 // HOW TO DO CUSTOM POTION EFFECT PLS HELP!!!
+// SHADE
+Shade::Shade(CharacterDefaults d): Player{d} {}
+
+// Drow
+Drow::Drow(CharacterDefaults d): Player{d} {}
+
+// VAMPIRE
+Vampire::Vampire(CharacterDefaults d): Player{d} {}
 
 void Vampire::attack(Tile& target) {
     const int DWARF_DAMAGE = 5;
@@ -28,33 +29,43 @@ void Vampire::attack(Tile& target) {
     if (c->getHP() <= 0) { target.setEntity(nullptr);} // kill if dead
 }
 
-void Troll::setHP(int n) {
-    if (n > defaults.hp) hp = defaults.hp;
-}
+//Troll
+
+Troll::Troll(CharacterDefaults d): Player{d} {}
 
 // NEED TO DO SOMETHING ABOUT THE FUCKING +5 HP EVERY TURN
+// GOBLIN
 
-void Goblin::setHP(int n) {
-    if (n > defaults.hp) hp = defaults.hp;
-}
+Goblin::Goblin(CharacterDefaults d): Player{d} {}
 
 void Goblin::attack(Tile& target) {
     const int GOBLIN_FILTHY_CAPITALIST_BONUS = 5;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
+    std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(c);
     if (!c) return; // not a character
     int damage = ceil((100/(100 + c->getDEF())) * atk);
     c->setHP(c->getHP() - damage); // do damage
-    if (c->getHP() <= 0) {target.setEntity(nullptr);}
-    setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
+    if (c->getHP() <= 0) {
+        target.setEntity(nullptr);
+        setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
+    }
 }
 
 
-// HUMAN is DEFAULT
+// HUMAN 
+Human::Human(CharacterDefaults d): Enemy{d} {}
+char Human::icon() const { return 'H';}
 
 // DWARF is DEFUALT
 
+Dwarf::Dwarf(CharacterDefaults d): Enemy{d} {}
+char Dwarf::icon() const { return 'W';}
+
 // ELF
+Elf::Elf(CharacterDefaults d): Enemy{d} {}
+char Elf::icon() const { return 'E';}
+
 void Elf::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
@@ -69,6 +80,8 @@ void Elf::attack(Tile& target) {
 }
 
 // ORC
+Orc::Orc(CharacterDefaults d): Enemy{d} {}
+char Orc::icon() const {return 'O';}
 
 void Orc::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
@@ -84,6 +97,10 @@ void Orc::attack(Tile& target) {
 }
 
 // MERCHANT
+bool Merchant::isPissed = false;
+
+Merchant::Merchant(CharacterDefaults d): Enemy{d} {}
+char Merchant::icon() const {return 'M';}
 
 void Merchant::attack(Tile& target) {
     if (!isPissed) return;
@@ -94,7 +111,39 @@ void Merchant::togglePissed() {
     isPissed = !isPissed;
 }
 
-// dragon do not do much
+// Dragon
+Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
+char Dragon::icon() const { return 'D';}
 
-// hafling // not unique
+// HAFLING
+Halfling::Halfling(CharacterDefaults d): Enemy{d} {}
+char Halfling::icon() const {return 'L';}
 
+CharacterDefaults getCharDefs(Race race) {
+    switch (race) {
+        case Race::SHADE:
+        return {125, 25, 25, 100, 0};
+        case Race::DROW:
+        return {150, 25, 15, 100, 0};
+        case Race::VAMPIRE:
+        return {50, 25, 25, 100, 0};
+        case Race::TROLL:
+        return {120, 25, 15, 100, 0};
+        case Race::GOBLIN:
+        return {110, 15, 20, 100, 0};
+        case Race::HUMAN:
+        return {140, 20, 20, 50, 4};
+        case Race::DWARF:
+        return {100, 20, 30, 50, 0};
+        case Race::ELF:
+        return {140, 30, 10, 50, 0};
+        case Race::ORC:
+        return {180, 30, 25, 50, 0};
+        case Race::DRAGON:
+        return {150, 20, 20, 50, 0};
+        case Race::MERCHANT:
+        return {30, 70, 5, 50, 0};
+        case Race::HALFLING:
+        return {100, 15, 20, 50, 0};
+    }
+}

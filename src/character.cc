@@ -7,14 +7,16 @@ int Character::getATK() { return atk; }
 int Character::getDEF() { return def; }
 int Character::getHP() { return hp; }
 int Character::getACC() { return acc; }
+int Character::getGold() { return gold; }
 
 void Character::setHP(int new_hp) {hp = new_hp;}
 void Character::setATK(int new_atk) {atk = new_atk;}
 void Character::setDEF(int new_def) {def = new_def;}
 void Character::setACC(int new_acc) {acc = new_acc;}
+void Character::setGold(int new_gold) {gold = new_gold;}
 
-Character::Character(int atk, int def, int hp, int acc):
-    Entity{}, atk{atk}, def{def}, hp{hp}, acc{acc} {}
+Character::Character(CharacterDefaults d):
+    Entity(), atk{d.atk}, def{d.def}, hp{d.hp}, acc{d.acc}, gold{d.gold} {}
 
 void Character::attack(Tile& target) {
     // get information about the entity being attacked

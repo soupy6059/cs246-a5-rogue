@@ -21,6 +21,21 @@ enum class Direction {
 
 std::string dirToStr(Direction dir);
 
+enum class Race {
+    SHADE,
+    DROW,
+    VAMPIRE,
+    TROLL,
+    GOBLIN,
+    HUMAN,
+    DWARF,
+    ELF,
+    ORC,
+    DRAGON,
+    MERCHANT,
+    HALFLING,
+};
+
 struct Vec2 {
     int x,y;
     Vec2 operator+(const Vec2 &other) const {
@@ -52,5 +67,9 @@ struct Vec2 {
 template<typename T> std::ostream &operator<<(std::ostream &os, const std::vector<T> &v);
 std::ostream &operator<<(std::ostream &os, const Vec2 &v);
 std::ostream &getCout();
+
+struct CharacterDefaults {
+    int atk, def, hp, acc, gold;
+};
 
 #endif

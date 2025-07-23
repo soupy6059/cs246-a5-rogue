@@ -3,6 +3,8 @@
 #include <cmath>
 
 void Enemy::attack(Tile& target) {
+    int hit_target = getRand(0, 2);
+    if (!hit_target) return;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     if (!c) return; // not a character
@@ -51,9 +53,6 @@ void Enemy::step() {
     notifyObservers();
 }
 
-int Enemy::getLoot() {return droppableLoot;}
+char Enemy::icon() const { return '?';}
 
-void Enemy::setLoot(int n) {droppableLoot = n;}
-
-Enemy::Enemy(int atk, int def, int hp, int acc, int loot):
-    Character(atk, def, hp, acc), droppableLoot{loot} {}
+Enemy::Enemy(CharacterDefaults d): Character{d} {}
