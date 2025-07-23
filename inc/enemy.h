@@ -5,13 +5,11 @@
 #include "util.h"
 
 class Enemy : public Character {
-    int droppableLoot;
   public:
     virtual void attack(Tile& target) override;
-    Enemy(int atk, int def, int hp, int acc, int loot);
+    Enemy(CharacterDefaults d);
     void step() override;
-    void setLoot(int n);
-    int getLoot();
+    virtual char icon() const = 0;
 };
 
 #endif

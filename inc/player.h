@@ -8,7 +8,6 @@
 class Player: public Character {
     virtual void step() override;
     protected:
-    int gold;
     struct defaultStats {
         int atk, def, hp, acc;
     };
@@ -17,8 +16,6 @@ class Player: public Character {
     Player(CharacterDefaults d);
     virtual ~Player() = default;
     virtual char icon() const override;
-    void setGold(int);
-    int getGold() const;
 
     virtual void setHP(int n) override;
     void setATK(int n) override;

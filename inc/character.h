@@ -7,7 +7,7 @@
 
 class Character : public Entity {
   protected:
-    int atk, def, hp, acc;
+    int atk, def, hp, acc, gold;
   public:
     virtual void attack(Tile& target);
 
@@ -16,12 +16,14 @@ class Character : public Entity {
     int getDEF();
     int getHP();
     int getACC();
+    int getGold();
 
     // setters
     virtual void setATK(int new_atk);
     virtual void setDEF(int new_def);
     virtual void setHP(int new_hp); // to maintain maximums
     void setACC(int new_acc);
+    void setGold(int new_gold);
     
     Character(CharacterDefaults d);
     virtual ~Character() = default;

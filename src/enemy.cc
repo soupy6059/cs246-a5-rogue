@@ -53,9 +53,4 @@ void Enemy::step() {
     notifyObservers();
 }
 
-int Enemy::getLoot() {return droppableLoot;}
-
-void Enemy::setLoot(int n) {droppableLoot = n;}
-
-Enemy::Enemy(int atk, int def, int hp, int acc, int loot):
-    Character(atk, def, hp, acc), droppableLoot{loot} {}
+Enemy::Enemy(CharacterDefaults d): Character{d} {}
