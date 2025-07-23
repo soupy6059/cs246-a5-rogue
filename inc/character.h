@@ -17,7 +17,6 @@ class Character : public Entity {
     int getHP();
     int getACC();
     int getGold();
-    int getGold();
 
     // setters
     virtual void setATK(int new_atk);
