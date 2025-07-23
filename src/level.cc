@@ -135,7 +135,6 @@ unique_ptr<Level> LevelFactory::create() {
 
         level->spawnAt(randomGoldType(), location);
     }
-    // TODO: Generate items and entities
 
     return level;
 }
