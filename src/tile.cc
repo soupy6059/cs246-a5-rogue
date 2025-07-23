@@ -104,7 +104,7 @@ void Tile::queryInteraction(Tile &whoFrom) {
 void Tile::queryInteraction(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::INTERACT,
-        .dir = whoFrom.getStatus().dir,
+        .data = whoFrom.getStatus().dir,
     });
     notifyObservers();
 }
@@ -112,7 +112,7 @@ void Tile::queryInteraction(Entity &whoFrom) {
 void Tile::queryMovement(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::MOVE_OWNED_ENTITY,
-        .dir = whoFrom.getStatus().dir,
+        .data = whoFrom.getStatus().dir,
     });
     notifyObservers();
 }
@@ -161,7 +161,7 @@ Direction Tile::getRelativeDirection(const Tile &other) const {
 }
 
 bool Tile::pointingAt(const Tile &other) const {
-    return getRelativeDirection(other) == this->getStatus().dir;
+    return getRelativeDirection(other) == get<Direction>(this->getStatus().data);
 }
 
 void Tile::queryMovement(Tile &whoFrom) {
@@ -188,7 +188,7 @@ void Tile::queryMovement(Tile &whoFrom) {
     }
 
     // doubleRisk management
-    switch(whoFrom.getStatus().dir) {
+    switch(get<Direction>(whoFrom.getStatus().data)) {
         case Direction::SOUTHWEST:
         case Direction::SOUTH:
         case Direction::SOUTHEAST:
@@ -201,8 +201,7 @@ void Tile::queryMovement(Tile &whoFrom) {
     // so they're good to move. im stealing their entity!
     whoFrom.setStatus({
         .action = Tile::Action::SWAP,
-        .selfPosition = whoFrom.getPosition(),
-        .otherPosition = this->getPosition(),
+        .data = pair<Vec2,Vec2>(whoFrom.getPosition(),this->getPosition()),
     });
     whoFrom.notifyObservers();
 }
