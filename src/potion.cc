@@ -46,6 +46,11 @@ void HealthPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setHP(character.getHP() + DELTA_HP);
+        setStatus(Entity::Status{
+            .action = Entity::Action::KILL_ME,
+            .data = monostate{},
+        });
+        notifyObservers();
     }
     catch(const bad_cast &ex) {}
 }
@@ -54,6 +59,11 @@ void AttackPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setATK(character.getATK() + DELTA_ATK);
+        setStatus(Entity::Status{
+            .action = Entity::Action::KILL_ME,
+            .data = monostate{},
+        });
+        notifyObservers();
     }
     catch(const bad_cast &ex) {}
 }
@@ -62,6 +72,11 @@ void DefensePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setDEF(character.getDEF() + DELTA_DEF);
+        setStatus(Entity::Status{
+            .action = Entity::Action::KILL_ME,
+            .data = monostate{},
+        });
+        notifyObservers();
     }
     catch(const bad_cast &ex) {}
 }
@@ -70,6 +85,11 @@ void PoisonPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setHP(max(1, character.getHP() - DELTA_HP));
+        setStatus(Entity::Status{
+            .action = Entity::Action::KILL_ME,
+            .data = monostate{},
+        });
+        notifyObservers();
     }
     catch(const bad_cast &ex) {}
 }
@@ -78,6 +98,11 @@ void WeakPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setATK(max(0, character.getATK() - DELTA_ATK));
+        setStatus(Entity::Status{
+            .action = Entity::Action::KILL_ME,
+            .data = monostate{},
+        });
+        notifyObservers();
     }
     catch(const bad_cast &ex) {}
 }
@@ -87,6 +112,11 @@ void BrittlePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setDEF(max(0, character.getDEF() - DELTA_DEF));
+        setStatus(Entity::Status{
+            .action = Entity::Action::KILL_ME,
+            .data = monostate{},
+        });
+        notifyObservers();
     }
     catch(const bad_cast &ex) {}
 }

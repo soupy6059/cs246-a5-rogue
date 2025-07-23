@@ -26,7 +26,6 @@ class Character : public Entity {
     Character(Entity::EntityImpl ent_info, int atk, int def, int hp, int acc);
     virtual ~Character() = default;
     char icon() const override = 0;
-
 };
 
 #endif

@@ -1,20 +1,13 @@
 #ifndef __textDisplay__
 #define __textDisplay__
 
-#include <ostream>
+#include "subjectObserver.h"
 
-#include "grid.h"
-
-class TextDisplay final: public Observer {
-    std::vector<std::vector<char>> theDisplay;
-    public:
-    TextDisplay(const Grid &grid);
-    virtual void notify(Subject&) override;
-    void notify(Grid&);
+class TextDisplay: public Observer {
+public:
+    TextDisplay() = default;
     virtual ~TextDisplay() = default;
-    friend std::ostream &operator<<(std::ostream&,const TextDisplay&);
+    virtual void notify(Subject&) override;  
 };
-
-std::ostream &operator<<(std::ostream&,const TextDisplay&);
 
 #endif
