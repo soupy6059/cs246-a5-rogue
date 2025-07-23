@@ -7,6 +7,7 @@
 #include <cassert>
 
 #include "item.h"
+#include "verb.h"
 #include "gold.h"
 #include "player.h"
 
@@ -199,6 +200,17 @@ void Tile::queryMovement(Tile &whoFrom) {
             whoFrom.getEntity()->setDoubleRisk(true);
         default:
             break;
+    }
+
+    // printing Actions
+    if(player) {
+        player->appendVerb(Verb::Status{
+            .action = Verb::Action::MOVE,
+            .data = pair<shared_ptr<Entity>,Direction>(
+                player,
+                get<Direction>(player->getStatus().data)
+            ), 
+        });
     }
     
     // so they're good to move. im stealing their entity!

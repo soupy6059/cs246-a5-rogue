@@ -19,6 +19,7 @@ enum class Direction {
     CENTER,
 };
 
+std::string dirToStr(Direction dir);
 
 struct Vec2 {
     int x,y;

@@ -4,6 +4,7 @@
 #include <array>
 #include <memory>
 #include <variant>
+#include <string>
 
 #include "util.h"
 #include "subjectObserver.h"
@@ -42,6 +43,7 @@ public:
     virtual char icon() const = 0;
     bool getDoubleRisk();
     void setDoubleRisk(bool);
+    virtual std::string getName() const;
 };
 
 #endif

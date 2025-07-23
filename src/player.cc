@@ -25,6 +25,14 @@ int Player::getGold() const {
     return gold;
 }
 
+void Player::appendVerb(Verb::Status newStatus) {
+    verb.appendStatus(newStatus);
+}
+
+Verb &Player::refVerb() {
+    return verb;
+}
+
 static const map<string,Direction> dirNameToDir {
     {"no",Direction::NORTH},
     {"so",Direction::SOUTH},

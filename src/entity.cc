@@ -11,6 +11,11 @@ Entity::EntityImpl &Entity::getStats() const {
     return *data;
 }
 
+
+std::string Entity::getName() const {
+    return string{icon()};
+}
+
 Entity::EntityImpl Entity::EntityImpl::makeDefault() {
     return Entity::EntityImpl{
         .status = Entity::Status {

@@ -4,16 +4,20 @@
 #include "subjectObserver.h"
 #include "entity.h"
 #include "character.h"
+#include "verb.h"
 
 class Player: public Character {
     int gold = 0;
     virtual void step() override;
+    Verb verb;
     protected:
     struct defaultStats {
         int atk, def, hp, acc;
     };
     defaultStats defaults;
     public:
+    Verb &refVerb();
+    void appendVerb(Verb::Status);
     Player(int atk, int def, int hp, int acc);
     virtual ~Player() = default;
     virtual char icon() const override;
