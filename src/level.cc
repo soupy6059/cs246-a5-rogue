@@ -192,22 +192,26 @@ vector<vector<Vec2>> LevelFactory::getRooms(const Level &level) { // LeetCode 20
                 Vec2 pos = rooms.back()[i];
                 if (pos.x > 0 && !visited[pos.x-1][pos.y]
                     && grid[pos.x-1][pos.y]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x-1,pos.y});
+                    if (!grid[pos.x-1][pos.y]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x-1,pos.y});
                     visited[pos.x-1][pos.y] = true;
                 }
                 if (pos.x < (int)FLOOR_HEIGHT-1 && !visited[pos.x+1][pos.y]
                     && grid[pos.x+1][pos.y]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x+1,pos.y});
+                    if (!grid[pos.x+1][pos.y]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x+1,pos.y});
                     visited[pos.x+1][pos.y] = true;
                 }
                 if (pos.y > 0 && !visited[pos.x][pos.y-1]
                     && grid[pos.x][pos.y-1]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x,pos.y-1});
+                    if (!grid[pos.x][pos.y-1]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x,pos.y-1});
                     visited[pos.x][pos.y-1] = true;
                 }
                 if (pos.y < (int)FLOOR_WIDTH-1 && !visited[pos.x][pos.y+1]
                     && grid[pos.x][pos.y+1]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x,pos.y+1});
+                    if (!grid[pos.x][pos.y+1]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x,pos.y+1});
                     visited[pos.x][pos.y+1] = true;
                 }
             }
