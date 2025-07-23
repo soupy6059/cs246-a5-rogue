@@ -7,26 +7,29 @@
 
 using namespace std;
 
-Potion::Potion(const Entity::EntityImpl &data):
-    Item{data} {}
+Potion::Potion():
+    Item{} {}
 
-HealthPotion::HealthPotion(const Entity::EntityImpl &data):
-    Potion{data} {}
+std::unique_ptr<Potion> makePotion(Potion::PotionType type) {
+}
 
-AttackPotion::AttackPotion(const Entity::EntityImpl &data):
-    Potion{data} {}
+HealthPotion::HealthPotion():
+    Potion{} {}
 
-DefensePotion::DefensePotion(const Entity::EntityImpl &data):
-    Potion{data} {}
+AttackPotion::AttackPotion():
+    Potion{} {}
 
-PoisonPotion::PoisonPotion(const Entity::EntityImpl &data):
-    Potion{data} {}
+DefensePotion::DefensePotion():
+    Potion{} {}
+
+PoisonPotion::PoisonPotion():
+    Potion{} {}
     
-WeakPotion::WeakPotion(const Entity::EntityImpl &data):
-    Potion{data} {}
+WeakPotion::WeakPotion():
+    Potion{} {}
      
-BrittlePotion::BrittlePotion(const Entity::EntityImpl &data):
-    Potion{data} {}
+BrittlePotion::BrittlePotion():
+    Potion{} {}
 
 char Potion::icon() const {
     return 'P';
