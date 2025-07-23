@@ -3,8 +3,9 @@
 
 #include "subjectObserver.h"
 #include "entity.h"
+#include "character.h"
 
-class Player: public Entity {
+class Player: public Character {
     int gold = 0;
     virtual void step() override;
     protected:
@@ -13,7 +14,7 @@ class Player: public Entity {
     };
     defaultStats defaults;
     public:
-    Player(const Entity::EntityImpl &data);
+    Player(const Entity::EntityImpl data, int atk, int def, int hp, int acc);
     virtual ~Player() = default;
     virtual char icon() const override;
     void setGold(int);

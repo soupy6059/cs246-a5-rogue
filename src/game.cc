@@ -16,7 +16,7 @@ Game::Game(string levelFileName, int seed):
                 .action = Entity::Action::NOTHING,
                 .DUMMY = true,
             }
-        }
+        }, 100, 100, 100, 100
     )},
     levels{nullptr} {
     initRand(seed);
