@@ -11,6 +11,7 @@
 class Shade : public Player, public Character {
     // default everything
     void setHP(int n) override;
+
 };
 
 class Drow : public Player, public Character {
@@ -55,9 +56,12 @@ class Orc : public Enemy {
 
 class Merchant : public Enemy {
     static bool isPissed;
-    Merchant();
-    // default 
+    public:
+    void togglePissed();
+    void attack(Tile& t);
 };
+
+bool Merchant::isPissed = false;
 
 class Dragon : public Enemy {
     // custom move
