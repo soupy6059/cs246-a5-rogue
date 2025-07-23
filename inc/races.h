@@ -8,29 +8,29 @@
 #include <memory>
 
 // player classes inherit from player
-class Shade : public Player, public Character {
+class Shade : public Player {
     // default everything
     void setHP(int n) override;
 
 };
 
-class Drow : public Player, public Character {
+class Drow : public Player {
     // defualt attack
     void setHP(int n) override;
     // custom potions
 };
 
-class Vampire : public Player, public Character {
+class Vampire : public Player {
   public:
     void attack(Tile& t) override;
 };
 
-class Troll : public Player, public Character {
+class Troll : public Player {
   public:
     void setHP(int n) override;
 };
 
-class Goblin : public Player, public Character {
+class Goblin : public Player {
     void setHP(int n) override;
     void attack(Tile& t) override;
 };

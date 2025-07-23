@@ -6,8 +6,13 @@
 
 using namespace std;
 
-Player::Player(const Entity::EntityImpl &data):
-    Entity{data} {}
+Player::Player(const Entity::EntityImpl data, int atk, int def, int hp, int acc):
+    Character{data, atk, def, hp, acc} {
+        defaults.atk = atk;
+        defaults.def = def;
+        defaults.hp = hp;
+        defaults.acc = acc;
+    }
 
 void Player::setGold(int newGoldCount) {
     gold = newGoldCount;

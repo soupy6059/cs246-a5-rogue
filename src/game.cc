@@ -17,7 +17,7 @@ Game::Game(string levelFileName, int seed):
                 .DUMMY = true,
             },
             .doubleRisk = false,
-        }
+        }, 100, 100, 100, 100
     )},
     levels{nullptr} {
     initRand(seed);

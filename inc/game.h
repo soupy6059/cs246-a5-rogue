@@ -7,6 +7,7 @@
 
 #include "level.h"
 #include "entity.h"
+#include "util.h"
 
 // note that switch floors means the textDisplay has to observer a new grid
 
