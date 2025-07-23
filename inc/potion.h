@@ -2,10 +2,13 @@
 #define __potion__
 
 #include "item.h"
+#include <memory>
 
 class Potion: public Item {
     public:
+    enum PotionType {HEALTH, ATTACK, DEFENSE, POISON, WEAK, BRITTLE};
     Potion(const Entity::EntityImpl &data); 
+    std::unique_ptr<Potion> makePotion(PotionType type);
     virtual ~Potion() = default;
     virtual char icon() const override;
     virtual void affect(Entity&) override;
