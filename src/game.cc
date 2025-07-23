@@ -3,14 +3,16 @@
 #include <iostream>
 
 #include "player.h"
+#include "util.h"
 #include "gold.h"
 #include "rng.h"
+#include "races.h"
 
 using namespace std;
 
 Game::Game(string levelFileName, int seed):
     levelFactory{levelFileName},
-    player{make_shared<Player>(0, 0, 0, 0)},
+    player{make_shared<Player>(getCharDefs(Race::SHADE))},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {

@@ -63,11 +63,9 @@ class Merchant : public Enemy {
     public:
     Merchant(CharacterDefaults d);
     void togglePissed();
-    void attack(Tile& t);
+    void attack(Tile& t) override;
     char icon() const override;
 };
-
-bool Merchant::isPissed = false;
 
 class Dragon : public Enemy {
     Dragon(CharacterDefaults d);
@@ -77,7 +75,7 @@ class Dragon : public Enemy {
 
 class Halfling : public Enemy {
     Halfling(CharacterDefaults d);
-    char icon() const override()
+    char icon() const override;
     // player loses 50% accuracy
 };
 

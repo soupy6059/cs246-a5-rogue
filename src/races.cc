@@ -96,6 +96,8 @@ void Orc::attack(Tile& target) {
 }
 
 // MERCHANT
+bool Merchant::isPissed = false;
+
 Merchant::Merchant(CharacterDefaults d): Enemy{d} {}
 char Merchant::icon() const {return 'M';}
 

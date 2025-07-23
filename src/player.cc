@@ -11,14 +11,7 @@
 using namespace std;
 
 Player::Player(CharacterDefaults d):
-    Character{d.atk, d.def, d.hp, d.acc}, gold{d.gold} {}
-
-void Player::setGold(int newGoldCount) {
-    gold = newGoldCount;
-}
-int Player::getGold() const {
-    return gold;
-}
+    Character{d} {}
 
 static const map<string,Direction> dirNameToDir {
     {"no",Direction::NORTH},

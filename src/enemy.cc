@@ -53,4 +53,6 @@ void Enemy::step() {
     notifyObservers();
 }
 
+char Enemy::icon() const { return '?';}
+
 Enemy::Enemy(CharacterDefaults d): Character{d} {}
