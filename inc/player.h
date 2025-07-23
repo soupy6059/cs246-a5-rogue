@@ -6,7 +6,6 @@
 #include "character.h"
 
 class Player: public Character {
-    int gold = 0;
     virtual void step() override;
     protected:
     struct defaultStats {
@@ -14,11 +13,14 @@ class Player: public Character {
     };
     defaultStats defaults;
     public:
-    Player(int atk, int def, int hp, int acc);
+    Player(CharacterDefaults d);
     virtual ~Player() = default;
     virtual char icon() const override;
-    void setGold(int);
-    int getGold() const;
+
+    virtual void setHP(int n) override;
+    void setATK(int n) override;
+    void setDEF(int n) override;
+    virtual void attack(Tile& t) override;
 };
 
 #endif
