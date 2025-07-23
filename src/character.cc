@@ -13,8 +13,8 @@ void Character::setATK(int new_atk) {atk = new_atk;}
 void Character::setDEF(int new_def) {def = new_def;}
 void Character::setACC(int new_acc) {acc = new_acc;}
 
-Character::Character(int atk, int def, int hp, int acc):
-    Entity{}, atk{atk}, def{def}, hp{hp}, acc{acc} {}
+Character::Character(CharacterDefaults d):
+    Entity(), atk{d.atk}, def{d.def}, hp{d.hp}, acc{d.acc} {}
 
 void Character::attack(Tile& target) {
     // get information about the entity being attacked

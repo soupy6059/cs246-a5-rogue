@@ -10,13 +10,8 @@
 
 using namespace std;
 
-Player::Player(int atk, int def, int hp, int acc):
-    Character{atk, def, hp, acc} {
-        defaults.atk = atk;
-        defaults.def = def;
-        defaults.hp = hp;
-        defaults.acc = acc;
-    }
+Player::Player(CharacterDefaults d):
+    Character{d.atk, d.def, d.hp, d.acc}, gold{d.gold} {}
 
 void Player::setGold(int newGoldCount) {
     gold = newGoldCount;
@@ -91,4 +86,14 @@ void Player::step() {
 
 char Player::icon() const {
     return '@';
+}
+
+void Player::setHP(int n) {if (n > defaults.hp) hp = defaults.hp;}
+
+void Player::setDEF(int n) {if (n <= 0) def = 1;}
+
+void Player::setATK(int n) {if (n <= 0) atk = 1;}
+
+void Player::attack(Tile& target) {
+    Character::attack(target);
 }

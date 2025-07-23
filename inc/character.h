@@ -18,12 +18,12 @@ class Character : public Entity {
     int getACC();
 
     // setters
-    void setATK(int new_atk);
-    void setDEF(int new_def);
+    virtual void setATK(int new_atk);
+    virtual void setDEF(int new_def);
     virtual void setHP(int new_hp); // to maintain maximums
     void setACC(int new_acc);
     
-    Character(int atk, int def, int hp, int acc);
+    Character(CharacterDefaults d);
     virtual ~Character() = default;
     char icon() const override = 0;
 };
