@@ -35,25 +35,25 @@ BADINPUT:
     case 'w':
         setStatus(Entity::Status{
             .action = Entity::Action::MOVE,
-            .dir = Direction::NORTH,
+            .data = Direction::NORTH,
         });
         break;
     case 's':
         setStatus(Entity::Status{
             .action = Entity::Action::MOVE,
-            .dir = Direction::SOUTH,
+            .data = Direction::SOUTH,
         });
         break;
     case 'a':
         setStatus(Entity::Status{
             .action = Entity::Action::MOVE,
-            .dir = Direction::WEST,
+            .data = Direction::WEST,
         });
         break;
     case 'd':
         setStatus(Entity::Status{
             .action = Entity::Action::MOVE,
-            .dir = Direction::EAST,
+            .data = Direction::EAST,
         });
         break;
     default:

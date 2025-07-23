@@ -14,7 +14,7 @@ Game::Game(string levelFileName, int seed):
         Entity::EntityImpl{
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
-                .DUMMY = true,
+                .data = monostate{},
             },
             .doubleRisk = false,
         }, 100, 100, 100, 100
@@ -61,7 +61,7 @@ void Game::start() {
         Entity::EntityImpl{
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
-                .DUMMY = true,
+                .data = monostate{},
             },
             .doubleRisk = false,
         },

@@ -3,6 +3,7 @@
 
 #include <array>
 #include <memory>
+#include <variant>
 
 #include "util.h"
 #include "subjectObserver.h"
@@ -21,14 +22,7 @@ public:
     };
     struct Status {
         Action action;
-        union {
-            struct {
-                bool DUMMY;
-            };
-            struct {
-                Direction dir;
-            };
-        };
+        std::variant<std::monostate,Direction> data;
     };
     struct EntityImpl {
         Status status;

@@ -104,7 +104,7 @@ void Tile::queryInteraction(Tile &whoFrom) {
 void Tile::queryInteraction(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::INTERACT,
-        .data = whoFrom.getStatus().dir,
+        .data = get<Direction>(whoFrom.getStatus().data),
     });
     notifyObservers();
 }
@@ -112,7 +112,7 @@ void Tile::queryInteraction(Entity &whoFrom) {
 void Tile::queryMovement(Entity &whoFrom) {
     setStatus(Tile::Status{
         .action = Tile::Action::MOVE_OWNED_ENTITY,
-        .data = whoFrom.getStatus().dir,
+        .data = get<Direction>(whoFrom.getStatus().data),
     });
     notifyObservers();
 }

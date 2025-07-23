@@ -45,7 +45,7 @@ void Enemy::step() {
     //set status
     setStatus(Entity::Status{
             .action = Entity::Action::MOVE,
-            .dir = dir,
+            .data = dir
     });
     // notify observers
     notifyObservers();

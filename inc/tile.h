@@ -17,18 +17,6 @@ public: // INTERNAL TYPES
     struct Status {
         Action action;
         std::variant<std::monostate,Direction,std::pair<Vec2,Vec2>> data;
-//         union {
-//             struct { // NOTHING
-//                 bool DUMMY;
-//             };
-//             struct { // MOVE_OWNED_ENTITY, INTERACT, (ATTACK?)
-//                 Direction dir;
-//             };
-//             struct { // SWAP
-//                 Vec2 selfPosition;
-//                 Vec2 otherPosition;
-//             };
-//         };
     };
     enum class TileType {
         FLOOR,
