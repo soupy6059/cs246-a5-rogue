@@ -11,6 +11,18 @@ Entity::EntityImpl &Entity::getStats() const {
     return *data;
 }
 
+static Entity::EntityImpl unique_ptr<EntityImpl> makeDefault() {
+    return unique_ptr<EntityImpl>(
+        new Entity::EntityImpl{
+            .status = Entity::Status {
+                .action = Entity::Action::NOTHING,
+                .data = monostate{},
+            },
+            .doubleRisk = false,
+        }
+    );
+}
+
 const Entity::Status &Entity::getStatus() {
     return data->status;
 }
