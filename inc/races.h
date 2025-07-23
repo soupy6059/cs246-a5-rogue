@@ -5,6 +5,21 @@
 #include "player.h"
 #include "enemy.h"
 
+enum class Race {
+    SHADE,
+    DROW,
+    VAMPIRE,
+    TROLL,
+    GOBLIN,
+    HUMAN,
+    DWARF,
+    ELF,
+    ORC,
+    DRAGON,
+    MERCHANT,
+    HALFLING,
+};
+
 // player classes inherit from player
 class Shade : public Player {
     Shade(CharacterDefaults d);

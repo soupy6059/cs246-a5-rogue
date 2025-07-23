@@ -19,21 +19,6 @@ enum class Direction {
     CENTER,
 };
 
-enum class Race {
-    SHADE,
-    DROW,
-    VAMPIRE,
-    TROLL,
-    GOBLIN,
-    HUMAN,
-    DWARF,
-    ELF,
-    ORC,
-    DRAGON,
-    MERCHANT,
-    HALFLING,
-};
-
 struct Vec2 {
     int x,y;
     Vec2 operator+(const Vec2 &other) const {
