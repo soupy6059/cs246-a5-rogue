@@ -4,6 +4,7 @@
 #include "rng.h"
 
 
+#include <memory>
 #include <utility>
 #include <exception>
 #include <stdexcept>
@@ -12,7 +13,8 @@
 using namespace std;
 
 Level::Level(size_t rowCount, size_t colCount):
-    ownedGrid{make_unique<Grid>(rowCount,colCount)} {
+    ownedGrid{make_unique<Grid>(rowCount,colCount)},
+    playerSpawnLocation{0,0} {
     attachTilesToGrid();
 }
 
@@ -43,10 +45,25 @@ Grid &Level::getGrid() const {
     return *ownedGrid;
 }
 
+void Level::setSpawnLocation(Vec2 loc) {
+    playerSpawnLocation = loc;
+}
+
+void Level::spawnAt(const shared_ptr<Entity> entity, Vec2 loc) {
+    ownedGrid->at(loc)->setEntity(entity);
+    ownedGrid->at(loc)->getEntity()->attach(
+        ownedGrid->at(loc)
+    );
+}
+
+void Level::setActiveLevel(const shared_ptr<Player> player) {
+    spawnAt(player, playerSpawnLocation);
+}
+
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
 
-unique_ptr<Level> LevelFactory::create(shared_ptr<Player> player) {
+unique_ptr<Level> LevelFactory::create() {
     ifstream in{file};
     if (!in) throw logic_error("bad file: file not found");
     auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
@@ -64,7 +81,20 @@ unique_ptr<Level> LevelFactory::create(shared_ptr<Player> player) {
     auto rooms = getRooms(*level);
 
     size_t playerRoom = getRand(0,rooms.size());
-    Vec2 playerLocation = rooms[playerRoom][getRand(0,rooms[playerRoom].size())];
+    size_t idx = getRand(0,rooms[playerRoom].size());
+    level->setSpawnLocation(rooms[playerRoom][idx]);
+    rooms[playerRoom].erase(rooms[playerRoom].begin() + idx);
+
+    size_t stairsRoom = getRand(0,rooms.size());
+    if (stairsRoom == playerRoom && rooms.size() > 1)
+        while (stairsRoom == playerRoom) 
+            stairsRoom = getRand(0,rooms.size());
+
+    idx = getRand(0,rooms[stairsRoom].size());
+    Vec2 stairsLocation = rooms[stairsRoom][idx];
+    rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
+
+    theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
 
     // TODO: Generate items and entities
 
