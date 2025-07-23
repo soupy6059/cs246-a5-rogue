@@ -186,6 +186,17 @@ void Tile::queryMovement(Tile &whoFrom) {
         // if i am, do nothing.
         return;
     }
+
+    // doubleRisk management
+    switch(whoFrom.getStatus().dir) {
+        case Direction::SOUTHWEST:
+        case Direction::SOUTH:
+        case Direction::SOUTHEAST:
+        case Direction::EAST:
+            whoFrom.getEntity()->setDoubleRisk(true);
+        default:
+            break;
+    }
     
     // so they're good to move. im stealing their entity!
     whoFrom.setStatus({

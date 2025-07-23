@@ -28,6 +28,7 @@ Grid::Grid(size_t rowCount, size_t colCount):
         for(size_t c = 0; c < colCount; ++c) {
             column.emplace_back(make_shared<Tile>(Tile::TileImpl{
                 .entity = nullptr,
+                .goldStorage = nullptr,
                 .status = Tile::Status{
                     .action = Tile::Action::NOTHING,
                     .DUMMY = true,

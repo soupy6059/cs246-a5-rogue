@@ -1,6 +1,8 @@
 #ifndef __tile__
 #define __tile__
 
+#include <variant>
+
 #include "subjectObserver.h"
 #include "entity.h"
 #include "util.h"

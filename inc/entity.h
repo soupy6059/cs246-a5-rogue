@@ -32,6 +32,7 @@ public:
     };
     struct EntityImpl {
         Status status;
+        bool doubleRisk;
     };
     Entity(const EntityImpl &data);
     Entity(const Entity &other);
@@ -44,6 +45,8 @@ public:
     EntityImpl &getStats() const;
     void update(); 
     virtual char icon() const = 0;
+    bool getDoubleRisk();
+    void setDoubleRisk(bool);
 };
 
 #endif

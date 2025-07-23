@@ -15,6 +15,10 @@ class Game {
     std::shared_ptr<Player> player;
     static const std::size_t NUMBER_OF_LEVELS = 5;
     std::array<std::unique_ptr<Level>,NUMBER_OF_LEVELS> levels;
+    size_t currentLevelIndex = 0;
+    bool run = true;
+    void updateScan(Level&);
+    void updateLoop();
     public:
     Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0);
     virtual ~Game() = default;

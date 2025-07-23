@@ -15,13 +15,33 @@ Game::Game(string levelFileName, int seed):
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
                 .DUMMY = true,
-            }
+            },
+            .doubleRisk = false,
         }
     )},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
         levels.at(i) = levelFactory.create(player);
+    }
+}
+
+void Game::updateScan(Level &level) {
+    Grid &grid = level.getGrid();
+    for(auto &tiles: grid.getTheGrid()) {
+        for(auto &tilePtr: tiles) {
+            if(auto entityPtr {tilePtr->getEntity()}; entityPtr) {
+                if(entityPtr->getDoubleRisk()) entityPtr->setDoubleRisk(false);
+                else entityPtr->update();
+            }
+        }
+    }
+}
+
+void Game::updateLoop() {
+    while(run) {
+        levels[currentLevelIndex]->getGrid().print(cout);
+        updateScan(*levels[currentLevelIndex]);
     }
 }
 
@@ -42,17 +62,13 @@ void Game::start() {
             .status = Entity::Status {
                 .action = Entity::Action::NOTHING,
                 .DUMMY = true,
-            }
+            },
+            .doubleRisk = false,
         },
         2 // value
     ));
     mainLevel.getGrid().at(coinLocal)->getEntity()->attach(
         mainLevel.getGrid().at(coinLocal)
     );
-    
-    while(true) {
-        mainLevel.getGrid().print(cout);
-        player->update();
-        getCout() << dynamic_pointer_cast<Player>(player)->getGold() << endl;
-    }
+    updateLoop();
 }

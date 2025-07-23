@@ -5,6 +5,7 @@
 #include <string>
 
 #include "player.h"
+#include "util.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ char Gold::icon() const {
 
 int Gold::getValue() { return value; }
 
+        bool doubleRisk;
 void Gold::step() {}
 void Gold::affect(Entity& e) {
     try {
