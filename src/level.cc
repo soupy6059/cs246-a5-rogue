@@ -2,8 +2,10 @@
 #include "grid.h"
 #include "tile.h"
 #include "rng.h"
+#include "potion.h"
 
 
+#include <iterator>
 #include <memory>
 #include <utility>
 #include <exception>
@@ -60,6 +62,9 @@ void Level::setActiveLevel(const shared_ptr<Player> player) {
     spawnAt(player, playerSpawnLocation);
 }
 
+// Helper methods for LevelFactory (implemented below):
+static Potion::PotionType randomPotionType();
+
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
 
@@ -69,22 +74,29 @@ unique_ptr<Level> LevelFactory::create() {
     auto level = make_unique<Level>(FLOOR_HEIGHT, FLOOR_WIDTH);
     auto theGrid = level->getGrid().getTheGrid();
 
+    unsigned int goldCount = 0, potionCount = 0, enemyCount = 0;
+
     for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
         string line;
         if (!getline(in, line)) throw logic_error("bad file: not enough lines");
         if (line.size() < FLOOR_WIDTH) throw logic_error("bad file: line too short");
         for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
+            // Todo: spawn entities from characters in file
             theGrid[r][c]->setType(fromChar(line[c]));
         }
     }
 
     auto rooms = getRooms(*level);
 
+    // Generate player spawn location but don't place player yet (the Game will 
+    // spawn the player upon changing levels).
     size_t playerRoom = getRand(0,rooms.size());
     size_t idx = getRand(0,rooms[playerRoom].size());
     level->setSpawnLocation(rooms[playerRoom][idx]);
     rooms[playerRoom].erase(rooms[playerRoom].begin() + idx);
+    if (rooms[playerRoom].empty()) rooms.erase(rooms.begin() + playerRoom);
 
+    // Generate stair spawn location
     size_t stairsRoom = getRand(0,rooms.size());
     if (stairsRoom == playerRoom && rooms.size() > 1)
         while (stairsRoom == playerRoom) 
@@ -93,8 +105,24 @@ unique_ptr<Level> LevelFactory::create() {
     idx = getRand(0,rooms[stairsRoom].size());
     Vec2 stairsLocation = rooms[stairsRoom][idx];
     rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
+    if (rooms[stairsRoom].empty()) rooms.erase(rooms.begin() + stairsRoom);
 
     theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
+
+    size_t room;
+    Vec2 location;
+
+    // Generate potions
+    for (; potionCount < MAX_POTIONS; ++potionCount) {
+        room = getRand(0, rooms.size());
+        idx = getRand(0, rooms[room].size());
+        location = rooms[room][idx];
+        rooms[room].erase(rooms[room].begin() + idx);
+        if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
+
+        Potion::PotionType type = randomPotionType();
+        level->spawnAt(Potion::makePotion(type), location);
+    }
 
     // TODO: Generate items and entities
 
@@ -141,4 +169,24 @@ vector<vector<Vec2>> LevelFactory::getRooms(const Level &level) { // LeetCode 20
     }
 
     return rooms;
+}
+
+static Potion::PotionType randomPotionType() {
+    int x = getRand(0, Potion::NUMPOTIONTYPES);
+    switch (x) {
+        case 0:
+            return Potion::PotionType::HEALTH;
+        case 1:
+            return Potion::PotionType::ATTACK;
+        case 2:
+            return Potion::PotionType::DEFENSE;
+        case 3:
+            return Potion::PotionType::POISON;
+        case 4:
+            return Potion::PotionType::WEAK;
+        case 5:
+            return Potion::PotionType::BRITTLE;
+        default:
+            throw logic_error("You added a potion type without updating this function");
+    }
 }
