@@ -30,6 +30,7 @@ class Level {
 
     Grid &getGrid() const;
 
+    const Vec2 &getSpawnLocation() const;
     void setSpawnLocation(Vec2 loc);
 
     void spawnAt(const std::shared_ptr<Entity> entity, Vec2 loc);

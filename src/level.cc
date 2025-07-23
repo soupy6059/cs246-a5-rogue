@@ -17,7 +17,7 @@ using namespace std;
 
 Level::Level(size_t rowCount, size_t colCount):
     ownedGrid{make_unique<Grid>(rowCount,colCount)},
-    playerSpawnLocation{0,0} {
+    playerSpawnLocation{-1,-1} {
     attachTilesToGrid();
 }
 
@@ -48,6 +48,10 @@ Grid &Level::getGrid() const {
     return *ownedGrid;
 }
 
+const Vec2 &Level::getSpawnLocation() const {
+    return playerSpawnLocation;
+}
+
 void Level::setSpawnLocation(Vec2 loc) {
     playerSpawnLocation = loc;
 }
@@ -67,6 +71,8 @@ void Level::setActiveLevel(const shared_ptr<Player> player) {
 static Potion::PotionType randomPotionType();
 static shared_ptr<Gold> randomGoldType();
 static Race randomEnemyType();
+static shared_ptr<Entity> charToLootPtr(char c);
+static shared_ptr<Entity> charToEnemyPtr(char c);
 
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
@@ -78,39 +84,55 @@ unique_ptr<Level> LevelFactory::create() {
     auto theGrid = level->getGrid().getTheGrid();
 
     unsigned int goldCount = 0, potionCount = 0, enemyCount = 0;
+    Vec2 stairsLocation = Vec2{-1,-1};
 
-    for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
+    for (unsigned int r = 0; r < FLOOR_HEIGHT; ++r) {
         string line;
         if (!getline(in, line)) throw logic_error("bad file: not enough lines");
         if (line.size() < FLOOR_WIDTH) throw logic_error("bad file: line too short");
-        for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
+        for (unsigned int c = 0; c < FLOOR_WIDTH; ++c) {
             // Todo: spawn entities from characters in file
             theGrid[r][c]->setType(fromChar(line[c]));
+            if (line[c] == '@') level->setSpawnLocation(Vec2{(int)r,(int)c});
+            else if (line[c] == '\\') stairsLocation = Vec2{(int)r,(int)c};
+            else if (line[c] >= '0' && line[c] <= '9') {
+                level->spawnAt(charToLootPtr(line[c]), Vec2{(int)r,(int)c});
+                if (line[c] <= '5') ++potionCount;
+                else ++goldCount;
+            } else if (auto p = charToEnemyPtr(line[c])) {
+                level->spawnAt(p, Vec2{(int)r,(int)c});
+                ++enemyCount;
+            }
         }
     }
 
     auto rooms = getRooms(*level);
 
-    // Generate player spawn location but don't place player yet (the Game will 
-    // spawn the player upon changing levels).
-    size_t playerRoom = getRand(0,rooms.size());
-    size_t idx = getRand(0,rooms[playerRoom].size());
-    level->setSpawnLocation(rooms[playerRoom][idx]);
-    rooms[playerRoom].erase(rooms[playerRoom].begin() + idx);
-    if (rooms[playerRoom].empty()) rooms.erase(rooms.begin() + playerRoom);
+    size_t playerRoom = rooms.size(), idx;
+    if (level->getSpawnLocation() == Vec2{-1,-1}) {
+        // Generate player spawn location but don't place player yet (the Game will 
+        // spawn the player upon changing levels).
+        playerRoom = getRand(0,rooms.size());
+        idx = getRand(0,rooms[playerRoom].size());
+        level->setSpawnLocation(rooms[playerRoom][idx]);
+        rooms[playerRoom].erase(rooms[playerRoom].begin() + idx);
+        if (rooms[playerRoom].empty()) rooms.erase(rooms.begin() + playerRoom);
+    }
 
-    // Generate stair spawn location
-    size_t stairsRoom = getRand(0,rooms.size());
-    if (stairsRoom == playerRoom && rooms.size() > 1)
-        while (stairsRoom == playerRoom) 
-            stairsRoom = getRand(0,rooms.size());
+    if (stairsLocation == Vec2{-1,-1}) {
+        // Generate stair spawn location
+        size_t stairsRoom = getRand(0,rooms.size());
+        if (stairsRoom == playerRoom && rooms.size() > 1)
+            while (stairsRoom == playerRoom) 
+                stairsRoom = getRand(0,rooms.size());
 
-    idx = getRand(0,rooms[stairsRoom].size());
-    Vec2 stairsLocation = rooms[stairsRoom][idx];
-    rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
-    if (rooms[stairsRoom].empty()) rooms.erase(rooms.begin() + stairsRoom);
+        idx = getRand(0,rooms[stairsRoom].size());
+        stairsLocation = rooms[stairsRoom][idx];
+        rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
+        if (rooms[stairsRoom].empty()) rooms.erase(rooms.begin() + stairsRoom);
 
-    theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
+        theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
+    }
 
     size_t room;
     Vec2 location;
@@ -170,22 +192,26 @@ vector<vector<Vec2>> LevelFactory::getRooms(const Level &level) { // LeetCode 20
                 Vec2 pos = rooms.back()[i];
                 if (pos.x > 0 && !visited[pos.x-1][pos.y]
                     && grid[pos.x-1][pos.y]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x-1,pos.y});
+                    if (!grid[pos.x-1][pos.y]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x-1,pos.y});
                     visited[pos.x-1][pos.y] = true;
                 }
                 if (pos.x < (int)FLOOR_HEIGHT-1 && !visited[pos.x+1][pos.y]
                     && grid[pos.x+1][pos.y]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x+1,pos.y});
+                    if (!grid[pos.x+1][pos.y]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x+1,pos.y});
                     visited[pos.x+1][pos.y] = true;
                 }
                 if (pos.y > 0 && !visited[pos.x][pos.y-1]
                     && grid[pos.x][pos.y-1]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x,pos.y-1});
+                    if (!grid[pos.x][pos.y-1]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x,pos.y-1});
                     visited[pos.x][pos.y-1] = true;
                 }
                 if (pos.y < (int)FLOOR_WIDTH-1 && !visited[pos.x][pos.y+1]
                     && grid[pos.x][pos.y+1]->isFloor()) {
-                    rooms.back().push_back(Vec2{pos.x,pos.y+1});
+                    if (!grid[pos.x][pos.y+1]->getEntity())
+                        rooms.back().push_back(Vec2{pos.x,pos.y+1});
                     visited[pos.x][pos.y+1] = true;
                 }
             }
@@ -230,4 +256,52 @@ static Race randomEnemyType() {
     if (x <= 13) return Race::ELF;
     if (x <= 15) return Race::ORC;
     else return Race::MERCHANT;
+}
+
+static shared_ptr<Entity> charToLootPtr(char c) {
+    switch (c) {
+        case '0':
+            return make_shared<HealthPotion>();
+        case '1':
+            return make_shared<AttackPotion>();
+        case '2':
+            return make_shared<DefensePotion>();
+        case '3':
+            return make_shared<PoisonPotion>();
+        case '4':
+            return make_shared<WeakPotion>();
+        case '5':
+            return make_shared<BrittlePotion>();
+        case '6':
+            return make_shared<Gold>(2);
+        case '7':
+            return make_shared<Gold>(1);
+        case '8':
+            return make_shared<Gold>(4);
+        case '9':
+            return make_shared<DragonHoard>();
+        default:
+            throw logic_error("Unreachable statement");
+    }
+}
+
+static shared_ptr<Entity> charToEnemyPtr(char c) {
+    switch (c) {
+        case 'H':
+            return makeEntityWithRace(Race::HUMAN);
+        case 'W':
+            return makeEntityWithRace(Race::DWARF);
+        case 'E':
+            return makeEntityWithRace(Race::ELF);
+        case 'O':
+            return makeEntityWithRace(Race::ORC);
+        case 'M':
+            return makeEntityWithRace(Race::MERCHANT);
+        case 'D':
+            return makeEntityWithRace(Race::DRAGON);
+        case 'L':
+            return makeEntityWithRace(Race::HALFLING);
+        default:
+            return nullptr;
+    }
 }
