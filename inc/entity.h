@@ -27,9 +27,9 @@ public:
     struct EntityImpl {
         Status status;
         bool doubleRisk;
-        static std::unique_ptr<EntityImpl> makeDefault();
+        static EntityImpl makeDefault();
     };
-    Entity(const EntityImpl &data);
+    Entity(const EntityImpl &data = EntityImpl::makeDefault());
     Entity(const Entity &other);
     Entity(Entity &&other);
     Entity &operator=(const Entity &other);

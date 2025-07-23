@@ -10,15 +10,7 @@ using namespace std;
 
 Game::Game(string levelFileName, int seed):
     levelFactory{levelFileName},
-    player{make_shared<Player>(
-        Entity::EntityImpl{
-            .status = Entity::Status {
-                .action = Entity::Action::NOTHING,
-                .data = monostate{},
-            },
-            .doubleRisk = false,
-        }, 100, 100, 100, 100
-    )},
+    player{make_shared<Player>(Entity::EntityImpl::makeDefault(), 0, 0, 0, 0)},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
