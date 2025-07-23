@@ -10,7 +10,23 @@ using namespace std;
 Potion::Potion():
     Item{} {}
 
-std::unique_ptr<Potion> makePotion(Potion::PotionType type) {
+shared_ptr<Potion> Potion::makePotion(Potion::PotionType type) {
+    switch (type) {
+        case PotionType::HEALTH:
+            return make_shared<HealthPotion>();
+        case PotionType::ATTACK:
+            return make_shared<AttackPotion>();
+        case PotionType::DEFENSE:
+            return make_shared<DefensePotion>();
+        case PotionType::POISON:
+            return make_shared<PoisonPotion>();
+        case PotionType::WEAK:
+            return make_shared<WeakPotion>();
+        case PotionType::BRITTLE:
+            return make_shared<BrittlePotion>();
+        default: // Should be unreachable.
+            return make_shared<HealthPotion>();
+    }
 }
 
 HealthPotion::HealthPotion():
@@ -36,10 +52,10 @@ char Potion::icon() const {
 }
 
 
-void Potion::affect(Entity &) {
-    getCout() << "THE POTION DOES NOTHING!!!!" << endl;
-    getCout() << "I SHOULDN'T EXIST." << endl;
-}
+// void Potion::affect(Entity &) {
+//     getCout() << "THE POTION DOES NOTHING!!!!" << endl;
+//     getCout() << "I SHOULDN'T EXIST." << endl;
+// }
 
 static const int DELTA_HP = 10;
 static const int DELTA_ATK = 5;

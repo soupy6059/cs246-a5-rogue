@@ -5,12 +5,29 @@
 #include "player.h"
 #include "enemy.h"
 
+enum class Race {
+    SHADE,
+    DROW,
+    VAMPIRE,
+    TROLL,
+    GOBLIN,
+    HUMAN,
+    DWARF,
+    ELF,
+    ORC,
+    DRAGON,
+    MERCHANT,
+    HALFLING,
+};
+
 // player classes inherit from player
 class Shade : public Player {
+public:
     Shade(CharacterDefaults d);
 };
 
 class Drow : public Player {
+public:
     Drow(CharacterDefaults d);
     // custom potions
 };
@@ -22,29 +39,34 @@ class Vampire : public Player {
 };
 
 class Troll : public Player {
+public:
     Troll(CharacterDefaults d);
     // gets +5 hp everyturn
 };
 
 class Goblin : public Player {
+public:
     Goblin(CharacterDefaults d);
     void attack(Tile& t) override;
 };
 
 // enemy classes inherit from enemy
 class Human : public Enemy {
+public:
     Human(CharacterDefaults d);
     char icon() const override;
     // fully defualt from enemy
 };
 
 class Dwarf : public Enemy {
+public:
     Dwarf(CharacterDefaults d);
     char icon() const override;
     // defualt (vampire take 5 dmg on attack)
 };
 
 class Elf : public Enemy {
+public:
     // double attack
     Elf(CharacterDefaults d);
     void attack(Tile& t) override;
@@ -52,6 +74,7 @@ class Elf : public Enemy {
 };
 
 class Orc : public Enemy {
+public:
     // + 50% damage to goblins
     Orc(CharacterDefaults d);
     void attack(Tile& t) override;
@@ -68,16 +91,20 @@ class Merchant : public Enemy {
 };
 
 class Dragon : public Enemy {
+public:
     Dragon(CharacterDefaults d);
     char icon() const override;
     // custom move
 };
 
 class Halfling : public Enemy {
+public:
     Halfling(CharacterDefaults d);
     char icon() const override;
     // player loses 50% accuracy
 };
+
+std::shared_ptr<Entity> makeEntityWithRace(Race race);
 
 CharacterDefaults getCharDefs(Race race);
 

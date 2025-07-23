@@ -11,6 +11,11 @@
 static const size_t FLOOR_HEIGHT = 25;
 static const size_t FLOOR_WIDTH = 79;
 
+static const unsigned int MAX_POTIONS = 10;
+static const unsigned int MAX_ENEMIES = 20;
+static const unsigned int MAX_GOLD = 10;
+
+
 class Level {
     std::shared_ptr<Grid> ownedGrid;
     Vec2 playerSpawnLocation;

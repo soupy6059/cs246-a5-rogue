@@ -6,12 +6,12 @@
 
 class Potion: public Item {
     public:
+    static const size_t NUMPOTIONTYPES = 6;
     enum PotionType {HEALTH, ATTACK, DEFENSE, POISON, WEAK, BRITTLE};
     Potion(); 
-    std::unique_ptr<Potion> makePotion(PotionType type);
+    static std::shared_ptr<Potion> makePotion(PotionType type);
     virtual ~Potion() = default;
     virtual char icon() const override;
-    virtual void affect(Entity&) override;
 };
 
 class HealthPotion: public Potion {

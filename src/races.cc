@@ -1,7 +1,10 @@
 #include "races.h"
 #include <memory>
 #include <cmath>
+#include <stdexcept>
 
+
+using namespace std;
 
 // HOW TO DO CUSTOM POTION EFFECT PLS HELP!!!
 // SHADE
@@ -119,6 +122,38 @@ char Dragon::icon() const { return 'D';}
 Halfling::Halfling(CharacterDefaults d): Enemy{d} {}
 char Halfling::icon() const {return 'L';}
 
+shared_ptr<Entity> makeEntityWithRace(Race race) {
+    CharacterDefaults stats = getCharDefs(race);
+    switch (race) {
+        case Race::SHADE:
+        return make_shared<Shade>(stats);
+        case Race::DROW:
+        return make_shared<Drow>(stats);
+        case Race::VAMPIRE:
+        return make_shared<Vampire>(stats);
+        case Race::TROLL:
+        return make_shared<Troll>(stats);
+        case Race::GOBLIN:
+        return make_shared<Goblin>(stats);
+        case Race::HUMAN:
+        return make_shared<Human>(stats);
+        case Race::DWARF:
+        return make_shared<Dwarf>(stats);
+        case Race::ELF:
+        return make_shared<Elf>(stats);
+        case Race::ORC:
+        return make_shared<Orc>(stats);
+        case Race::DRAGON:
+        return make_shared<Dragon>(stats);
+        case Race::MERCHANT:
+        return make_shared<Merchant>(stats);
+        case Race::HALFLING:
+        return make_shared<Halfling>(stats);
+        default:
+        throw logic_error("Not implemented!");
+    }
+}
+
 CharacterDefaults getCharDefs(Race race) {
     switch (race) {
         case Race::SHADE:
@@ -145,5 +180,7 @@ CharacterDefaults getCharDefs(Race race) {
         return {30, 70, 5, 50, 0};
         case Race::HALFLING:
         return {100, 15, 20, 50, 0};
+        default:
+        throw logic_error("Not implemented!");
     }
 }

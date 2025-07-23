@@ -16,7 +16,7 @@ class Gold: public Item {
 
 class DragonHoard: public Gold {
     public:
-    DragonHoard(int);
+    DragonHoard();
     virtual ~DragonHoard() = default;
     bool hasDragon() const;
 };

@@ -129,6 +129,13 @@ void Tile::notify(Entity &whoFrom) {
     case Entity::Action::KILL_ME:
         setEntity(nullptr);
         break;
+    case Entity::Action::ATTACK:
+        setStatus({
+            .action = Tile::Action::ATTACK,
+            .data = get<Direction>(whoFrom.getStatus().data),
+        });
+        notifyObservers();
+        break;
     default:
         throw out_of_range{"bad enum"};
     }
@@ -221,6 +228,18 @@ void Tile::queryMovement(Tile &whoFrom) {
     whoFrom.notifyObservers();
 }
 
+void Tile::queryAttack(Tile &whoFrom) {
+     if(!whoFrom.pointingAt(*this)) return;
+     // they want to interact with me.
+     
+     if(!dynamic_pointer_cast<Character>(getEntity())) {
+         return;
+     }
+     // whoFrom // attack
+     cout << "attack is being called." << endl;
+     dynamic_pointer_cast<Character>(whoFrom.getEntity())->attack(*this);
+}
+
 void Tile::notify(Tile &whoFrom) {
     switch(whoFrom.getStatus().action) {
     case Tile::Action::MOVE_OWNED_ENTITY:
@@ -230,6 +249,9 @@ void Tile::notify(Tile &whoFrom) {
         break;
     case Tile::Action::INTERACT:
         queryInteraction(whoFrom);
+        break;
+    case Tile::Action::ATTACK:
+        queryAttack(whoFrom);
         break;
     default:
         throw out_of_range{"bad enum"};
