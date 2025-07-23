@@ -29,5 +29,5 @@ void Gold::affect(Entity& e) {
 DragonHoard::DragonHoard(const Entity::EntityImpl &data, int value):
     Gold{data, value} {}
 
-bool DragonHoard::hasDragon() const { return false; }
+bool DragonHoard::hasDragon() const { return false; } // TODO
 
