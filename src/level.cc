@@ -64,6 +64,7 @@ void Level::setActiveLevel(const shared_ptr<Player> player) {
 
 // Helper methods for LevelFactory (implemented below):
 static Potion::PotionType randomPotionType();
+static shared_ptr<Gold> randomGoldType();
 
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
@@ -124,6 +125,16 @@ unique_ptr<Level> LevelFactory::create() {
         level->spawnAt(Potion::makePotion(type), location);
     }
 
+    // Generate gold
+    for (; goldCount < MAX_GOLD; ++goldCount) {
+        room = getRand(0, rooms.size());
+        idx = getRand(0, rooms[room].size());
+        location = rooms[room][idx];
+        rooms[room].erase(rooms[room].begin() + idx);
+        if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
+
+        level->spawnAt(randomGoldType(), location);
+    }
     // TODO: Generate items and entities
 
     return level;
@@ -189,4 +200,11 @@ static Potion::PotionType randomPotionType() {
         default:
             throw logic_error("You added a potion type without updating this function");
     }
+}
+
+static shared_ptr<Gold> randomGoldType() {
+    int x = getRand(0,8);
+    if (x <= 4) return make_shared<Gold>(2);
+    if (x <= 5) return make_shared<DragonHoard>();
+    else return make_shared<Gold>(1);
 }

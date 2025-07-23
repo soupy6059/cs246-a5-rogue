@@ -33,8 +33,8 @@ void Gold::affect(Entity& e) {
     catch(const bad_cast &ex) {}
 }
 
-DragonHoard::DragonHoard(int value):
-    Gold{value} {}
+DragonHoard::DragonHoard():
+    Gold{6} {}
 
 bool DragonHoard::hasDragon() const { return false; } // TODO
 
