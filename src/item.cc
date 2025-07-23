@@ -6,3 +6,5 @@ Item::Item(bool autoPickup):
 char Item::icon() const {
     return 'I';
 }
+
+void Item::step() {}
