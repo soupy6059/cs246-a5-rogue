@@ -3,6 +3,7 @@
 #include "tile.h"
 #include "rng.h"
 #include "potion.h"
+#include "races.h"
 
 
 #include <iterator>
@@ -65,6 +66,7 @@ void Level::setActiveLevel(const shared_ptr<Player> player) {
 // Helper methods for LevelFactory (implemented below):
 static Potion::PotionType randomPotionType();
 static shared_ptr<Gold> randomGoldType();
+static Race randomEnemyType();
 
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
@@ -134,6 +136,18 @@ unique_ptr<Level> LevelFactory::create() {
         if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
 
         level->spawnAt(randomGoldType(), location);
+    }
+
+    // Generate entities
+    for (; enemyCount < MAX_ENEMIES; ++enemyCount) {
+        room = getRand(0, rooms.size());
+        idx = getRand(0, rooms[room].size());
+        location = rooms[room][idx];
+        rooms[room].erase(rooms[room].begin() + idx);
+        if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
+
+        Race race = randomEnemyType();
+        level->spawnAt(makeEntityWithRace(race), location);
     }
 
     return level;
@@ -206,4 +220,14 @@ static shared_ptr<Gold> randomGoldType() {
     if (x <= 4) return make_shared<Gold>(2);
     if (x <= 5) return make_shared<DragonHoard>();
     else return make_shared<Gold>(1);
+}
+
+static Race randomEnemyType() {
+    int x = getRand(0,18);
+    if (x <= 3) return Race::HUMAN;
+    if (x <= 6) return Race::DWARF;
+    if (x <= 11) return Race::HALFLING;
+    if (x <= 13) return Race::ELF;
+    if (x <= 15) return Race::ORC;
+    else return Race::MERCHANT;
 }
