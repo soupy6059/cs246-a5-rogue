@@ -114,9 +114,15 @@ void Player::setHP(int n) {if (n > defaults.hp) hp = defaults.hp;}
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // these seem bugged
 // - carter lol
-void Player::setDEF(int n) {if (n <= 0) def = 1;}
+void Player::setDEF(int n) {
+    if (n <= 0) { def = 1; }
+    else {def = n;}
+}
 
-void Player::setATK(int n) {if (n <= 0) atk = 1;}
+void Player::setATK(int n) {
+    if (n <= 0) {atk = 1;}
+    else { atk = n;}
+}
 
 string Player::getName() const {
     return "PC";
