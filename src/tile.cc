@@ -47,6 +47,16 @@ void Tile::setEntity(shared_ptr<Entity> toEntity) {
     if(!toEntity) {
         if(dynamic_pointer_cast<Merchant>(getEntity())) {
             data->entity = make_shared<Gold>(4);
+        } else if(dynamic_pointer_cast<Human>(getEntity())) {
+            data->entity = make_shared<Gold>(2); 
+            for(auto observer: getObservers()) {
+                if(auto tile = dynamic_pointer_cast<Tile>(observer); tile) {
+                    if(tile->getEntity() == nullptr) {
+                        tile->setEntity(make_shared<Gold>(2));
+                        break;
+                    }
+                }
+            }
         } else data->entity = data->goldStorage;
         return;
     }
