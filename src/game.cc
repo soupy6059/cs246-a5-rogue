@@ -48,7 +48,8 @@ void Game::updateLoop() {
                 .at(refCurrentLevel().getStairsLocation())
                 ->setEntity(nullptr);
             ++currentLevelIndex;
-            refCurrentLevel().setActiveLevel(player);
+            if (currentLevelIndex == NUMBER_OF_LEVELS) run = false;
+            else refCurrentLevel().setActiveLevel(player);
         }
     }
 }
