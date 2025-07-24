@@ -48,7 +48,10 @@ bool Game::updateLoop() {
                 .at(refCurrentLevel().getStairsLocation())
                 ->setEntity(nullptr);
             ++currentLevelIndex;
-            if (currentLevelIndex == NUMBER_OF_LEVELS) return false;
+            if (currentLevelIndex == NUMBER_OF_LEVELS) {
+                cout << "You Win! Score: " << player->getScore() << endl;
+                return false;
+            }
             else refCurrentLevel().setActiveLevel(player);
         } else if (player->getStatus().action == Entity::Action::QUIT) {
             return false;
