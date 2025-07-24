@@ -20,17 +20,6 @@ Game::Game(string levelFileName, int seed):
     }
 }
 
-void Game::notify(Subject &whoFrom) {
-    try {
-        dynamic_cast<Player&>(whoFrom);
-    } catch(...) { return; }
-    if(player->getStatus().action != Entity::Action::CHANGE_LEVEL) return;
-
-    ++currentLevelIndex; // 0 -> 1
-    cout << "new level index: " << currentLevelIndex << endl;
-    refCurrentLevel().setActiveLevel(player);
-}
-
 void Game::updateScan(Level &level) {
     Grid &grid = level.getGrid();
     for(auto &tiles: grid.getTheGrid()) {

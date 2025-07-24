@@ -12,7 +12,7 @@
 
 // note that switch floors means the textDisplay has to observer a new grid
 
-class Game: public Subject, public Observer {
+class Game: public Subject {
     LevelFactory levelFactory;
     std::shared_ptr<Player> player;
     static const std::size_t NUMBER_OF_LEVELS = 5;
@@ -28,7 +28,6 @@ class Game: public Subject, public Observer {
     Level &refCurrentLevel();
     size_t getCurrentLevelIndex();
     std::shared_ptr<Player> getPlayer();
-    virtual void notify(Subject&) override;
 };
 
 #endif
