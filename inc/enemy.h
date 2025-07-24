@@ -5,6 +5,8 @@
 #include "util.h"
 
 class Enemy : public Character {
+  protected:
+    void moveNewDir();
   public:
     virtual void attack(Tile& target) override;
     Enemy(CharacterDefaults d);

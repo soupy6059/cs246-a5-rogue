@@ -13,8 +13,8 @@ void Enemy::attack(Tile& target) {
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
-void Enemy::step() {
-    // get a random number
+void Enemy::moveNewDir() {
+        // get a random number
     int i = getRand(0, 8); //gets a number 0 to 7
     // map to direction
     Direction dir;
@@ -51,6 +51,14 @@ void Enemy::step() {
     });
     // notify observers
     notifyObservers();
+}
+
+void Enemy::step() {
+    // if () {
+
+    // } else {
+    //     moveNewDir();
+    // }
 }
 
 std::string Enemy::icon() const { return "\033[31;1m?\033[0m";}

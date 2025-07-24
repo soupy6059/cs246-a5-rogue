@@ -122,10 +122,10 @@ void Merchant::togglePissed() {
 void Merchant::step() {
     const int MERCHANT_BASE_HP = 30;
     if (hp < MERCHANT_BASE_HP) togglePissed();
-    if (isPissed) {
+    if (isPissed) { 
         // attack
     } else {
-        Enemy::step();
+        Enemy::moveNewDir();
     }
 }
 // Dragon
