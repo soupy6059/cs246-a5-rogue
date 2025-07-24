@@ -136,6 +136,8 @@ void Tile::notify(Entity &whoFrom) {
         });
         notifyObservers();
         break;
+    case Entity::Action::CHANGE_LEVEL:
+        break;
     default:
         throw out_of_range{"bad enum"};
     }
@@ -190,6 +192,12 @@ void Tile::queryMovement(Tile &whoFrom) {
     if(player && gold) {
         player->setGold(player->getGold() + gold->getValue());
         this->setEntity(nullptr);
+    }
+
+    if(player && getType() == Tile::TileType::STAIR) {
+        player->setStatus({Entity::Action::CHANGE_LEVEL, monostate{}});
+        player->notifyObservers();
+        return;
     }
 
     // am i collidable?

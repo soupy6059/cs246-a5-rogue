@@ -45,7 +45,7 @@ rebuild: clean all
 
 # Run the program
 run: $(TARGET)
-	./$(TARGET) "assets/carter-level.txt"
+	./$(TARGET)
 
 # Debug build
 debug: CXXFLAGS += -DDEBUG -g3 -O0

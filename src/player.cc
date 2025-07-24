@@ -5,6 +5,9 @@
 #include <string>
 #include <map>
 #include <cassert>
+#include <memory>
+#include <races.h>
+#include <rng.h>
 
 #include "log.h"
 
@@ -101,5 +104,13 @@ void Player::setDEF(int n) {if (n <= 0) def = 1;}
 void Player::setATK(int n) {if (n <= 0) atk = 1;}
 
 void Player::attack(Tile& target) {
-    Character::attack(target);
+    std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(target.getEntity());
+    if (h) {
+        int r = getRand(0, 2);
+        if (r) {
+            Character::attack(target);
+        }
+    } else {
+        Character::attack(target);
+    }
 }

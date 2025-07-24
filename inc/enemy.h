@@ -8,8 +8,8 @@ class Enemy : public Character {
   public:
     virtual void attack(Tile& target) override;
     Enemy(CharacterDefaults d);
-    void step() override;
     virtual std::string icon() const override;
+    virtual void step() override;
 };
 
 #endif
