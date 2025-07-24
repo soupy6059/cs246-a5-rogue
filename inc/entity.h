@@ -19,7 +19,7 @@ private:
     virtual void mainUpdate();
 public:
     enum class Action { // im using Luke's idea
-        MOVE, NOTHING, INTERACT, ATTACK, KILL_ME, CHANGE_LEVEL,
+        MOVE, NOTHING, INTERACT, ATTACK, KILL_ME, 
     };
     struct Status {
         Action action;
