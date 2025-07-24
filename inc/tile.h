@@ -12,7 +12,7 @@
 class Tile: public Observer, public Subject {
 public: // INTERNAL TYPES
     enum class Action {
-        MOVE_OWNED_ENTITY, NOTHING, SWAP, INTERACT, ATTACK
+        MOVE_OWNED_ENTITY, NOTHING, SWAP, INTERACT, ATTACK, ADJACENT_POTION,
     };
     struct Status {
         Action action;
@@ -65,6 +65,7 @@ public: // VIRTUAL BEHAVIORS
 
 public: // METHODS
     void queryMovement(Tile &whoFrom);
+    void queryPotion(Tile &whoFrom);
     void queryMovement(Entity &whoFrom);
     void queryInteraction(Entity &whoFrom);
     void queryInteraction(Tile &whoFrom);

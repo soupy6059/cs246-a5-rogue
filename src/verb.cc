@@ -10,7 +10,7 @@ Verb &Verb::append(string word) {
 }
 
 void Verb::appendStatus(Verb::Status status) {
-    if(!empty) append("and"s);
+    if(!action.empty()) append("and"s);
     switch(status.action) {
     case Verb::Action::SPAWN:
         append("Player"s)
@@ -40,6 +40,12 @@ void Verb::appendStatus(Verb::Status status) {
             .append("to"s)
             .append(attacker->getName());
         } break;
+    case Verb::Action::SEES_POTION:
+        append(get<3>(status.data).first->getName())
+            .append("sees"s)
+            .append("a"s)
+            .append(get<3>(status.data).second->getName());
+        break;
     default:
         break;
     }
