@@ -12,6 +12,7 @@
 #include <exception>
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -168,17 +169,22 @@ unique_ptr<Level> LevelFactory::create() {
         // CARTER 
         auto gold = randomGoldType();
         if(auto dragonGold = dynamic_pointer_cast<DragonHoard>(gold); dragonGold) {
+            cout << "spawning dragon gold" << endl;
             auto dragonLocation = Vec2::stepVec(location, static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
             auto dragonEntity = makeEntityWithRace(Race::DRAGON);
             while(true) {
                 try { 
+                    cout << "trying to spawn dragon" << endl;
                     level->spawnAt(dragonEntity, dragonLocation);
+                    cout << "spawned dragon! at " << dragonLocation << ", gold at " << location << endl;
                     break;
                 }
                 catch(...) {}
                 dragonLocation = Vec2::stepVec(location, static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
             }
-            dragonGold->setDragon(dynamic_pointer_cast<Dragon>(dragonEntity));
+            auto dragonPtr = dynamic_pointer_cast<Dragon>(dragonEntity);
+            assert(dragonPtr); 
+            dragonGold->setDragon(dragonPtr);
         }
         // CARTER END
         level->spawnAt(gold, location);

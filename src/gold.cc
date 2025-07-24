@@ -44,6 +44,6 @@ void DragonHoard::setDragon(std::shared_ptr<Dragon> newMyDragon) {
 }
 
 void DragonHoard::mainUpdate() {
-    if(myDragon->getHP() <= 0) myDragon = nullptr;
+    if(myDragon && myDragon->getHP() <= 0) myDragon = nullptr;
     step();
 }
