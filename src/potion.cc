@@ -47,8 +47,8 @@ WeakPotion::WeakPotion():
 BrittlePotion::BrittlePotion():
     Potion{} {}
 
-char Potion::icon() const {
-    return 'P';
+string Potion::icon() const {
+    return "\033[92;1mP\033[0m";
 }
 
 

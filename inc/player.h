@@ -19,7 +19,7 @@ class Player: public Character {
     void appendVerb(Verb::Status);
     Player(CharacterDefaults d);
     virtual ~Player() = default;
-    virtual char icon() const override;
+    virtual std::string icon() const override;
 
     virtual void setHP(int n) override;
     void setATK(int n) override;

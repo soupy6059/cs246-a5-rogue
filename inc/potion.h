@@ -11,7 +11,7 @@ class Potion: public Item {
     Potion(); 
     static std::shared_ptr<Potion> makePotion(PotionType type);
     virtual ~Potion() = default;
-    virtual char icon() const override;
+    virtual std::string icon() const override;
 };
 
 class HealthPotion: public Potion {

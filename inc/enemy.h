@@ -9,7 +9,7 @@ class Enemy : public Character {
     virtual void attack(Tile& target) override;
     Enemy(CharacterDefaults d);
     void step() override;
-    virtual char icon() const override;
+    virtual std::string icon() const override;
 };
 
 #endif

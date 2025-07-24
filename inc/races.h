@@ -54,14 +54,14 @@ public:
 class Human : public Enemy {
 public:
     Human(CharacterDefaults d);
-    char icon() const override;
+    std::string icon() const override;
     // fully defualt from enemy
 };
 
 class Dwarf : public Enemy {
 public:
     Dwarf(CharacterDefaults d);
-    char icon() const override;
+    std::string icon() const override;
     // defualt (vampire take 5 dmg on attack)
 };
 
@@ -70,7 +70,7 @@ public:
     // double attack
     Elf(CharacterDefaults d);
     void attack(Tile& t) override;
-    char icon() const override; 
+    std::string icon() const override; 
 };
 
 class Orc : public Enemy {
@@ -78,7 +78,7 @@ public:
     // + 50% damage to goblins
     Orc(CharacterDefaults d);
     void attack(Tile& t) override;
-    char icon() const override;
+    std::string icon() const override;
 };
 
 class Merchant : public Enemy {
@@ -87,20 +87,20 @@ class Merchant : public Enemy {
     Merchant(CharacterDefaults d);
     void togglePissed();
     void attack(Tile& t) override;
-    char icon() const override;
+    std::string icon() const override;
 };
 
 class Dragon : public Enemy {
 public:
     Dragon(CharacterDefaults d);
-    char icon() const override;
+    std::string icon() const override;
     // custom move
 };
 
 class Halfling : public Enemy {
 public:
     Halfling(CharacterDefaults d);
-    char icon() const override;
+    std::string icon() const override;
     // player loses 50% accuracy
 };
 

@@ -58,16 +58,16 @@ void Goblin::attack(Tile& target) {
 
 // HUMAN 
 Human::Human(CharacterDefaults d): Enemy{d} {}
-char Human::icon() const { return 'H';}
+string Human::icon() const { return "\033[31;1mH\033[0m";}
 
 // DWARF is DEFUALT
 
 Dwarf::Dwarf(CharacterDefaults d): Enemy{d} {}
-char Dwarf::icon() const { return 'W';}
+string Dwarf::icon() const { return "\033[31;1mW\033[0m";}
 
 // ELF
 Elf::Elf(CharacterDefaults d): Enemy{d} {}
-char Elf::icon() const { return 'E';}
+string Elf::icon() const { return "\033[31;1mE\033[0m";}
 
 void Elf::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
@@ -84,7 +84,7 @@ void Elf::attack(Tile& target) {
 
 // ORC
 Orc::Orc(CharacterDefaults d): Enemy{d} {}
-char Orc::icon() const {return 'O';}
+string Orc::icon() const {return "\033[31;1mO\033[0m";}
 
 void Orc::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
@@ -103,7 +103,7 @@ void Orc::attack(Tile& target) {
 bool Merchant::isPissed = false;
 
 Merchant::Merchant(CharacterDefaults d): Enemy{d} {}
-char Merchant::icon() const {return 'M';}
+string Merchant::icon() const {return "\033[31;1mM\033[0m";}
 
 void Merchant::attack(Tile& target) {
     if (!isPissed) return;
@@ -116,11 +116,11 @@ void Merchant::togglePissed() {
 
 // Dragon
 Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
-char Dragon::icon() const { return 'D';}
+string Dragon::icon() const { return "\033[31;1mD\033[0m";}
 
 // HAFLING
 Halfling::Halfling(CharacterDefaults d): Enemy{d} {}
-char Halfling::icon() const {return 'L';}
+string Halfling::icon() const {return "\033[31;1mL\033[0m";}
 
 shared_ptr<Entity> makeEntityWithRace(Race race) {
     CharacterDefaults stats = getCharDefs(race);

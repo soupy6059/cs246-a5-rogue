@@ -90,8 +90,8 @@ void Player::step() {
     notifyObservers();
 }
 
-char Player::icon() const {
-    return '@';
+string Player::icon() const {
+    return "\033[94;1m@\033[0m";
 }
 
 void Player::setHP(int n) {if (n > defaults.hp) hp = defaults.hp;}

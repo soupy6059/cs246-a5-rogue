@@ -9,7 +9,7 @@ class Item: public Entity {
 public:
     Item(bool autoPickup = false); 
     virtual ~Item() = default;
-    virtual char icon() const override;
+    virtual std::string icon() const override;
     virtual void step() override;
     virtual void affect(Entity&) = 0;
 };

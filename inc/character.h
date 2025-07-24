@@ -27,7 +27,7 @@ class Character : public Entity {
     
     Character(CharacterDefaults d);
     virtual ~Character() = default;
-    virtual char icon() const override = 0;
+    virtual std::string icon() const override = 0;
 
 };
 

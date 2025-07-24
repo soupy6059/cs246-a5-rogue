@@ -40,7 +40,7 @@ public:
     const Status &getStatus();
     EntityImpl &getStats() const;
     void update(); 
-    virtual char icon() const = 0;
+    virtual std::string icon() const = 0;
     bool getDoubleRisk();
     void setDoubleRisk(bool);
     virtual std::string getName() const;

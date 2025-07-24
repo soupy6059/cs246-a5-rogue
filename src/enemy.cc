@@ -53,6 +53,6 @@ void Enemy::step() {
     notifyObservers();
 }
 
-char Enemy::icon() const { return '?';}
+std::string Enemy::icon() const { return "\033[31;1m?\033[0m";}
 
 Enemy::Enemy(CharacterDefaults d): Character{d} {}

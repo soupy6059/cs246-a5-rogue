@@ -269,22 +269,22 @@ void Tile::notify(Subject &whoFrom) {
     catch(...) {}
 }
 
-char Tile::icon() const {
+string Tile::icon() const {
     switch(getType()) {
     case TileType::FLOOR:
-        return getEntity()? getEntity()->icon() : '.';
+        return getEntity()? getEntity()->icon() : ".";
     case TileType::STAIR:
-        return '\\';
+        return "\033[94;1m\\\033[0m";
     case TileType::HALLWAY:
-        return getEntity()? getEntity()->icon() : '#';
+        return getEntity()? getEntity()->icon() : "#";
     case TileType::DOOR:
-        return getEntity()? getEntity()->icon() : '+';
+        return getEntity()? getEntity()->icon() : "+";
     case TileType::VERTICAL_WALL:
-        return '|';
+        return "|";
     case TileType::HORIZONTAL_WALL:
-        return '-';
+        return "-";
     case TileType::VOID:
-        return ' ';
+        return " ";
     default:
        throw out_of_range{"bad enum"};
     }
