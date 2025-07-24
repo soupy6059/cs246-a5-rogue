@@ -95,6 +95,7 @@ class Merchant : public Enemy {
 class Dragon : public Enemy {
 public:
     Dragon(CharacterDefaults d);
+    void step() override;
     std::string icon() const override;
     // custom move
 };

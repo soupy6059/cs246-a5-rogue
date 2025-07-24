@@ -143,6 +143,12 @@ void Merchant::step() {
 // Dragon
 Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
 string Dragon::icon() const { return "\033[31;1mD\033[0m";}
+void Dragon::step() {
+    // they dont move
+    bool canAttack = false;
+    std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
+    if (playerLocation != nullptr) {attack(*playerLocation);}
+}
 
 // HAFLING
 Halfling::Halfling(CharacterDefaults d): Enemy{d} {}
