@@ -52,7 +52,10 @@ bool Game::updateLoop() {
                 cout << "You Win! Score: " << player->getScore() << endl;
                 return false;
             }
-            else refCurrentLevel().setActiveLevel(player);
+            else {
+                refCurrentLevel().setActiveLevel(player);
+                player->resetDeltaStats();
+            }
         } else if (player->getStatus().action == Entity::Action::QUIT) {
             return false;
         } else if (player->getStatus().action == Entity::Action::RESTART) {
