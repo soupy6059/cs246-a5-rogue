@@ -14,6 +14,10 @@ void Subject::detach(shared_ptr<Observer> obs) {
     return;
 }
 
+void Subject::detachAll() {
+    observers.clear();
+}
+
 void Subject::notifyObservers() {
     for(shared_ptr<Observer> obs: this->observers) {
         obs->notify(*this);

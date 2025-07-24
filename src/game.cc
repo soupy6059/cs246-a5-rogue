@@ -10,9 +10,9 @@
 
 using namespace std;
 
-Game::Game(string levelFileName, int seed):
+Game::Game(string levelFileName, int seed, Race race):
     levelFactory{levelFileName},
-    player{make_shared<Player>(getCharDefs(Race::SHADE))},
+    player{std::dynamic_pointer_cast<Player>(makeEntityWithRace(race))},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
@@ -48,7 +48,8 @@ void Game::updateLoop() {
                 .at(refCurrentLevel().getStairsLocation())
                 ->setEntity(nullptr);
             ++currentLevelIndex;
-            refCurrentLevel().setActiveLevel(player);
+            if (currentLevelIndex == NUMBER_OF_LEVELS) run = false;
+            else refCurrentLevel().setActiveLevel(player);
         }
     }
 }
@@ -77,4 +78,17 @@ void Game::start() {
     // );
 
     updateLoop();
+}
+
+void Game::cleanUp() {
+    detachAll();
+    player->detachAll();
+    for (int unsigned i = 0; i < NUMBER_OF_LEVELS; ++i) {
+        for (auto &v : levels[i]->getGrid().getTheGrid()) {
+            for (auto &t : v) {
+                t->detachAll();
+                if (t->getEntity()) t->getEntity()->detachAll();
+            }
+        }
+    }
 }

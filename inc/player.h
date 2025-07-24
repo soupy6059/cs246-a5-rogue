@@ -24,6 +24,7 @@ class Player: public Character {
     Player(CharacterDefaults d);
     virtual ~Player() = default;
     virtual std::string icon() const override;
+    virtual std::string getRaceName() const = 0;
 
     virtual void setHP(int n) override;
     void setATK(int n) override;

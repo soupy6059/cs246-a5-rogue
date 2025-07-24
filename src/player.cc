@@ -117,9 +117,6 @@ void Player::setHP(int n) {
     }
 }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// these seem bugged
-// - carter lol
 void Player::setDEF(int n) {
     if (n <= 0) { def = 1; }
     else {def = n;}
@@ -142,6 +139,8 @@ void Player::attack(Tile& target) {
             Character::attack(target);
         }
     } else {
+        std::shared_ptr<Merchant> m = std::dynamic_pointer_cast<Merchant>(target.getEntity());
+        if (m) m->togglePissed();
         Character::attack(target);
     }
 }

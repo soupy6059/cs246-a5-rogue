@@ -265,11 +265,11 @@ void Tile::queryAttack(Tile &whoFrom) {
      // verbAppend <=> action pretty printing
      auto player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
      auto target = dynamic_pointer_cast<Character>(this->getEntity());
+
+     dynamic_pointer_cast<Character>(whoFrom.getEntity())->attack(*this);
      if(player && target) {
          player->appendVerb({Verb::Action::ATTACK,pair<shared_ptr<Entity>,shared_ptr<Entity>>(player,target)});
      }
-
-     dynamic_pointer_cast<Character>(whoFrom.getEntity())->attack(*this);
 }
 
 void Tile::notify(Tile &whoFrom) {
