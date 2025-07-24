@@ -19,6 +19,7 @@ static const unsigned int MAX_GOLD = 10;
 class Level {
     std::shared_ptr<Grid> ownedGrid;
     Vec2 playerSpawnLocation;
+    Vec2 stairsLocation;
     void attachTilesToGrid();
     public:
     Level(size_t,size_t); // idk what the params are
@@ -32,6 +33,9 @@ class Level {
 
     const Vec2 &getSpawnLocation() const;
     void setSpawnLocation(Vec2 loc);
+
+    const Vec2 &getStairsLocation() const;
+    void setStairsLocation(Vec2 loc);
 
     void spawnAt(const std::shared_ptr<Entity> entity, Vec2 loc);
 
