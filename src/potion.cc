@@ -29,6 +29,60 @@ shared_ptr<Potion> Potion::makePotion(Potion::PotionType type) {
     }
 }
 
+bool HealthPotion::known = false;
+bool AttackPotion::known = false;
+bool DefensePotion::known = false;
+bool PoisonPotion::known = false;
+bool WeakPotion::known = false;
+bool BrittlePotion::known = false;
+
+bool HealthPotion::getKnown() const {
+    return HealthPotion::known;
+}
+
+void HealthPotion::setKnown(bool newKnown) {
+    HealthPotion::known = newKnown;
+}
+bool AttackPotion::getKnown() const {
+    return AttackPotion::known;
+}
+
+void AttackPotion::setKnown(bool newKnown) {
+    AttackPotion::known = newKnown;
+}
+
+bool DefensePotion::getKnown() const {
+    return DefensePotion::known;
+}
+
+void DefensePotion::setKnown(bool newKnown) {
+    DefensePotion::known = newKnown;
+}
+
+bool PoisonPotion::getKnown() const {
+    return PoisonPotion::known;
+}
+
+void PoisonPotion::setKnown(bool newKnown) {
+    PoisonPotion::known = newKnown;
+}
+
+bool WeakPotion::getKnown() const {
+    return WeakPotion::known;
+}
+
+void WeakPotion::setKnown(bool newKnown) {
+    WeakPotion::known = newKnown;
+}
+
+bool BrittlePotion::getKnown() const {
+    return BrittlePotion::known;
+}
+
+void BrittlePotion::setKnown(bool newKnown) {
+    BrittlePotion::known = newKnown;
+}
+
 HealthPotion::HealthPotion():
     Potion{} {}
 
@@ -47,12 +101,12 @@ WeakPotion::WeakPotion():
 BrittlePotion::BrittlePotion():
     Potion{} {}
 
-string HealthPotion::getName() const { return "BH"; }
-string AttackPotion::getName() const { return "BA"; }
-string DefensePotion::getName() const { return "BD"; }
-string PoisonPotion::getName() const { return "LH"; }
-string WeakPotion::getName() const { return "LA"; }
-string BrittlePotion::getName() const { return "LD"; }
+string HealthPotion::getName() const { return getKnown()? "BH" : "unknown"; }
+string AttackPotion::getName() const { return getKnown()? "BA" : "unknown"; }
+string DefensePotion::getName() const { return getKnown()? "BD" : "unknown"; }
+string PoisonPotion::getName() const { return getKnown()? "LH" : "unknown"; }
+string WeakPotion::getName() const { return getKnown()? "LA" : "unknown"; }
+string BrittlePotion::getName() const { return getKnown()? "LD" : "unknown"; }
 
 string Potion::icon() const {
     return "\033[92;1mP\033[0m";
@@ -72,6 +126,7 @@ void HealthPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setHP(character.getHP() + DELTA_HP);
+        setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -85,6 +140,7 @@ void AttackPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.changeDeltaATK(DELTA_ATK);
+        setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -98,6 +154,7 @@ void DefensePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.changeDeltaDEF(DELTA_DEF);
+        setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -111,6 +168,7 @@ void PoisonPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setHP(max(1, character.getHP() - DELTA_HP));
+        setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -125,6 +183,7 @@ void WeakPotion::affect(Entity &e) {
         Character &character {dynamic_cast<Character&>(e)};
         int delta = character.getATK() - max(0, character.getATK() - DELTA_ATK);
         character.changeDeltaATK(-delta);
+        setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -140,6 +199,7 @@ void BrittlePotion::affect(Entity &e) {
         Character &character {dynamic_cast<Character&>(e)};
         int delta = character.getDEF() - max(0, character.getDEF() - DELTA_DEF);
         character.changeDeltaDEF(-delta);
+        setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},

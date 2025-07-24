@@ -15,7 +15,10 @@ class Potion: public Item {
 };
 
 class HealthPotion: public Potion {
+    static bool known;
     public:
+    bool getKnown() const;
+    void setKnown(bool newKnown);
     HealthPotion();
     virtual ~HealthPotion() = default;
     virtual void affect(Entity&) override;
@@ -23,7 +26,10 @@ class HealthPotion: public Potion {
 };
 
 class AttackPotion: public Potion {
+    static bool known;
     public:
+    bool getKnown() const;
+    void setKnown(bool newKnown);
     AttackPotion();
     virtual ~AttackPotion() = default;
     virtual void affect(Entity&) override;
@@ -31,7 +37,10 @@ class AttackPotion: public Potion {
 };
 
 class DefensePotion: public Potion {
+    static bool known;
     public:
+    bool getKnown() const;
+    void setKnown(bool newKnown);
     DefensePotion();
     virtual ~DefensePotion() = default;
     virtual void affect(Entity&) override;
@@ -39,7 +48,10 @@ class DefensePotion: public Potion {
 };
 
 class PoisonPotion: public Potion {
+    static bool known;
     public:
+    bool getKnown() const;
+    void setKnown(bool newKnown);
     PoisonPotion();
     virtual ~PoisonPotion() = default;
     virtual void affect(Entity&) override;
@@ -47,7 +59,10 @@ class PoisonPotion: public Potion {
 };
 
 class WeakPotion: public Potion {
+    static bool known;
     public:
+    bool getKnown() const;
+    void setKnown(bool newKnown);
     WeakPotion();
     virtual ~WeakPotion() = default;
     virtual void affect(Entity&) override;
@@ -55,7 +70,10 @@ class WeakPotion: public Potion {
 };
 
 class BrittlePotion: public Potion {
+    static bool known;
     public:
+    bool getKnown() const;
+    void setKnown(bool newKnown);
     BrittlePotion();
     virtual ~BrittlePotion() = default;
     virtual void affect(Entity&) override;
