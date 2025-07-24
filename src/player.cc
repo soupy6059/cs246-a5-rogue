@@ -130,6 +130,12 @@ string Player::icon() const {
 void Player::setHP(int n) {
     if (n > defaults.hp){
         hp = defaults.hp;
+    } else if (n <= 0) {
+        hp = 0;
+        setStatus(Entity::Status{
+            .action = Entity::Action::PLAYER_DEATH,
+            .data = monostate{},
+        });
     } else {
         hp = n;
     }

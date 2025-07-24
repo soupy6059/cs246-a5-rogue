@@ -54,6 +54,9 @@ bool Game::updateLoop() {
             return false;
         } else if (player->getStatus().action == Entity::Action::RESTART) {
             return true;
+        } else if (player->getStatus().action == Entity::Action::PLAYER_DEATH) {
+            cout << "You Died" << endl;
+            return false;
         }
     }
     return false;
