@@ -1,6 +1,7 @@
 #include "races.h"
 #include "rng.h"
 #include <memory>
+#include <iostream>
 #include <cmath>
 #include <stdexcept>
 
@@ -31,6 +32,8 @@ void Vampire::attack(Tile& target) {
         c->setHP(c->getHP() + DWARF_DAMAGE);
     }
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
+    std::shared_ptr<Merchant> m = std::dynamic_pointer_cast<Merchant>(target.getEntity());
+    if (m) m->togglePissed();
 }
 
 //Troll
@@ -47,8 +50,6 @@ void Troll::step() {
 Goblin::Goblin(CharacterDefaults d): Player{d} {}
 
 void Goblin::attack(Tile& target) {
-    int hit = getRand(0, 2);
-    if (!hit) return;
     const int GOBLIN_FILTHY_CAPITALIST_BONUS = 5;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
@@ -61,6 +62,8 @@ void Goblin::attack(Tile& target) {
         target.setEntity(nullptr);
         setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
     }
+    std::shared_ptr<Merchant> m = std::dynamic_pointer_cast<Merchant>(target.getEntity());
+    if (m) m->togglePissed();
 }
 
 
@@ -105,10 +108,13 @@ void Orc::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Goblin> g = std::dynamic_pointer_cast<Goblin>(c);
     if (!c) return; // not a character
-        float damage = getDamage(target);    if (g) {
+    float damage = getDamage(target);    
+    if (g) {
         damage += damage / 2;
         this->setDamageDealt(static_cast<int>(damage));
+        std::cout << "damage to goblin: " << damage << std::endl;
     }
+    std::cout << "damage to goblin: " << damage << std::endl;
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // unprecdented murder
 }
@@ -133,7 +139,8 @@ void Merchant::step() {
     if (isPissed) { 
         bool canAttack = false;
         std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
-        if (playerLocation != nullptr) {attack(*playerLocation);}
+        if (playerLocation != nullptr && canAttack) {attack(*playerLocation);}
+        else {Enemy::moveNewDir();}
     } else {
         Enemy::moveNewDir();
     }

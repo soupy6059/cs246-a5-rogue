@@ -6,6 +6,7 @@
 #include <string>
 
 #include "level.h"
+#include "races.h"
 #include "entity.h"
 #include "util.h"
 #include "subjectObserver.h"
@@ -22,7 +23,7 @@ class Game: public Subject, public Observer {
     void updateScan(Level&);
     void updateLoop();
     public:
-    Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0);
+    Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0, Race race = Race::SHADE);
     virtual ~Game() = default;
     void start();
     Level &refCurrentLevel();

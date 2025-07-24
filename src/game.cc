@@ -10,9 +10,9 @@
 
 using namespace std;
 
-Game::Game(string levelFileName, int seed):
+Game::Game(string levelFileName, int seed, Race race):
     levelFactory{levelFileName},
-    player{make_shared<Player>(getCharDefs(Race::SHADE))},
+    player{std::dynamic_pointer_cast<Player>(makeEntityWithRace(race))},
     levels{nullptr} {
     initRand(seed);
     for(size_t i{0}; i < levels.size(); ++i) {
