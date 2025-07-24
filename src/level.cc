@@ -166,28 +166,7 @@ unique_ptr<Level> LevelFactory::create() {
         rooms[room].erase(rooms[room].begin() + idx);
         if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
        
-        // CARTER 
-        auto gold = randomGoldType();
-        if(auto dragonGold = dynamic_pointer_cast<DragonHoard>(gold); dragonGold) {
-            cout << "spawning dragon gold" << endl;
-            auto dragonLocation = Vec2::stepVec(location, static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
-            auto dragonEntity = makeEntityWithRace(Race::DRAGON);
-            while(true) {
-                try { 
-                    cout << "trying to spawn dragon" << endl;
-                    level->spawnAt(dragonEntity, dragonLocation);
-                    cout << "spawned dragon! at " << dragonLocation << ", gold at " << location << endl;
-                    break;
-                }
-                catch(...) {}
-                dragonLocation = Vec2::stepVec(location, static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
-            }
-            auto dragonPtr = dynamic_pointer_cast<Dragon>(dragonEntity);
-            assert(dragonPtr); 
-            dragonGold->setDragon(dragonPtr);
-        }
-        // CARTER END
-        level->spawnAt(gold, location);
+        level->spawnAt(randomGoldType(), location);
     }
 
     // Generate entities
@@ -202,6 +181,36 @@ unique_ptr<Level> LevelFactory::create() {
         level->spawnAt(makeEntityWithRace(race), location);
     }
 
+    // if(auto dragonGold = dynamic_pointer_cast<DragonHoard>(gold); dragonGold) {
+    //     cout << "spawning dragon gold" << endl;
+    //     auto dragonlocation = vec2::stepvec(location, static_cast<direction>(getrand(0,static_cast<int>(direction::center))));
+    //     auto dragonEntity = makeEntityWithRace(Race::DRAGON);
+    //     while(true) {
+    //         try { 
+    //             cout << "trying to spawn dragon" << endl;
+    //             level->spawnAt(dragonEntity, dragonLocation);
+    //             cout << "spawned dragon! at " << dragonLocation << ", gold at " << location << endl;
+    //             break;
+    //         }
+    //         catch(...) {}
+    //         dragonLocation = Vec2::stepVec(location, static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
+    //     }
+    //     auto dragonPtr = dynamic_pointer_cast<Dragon>(dragonEntity);
+    //     assert(dragonPtr); 
+    //     dragonGold->setDragon(dragonPtr);
+    // }
+    
+    for (unsigned int r = 0; r < FLOOR_HEIGHT; ++r) {
+        for (unsigned int c = 0; c < FLOOR_WIDTH; ++c) {
+            if (auto hoardptr = dynamic_pointer_cast<DragonHoard>(theGrid[r][c]->getEntity()); hoardptr) {
+                auto dragonLocation = Vec2::stepVec(Vec2{(int)r,(int)c},
+                                                    static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
+                auto dragonptr = makeEntityWithRace(Race::DRAGON);
+                level->spawnAt(dragonptr, dragonLocation);
+                hoardptr->setDragon(dynamic_pointer_cast<Dragon>(dragonptr));
+            }
+        }
+    }
     return level;
 }
 
