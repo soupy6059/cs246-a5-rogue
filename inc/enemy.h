@@ -5,6 +5,9 @@
 #include "util.h"
 
 class Enemy : public Character {
+  protected:
+    void moveNewDir();
+    std::shared_ptr<Tile> playerTile(bool &found);
   public:
     virtual void attack(Tile& target) override;
     Enemy(CharacterDefaults d);
