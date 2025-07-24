@@ -147,7 +147,7 @@ void Dragon::step() {
     // they dont move
     bool canAttack = false;
     std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
-    if (playerLocation != nullptr) {attack(*playerLocation);}
+    if (playerLocation != nullptr && canAttack) {attack(*playerLocation);}
 }
 
 // HAFLING
