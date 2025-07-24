@@ -11,9 +11,11 @@ using namespace std;
 // HOW TO DO CUSTOM POTION EFFECT PLS HELP!!!
 // SHADE
 Shade::Shade(CharacterDefaults d): Player{d} {}
+std::string Shade::getRaceName() const { return "Shade";}
 
 // Drow
 Drow::Drow(CharacterDefaults d): Player{d} {}
+std::string Drow::getRaceName() const { return "Drow";}
 
 // VAMPIRE
 Vampire::Vampire(CharacterDefaults d): Player{d} {}
@@ -35,6 +37,7 @@ void Vampire::attack(Tile& target) {
     std::shared_ptr<Merchant> m = std::dynamic_pointer_cast<Merchant>(target.getEntity());
     if (m) m->togglePissed();
 }
+std::string Vampire::getRaceName() const { return "Vampire";}
 
 //Troll
 
@@ -44,6 +47,8 @@ void Troll::step() {
     Player::step();
     setHP(getHP() + 5);
 }
+
+std::string Troll::getRaceName() const { return "Troll";}
 // NEED TO DO SOMETHING ABOUT THE FUCKING +5 HP EVERY TURN
 // GOBLIN
 
@@ -66,6 +71,7 @@ void Goblin::attack(Tile& target) {
     if (m) m->togglePissed();
 }
 
+std::string Goblin::getRaceName() const { return "Goblin";}
 
 // HUMAN 
 Human::Human(CharacterDefaults d): Enemy{d} {}

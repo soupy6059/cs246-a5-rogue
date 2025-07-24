@@ -24,11 +24,13 @@ enum class Race {
 class Shade : public Player {
 public:
     Shade(CharacterDefaults d);
+    std::string getRaceName() const override;
 };
 
 class Drow : public Player {
 public:
     Drow(CharacterDefaults d);
+    std::string getRaceName() const override;
     // custom potions
 };
 
@@ -36,12 +38,14 @@ class Vampire : public Player {
   public:
     Vampire(CharacterDefaults d);
     void attack(Tile& t) override;
+    std::string getRaceName() const override;
 };
 
 class Troll : public Player {
 public:
     Troll(CharacterDefaults d);
     void step() override;
+    std::string getRaceName() const override;
     // gets +5 hp everyturn
 };
 
@@ -49,6 +53,7 @@ class Goblin : public Player {
 public:
     Goblin(CharacterDefaults d);
     void attack(Tile& t) override;
+    std::string getRaceName() const override;
 };
 
 // enemy classes inherit from enemy
