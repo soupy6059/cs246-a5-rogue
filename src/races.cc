@@ -123,7 +123,9 @@ void Merchant::step() {
     const int MERCHANT_BASE_HP = 30;
     if (hp < MERCHANT_BASE_HP) togglePissed();
     if (isPissed) { 
-        // attack
+        bool canAttack = false;
+        std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
+        if (playerLocation != nullptr) {attack(*playerLocation);}
     } else {
         Enemy::moveNewDir();
     }

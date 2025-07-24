@@ -1,14 +1,18 @@
 #include "enemy.h"
+#include <iostream>
 #include "rng.h"
+#include "player.h"
 #include <cmath>
 
 void Enemy::attack(Tile& target) {
     int hit_target = getRand(0, 2);
+    std::cout << "enemy attack rolled: " << hit_target << std::endl;
     if (!hit_target) return;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     if (!c) return; // not a character
     float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    std::cout << "damage calced as: " << damage << std::endl;
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
@@ -53,12 +57,31 @@ void Enemy::moveNewDir() {
     notifyObservers();
 }
 
-void Enemy::step() {
-    // if () {
+std::shared_ptr<Tile> Enemy::playerTile(bool &found) {
+    // auto observer = getObservers();
+    for (auto observer : getObservers()) {
+        std::shared_ptr<Tile> myTile = std::dynamic_pointer_cast<Tile>(observer);
+        for (auto tileAsObserver : myTile->getObservers()) {
+            std::shared_ptr<Tile> neighbourTile = std::dynamic_pointer_cast<Tile>(tileAsObserver);
+            if (!neighbourTile) continue;
+            std::shared_ptr<Player> thePlayer = std::dynamic_pointer_cast<Player>(neighbourTile->getEntity());
+            if (thePlayer) {
+                found = true;
+                return neighbourTile;
+            }
+        }
+    }
+    return nullptr;
+}
 
-    // } else {
-    //     moveNewDir();
-    // }
+void Enemy::step() {
+    bool canAttack = false;
+    std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
+    if (canAttack && playerLocation != nullptr) {
+        attack(*playerLocation);
+    } else {
+         moveNewDir();
+    }
 }
 
 std::string Enemy::icon() const { return "\033[31;1m?\033[0m";}
