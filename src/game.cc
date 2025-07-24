@@ -43,6 +43,14 @@ size_t Game::getCurrentLevelIndex() {
 void Game::updateLoop() {
     while(run) {
         updateScan(refCurrentLevel());
+        if (refCurrentLevel().isPlayerOnStairs()) {
+            cout << "Changing Level" << endl;
+            refCurrentLevel().getGrid()
+                .at(refCurrentLevel().getStairsLocation())
+                ->setEntity(nullptr);
+            ++currentLevelIndex;
+            refCurrentLevel().setActiveLevel(player);
+        }
     }
 }
 
@@ -69,10 +77,5 @@ void Game::start() {
     //     mainLevel.getGrid().at(location)
     // );
 
-    static const Vec2 coinLocal {5,5};
-    mainLevel.getGrid().at(coinLocal)->setEntity(make_shared<Gold>(2));
-    mainLevel.getGrid().at(coinLocal)->getEntity()->attach(
-        mainLevel.getGrid().at(coinLocal)
-    );
     updateLoop();
 }

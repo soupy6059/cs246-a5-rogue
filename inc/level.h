@@ -37,6 +37,8 @@ class Level {
     const Vec2 &getStairsLocation() const;
     void setStairsLocation(Vec2 loc);
 
+    bool isPlayerOnStairs() const;
+
     void spawnAt(const std::shared_ptr<Entity> entity, Vec2 loc);
 
     void setActiveLevel(const std::shared_ptr<Player> player);
