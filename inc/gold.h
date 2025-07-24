@@ -2,6 +2,7 @@
 #define __gold__
 
 #include "item.h"
+#include <memory>
 
 class Gold: public Item {
     int value;
@@ -14,10 +15,14 @@ class Gold: public Item {
     virtual void affect(Entity&) override;
 };
 
+class Dragon;
 class DragonHoard: public Gold {
+    std::shared_ptr<Dragon> myDragon = nullptr;
     public:
     DragonHoard();
     virtual ~DragonHoard() = default;
+    void setDragon(std::shared_ptr<Dragon>);
+    virtual void mainUpdate() override;
     bool hasDragon() const;
 };
 
