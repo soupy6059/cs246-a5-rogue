@@ -25,6 +25,7 @@ class Shade : public Player {
 public:
     Shade(CharacterDefaults d);
     std::string getRaceName() const override;
+    int getScore() const override;
 };
 
 class Drow : public Player {

@@ -11,6 +11,7 @@ using namespace std;
 // SHADE
 Shade::Shade(CharacterDefaults d): Player{d} {}
 std::string Shade::getRaceName() const { return "Shade";}
+int Shade::getScore() const { return 1.5 * getGold(); }
 
 // Drow
 Drow::Drow(CharacterDefaults d): Player{d} {}

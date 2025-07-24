@@ -127,6 +127,8 @@ string Player::icon() const {
     return "\033[94;1m@\033[0m";
 }
 
+int Player::getScore() const {return getGold();}
+
 void Player::setHP(int n) {
     if (n > defaults.hp){
         hp = defaults.hp;

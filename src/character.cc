@@ -3,12 +3,12 @@
 #include "potion.h"
 #include <cmath>
 
-int Character::getATK() { return atk + deltaAtk; }
-int Character::getDEF() { return def + deltaDef; }
-int Character::getHP() { return hp; }
-int Character::getACC() { return acc; }
-int Character::getGold() { return gold; }
-int Character::getDamageDealt() { return damageDealt; }
+int Character::getATK() const { return atk + deltaAtk; }
+int Character::getDEF() const { return def + deltaDef; }
+int Character::getHP() const { return hp; }
+int Character::getACC() const { return acc; }
+int Character::getGold() const { return gold; }
+int Character::getDamageDealt() const { return damageDealt; }
 
 void Character::setHP(int new_hp) {hp = new_hp;}
 void Character::setATK(int new_atk) {atk = new_atk;}
