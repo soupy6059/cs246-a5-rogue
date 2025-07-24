@@ -8,7 +8,7 @@ class Enemy : public Character {
   public:
     virtual void attack(Tile& target) override;
     Enemy(CharacterDefaults d);
-    void step() override;
+    virtual void step() override;
     virtual char icon() const override;
 };
 

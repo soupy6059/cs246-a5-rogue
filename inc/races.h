@@ -41,6 +41,7 @@ class Vampire : public Player {
 class Troll : public Player {
 public:
     Troll(CharacterDefaults d);
+    void step() override;
     // gets +5 hp everyturn
 };
 
@@ -83,11 +84,12 @@ public:
 
 class Merchant : public Enemy {
     static bool isPissed;
+    void togglePissed();
     public:
     Merchant(CharacterDefaults d);
-    void togglePissed();
     void attack(Tile& t) override;
     char icon() const override;
+    void step() override;
 };
 
 class Dragon : public Enemy {

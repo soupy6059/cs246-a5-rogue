@@ -36,6 +36,10 @@ void Vampire::attack(Tile& target) {
 
 Troll::Troll(CharacterDefaults d): Player{d} {}
 
+void Troll::step() {
+    Player::step();
+    setHP(getHP() + 5);
+}
 // NEED TO DO SOMETHING ABOUT THE FUCKING +5 HP EVERY TURN
 // GOBLIN
 
@@ -111,9 +115,19 @@ void Merchant::attack(Tile& target) {
 }
 
 void Merchant::togglePissed() {
+    if (isPissed) return;
     isPissed = !isPissed;
 }
 
+void Merchant::step() {
+    const int MERCHANT_BASE_HP = 30;
+    if (hp < MERCHANT_BASE_HP) togglePissed();
+    if (isPissed) {
+        // attack
+    } else {
+        Enemy::step();
+    }
+}
 // Dragon
 Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
 char Dragon::icon() const { return 'D';}
@@ -177,7 +191,7 @@ CharacterDefaults getCharDefs(Race race) {
         case Race::DRAGON:
         return {150, 20, 20, 50, 0};
         case Race::MERCHANT:
-        return {30, 70, 5, 50, 0};
+        return {30, 70, 5, 50, 4};
         case Race::HALFLING:
         return {100, 15, 20, 50, 0};
         default:

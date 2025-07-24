@@ -7,9 +7,9 @@
 #include "verb.h"
 
 class Player: public Character {
-    virtual void step() override;
     Verb verb;
     protected:
+    virtual void step() override;
     struct defaultStats {
         int atk, def, hp, acc;
     };
