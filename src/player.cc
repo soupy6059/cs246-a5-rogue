@@ -113,6 +113,10 @@ void Player::step() {
         });
     }
 
+    if (word == "f") {
+        Enemy::toggleCanMove();
+    }
+
     assert(thingsTried == 0 || thingsTried == 1);
     if(thingsTried == 0) return;
 

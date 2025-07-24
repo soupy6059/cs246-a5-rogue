@@ -74,6 +74,7 @@ Level &Game::refCurrentLevel() {
 //
 // mostly temporary for now
 bool Game::start() {
+    Enemy::setCanMove(true);
     Level &mainLevel {*levels[0]};
     mainLevel.setActiveLevel(player);
     // static const Vec2 location {3,3};
