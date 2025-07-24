@@ -216,6 +216,7 @@ void Tile::queryMovement(Tile &whoFrom) {
         case Direction::SOUTH:
         case Direction::SOUTHEAST:
         case Direction::EAST:
+            if (!whoFrom.getEntity()) return;
             whoFrom.getEntity()->setDoubleRisk(true);
         default:
             break;

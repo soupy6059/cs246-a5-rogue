@@ -66,6 +66,10 @@ void Level::setStairsLocation(Vec2 loc) {
     stairsLocation = loc;
 }
 
+bool Level::isPlayerOnStairs() const {
+    return static_cast<bool>(dynamic_pointer_cast<Player>(ownedGrid->at(stairsLocation)->getEntity()));
+}
+
 void Level::spawnAt(const shared_ptr<Entity> entity, Vec2 loc) {
     ownedGrid->at(loc)->setEntity(entity);
     ownedGrid->at(loc)->getEntity()->attach(
@@ -103,8 +107,10 @@ unique_ptr<Level> LevelFactory::create() {
             // Todo: spawn entities from characters in file
             theGrid[r][c]->setType(fromChar(line[c]));
             if (line[c] == '@') level->setSpawnLocation(Vec2{(int)r,(int)c});
-            else if (line[c] == '\\') level->setStairsLocation(Vec2{(int)r,(int)c});
-            else if (line[c] >= '0' && line[c] <= '9') {
+            else if (line[c] == '\\') {
+                level->setStairsLocation(Vec2{(int)r,(int)c});
+                level->getGrid().at(level->getStairsLocation())->setType(Tile::TileType::STAIR);
+            } else if (line[c] >= '0' && line[c] <= '9') {
                 level->spawnAt(charToLootPtr(line[c]), Vec2{(int)r,(int)c});
                 if (line[c] <= '5') ++potionCount;
                 else ++goldCount;
@@ -140,8 +146,8 @@ unique_ptr<Level> LevelFactory::create() {
         rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
         if (rooms[stairsRoom].empty()) rooms.erase(rooms.begin() + stairsRoom);
 
+        level->getGrid().at(level->getStairsLocation())->setType(Tile::TileType::STAIR);
     }
-    level->getGrid().at(level->getStairsLocation())->setType(Tile::TileType::STAIR);
 
     size_t room;
     Vec2 location;

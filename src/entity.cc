@@ -11,7 +11,6 @@ Entity::EntityImpl &Entity::getStats() const {
     return *data;
 }
 
-
 std::string Entity::getName() const {
     return string{icon()};
 }
