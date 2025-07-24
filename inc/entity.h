@@ -38,6 +38,7 @@ public:
     virtual ~Entity() = default;
     void setStatus(const Status &);
     const Status &getStatus();
+    void setStats(EntityImpl &data);
     EntityImpl &getStats() const;
     void update(); 
     virtual std::string icon() const = 0;

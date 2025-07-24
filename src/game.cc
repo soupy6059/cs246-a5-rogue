@@ -44,7 +44,6 @@ void Game::updateLoop() {
     while(run) {
         updateScan(refCurrentLevel());
         if (refCurrentLevel().isPlayerOnStairs()) {
-            cout << "Changing Level" << endl;
             refCurrentLevel().getGrid()
                 .at(refCurrentLevel().getStairsLocation())
                 ->setEntity(nullptr);
