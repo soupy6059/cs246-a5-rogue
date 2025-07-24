@@ -191,8 +191,15 @@ void Tile::queryMovement(Tile &whoFrom) {
     shared_ptr<Player> player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
     shared_ptr<Gold> gold = dynamic_pointer_cast<Gold>(this->getEntity());
     if(player && gold) {
-        player->setGold(player->getGold() + gold->getValue());
-        this->setEntity(nullptr);
+        if(auto dragonHoard = dynamic_pointer_cast<DragonHoard>(gold); dragonHoard) {
+            if(!dragonHoard->hasDragon()) {
+                player->setGold(player->getGold() + gold->getValue());
+                this->setEntity(nullptr);
+            }
+        } else {
+            player->setGold(player->getGold() + gold->getValue());
+            this->setEntity(nullptr);
+        }
     }
 
     if(!player && (getType() == Tile::TileType::STAIR || getType() == Tile::TileType::DOOR)) return;

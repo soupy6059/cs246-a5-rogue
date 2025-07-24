@@ -21,6 +21,8 @@ enum class Direction {
 
 std::string dirToStr(Direction dir);
 
+Direction clockwise(Direction dir);
+
 struct Vec2 {
     int x,y;
     Vec2 operator+(const Vec2 &other) const {

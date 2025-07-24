@@ -4,6 +4,7 @@
 #include "rng.h"
 #include "potion.h"
 #include "races.h"
+#include "util.h"
 
 
 #include <iterator>
@@ -12,6 +13,7 @@
 #include <exception>
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -170,7 +172,7 @@ unique_ptr<Level> LevelFactory::create() {
         location = rooms[room][idx];
         rooms[room].erase(rooms[room].begin() + idx);
         if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
-
+       
         level->spawnAt(randomGoldType(), location);
     }
 
@@ -186,6 +188,23 @@ unique_ptr<Level> LevelFactory::create() {
         level->spawnAt(makeEntityWithRace(race), location);
     }
 
+    for (unsigned int r = 0; r < FLOOR_HEIGHT; ++r) {
+        for (unsigned int c = 0; c < FLOOR_WIDTH; ++c) {
+            if (auto hoardptr = dynamic_pointer_cast<DragonHoard>(theGrid[r][c]->getEntity()); hoardptr) {
+                auto dragonDirection = static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER)));
+                auto dragonptr = makeEntityWithRace(Race::DRAGON);
+
+                for (Direction dir = clockwise(dragonDirection); dir != dragonDirection; dir = clockwise(dir)) {
+                    Vec2 loc = Vec2::stepVec(Vec2{(int)r,(int)c}, dir);
+                    if (!theGrid[loc.x][loc.y]->isFloor() ||
+                        theGrid[loc.x][loc.y]->getEntity()) continue;
+                    level->spawnAt(dragonptr, loc);
+                    hoardptr->setDragon(dynamic_pointer_cast<Dragon>(dragonptr));
+                    break;
+                }
+            }
+        }
+    }
     return level;
 }
 

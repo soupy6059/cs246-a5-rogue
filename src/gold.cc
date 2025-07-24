@@ -6,6 +6,7 @@
 
 #include "player.h"
 #include "util.h"
+#include "races.h"
 
 using namespace std;
 
@@ -36,5 +37,13 @@ void Gold::affect(Entity& e) {
 DragonHoard::DragonHoard():
     Gold{6} {}
 
-bool DragonHoard::hasDragon() const { return false; } // TODO
+bool DragonHoard::hasDragon() const { return static_cast<bool>(myDragon); } // TODO
 
+void DragonHoard::setDragon(std::shared_ptr<Dragon> newMyDragon) {
+    myDragon = newMyDragon;
+}
+
+void DragonHoard::mainUpdate() {
+    if(myDragon && myDragon->getHP() <= 0) myDragon = nullptr;
+    step();
+}
