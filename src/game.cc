@@ -50,6 +50,8 @@ void Game::updateLoop() {
             ++currentLevelIndex;
             if (currentLevelIndex == NUMBER_OF_LEVELS) run = false;
             else refCurrentLevel().setActiveLevel(player);
+        } else if (player->getStatus().action == Entity::Action::QUIT) {
+            run = false;
         }
     }
 }

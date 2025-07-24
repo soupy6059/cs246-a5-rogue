@@ -98,6 +98,13 @@ void Player::step() {
         }
         catch(...) {}
     }
+
+    if (word == "q") {
+        setStatus(Entity::Status{
+            .action = Entity::Action::QUIT,
+            .data = monostate{},
+        });
+    }
     
     assert(thingsTried == 0 || thingsTried == 1);
     if(thingsTried == 0) return;

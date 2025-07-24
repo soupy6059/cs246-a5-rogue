@@ -138,6 +138,7 @@ void Tile::notify(Entity &whoFrom) {
         notifyObservers();
         break;
     case Entity::Action::PRINT_LEVEL:
+    case Entity::Action::QUIT:
         break;
     default:
         throw out_of_range{"bad enum"};
