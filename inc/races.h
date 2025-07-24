@@ -84,12 +84,12 @@ public:
 
 class Merchant : public Enemy {
     static bool isPissed;
-    void togglePissed();
     public:
     Merchant(CharacterDefaults d);
     void attack(Tile& t) override;
     std::string icon() const override;
     void step() override;
+    void togglePissed();
 };
 
 class Dragon : public Enemy {
