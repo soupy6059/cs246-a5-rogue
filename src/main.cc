@@ -14,7 +14,7 @@ int getUserInput(Race &startingRace) {
         string input;
         cout << "Select your race with s, d, v, g, t\n or enter q to quit" << endl;
         getline(cin, input);
-        if (!cin) { break; }
+        if (!cin) { return -1; }
         if (input == "q") return -1;
         if (input == "s") {
             startingRace = Race::SHADE;
@@ -45,22 +45,24 @@ int main(int argc, char **argv) {
     vector<string> args;
     for(int i{0}; i < argc; ++i) args.push_back(string{argv[i]});
 
+    bool playAgain = true;
     Log::initLogs();
-    shared_ptr<TextDisplay> td = make_shared<TextDisplay>();
-    Race userChoice = Race::SHADE;
-    if(getUserInput(userChoice) == -1) return 0;
-    try{
-        shared_ptr<Game> game = make_shared<Game>("assets/level-empty.txt", 0, userChoice);
-        game->attach(td);
-        game->getPlayer()->attach(game);
-        game->start();
-        game->cleanUp();
-    }
-    catch(...) {
-        shared_ptr<Game> game = make_shared<Game>();
-        game->getPlayer()->attach(game);
-        game->attach(td);
-        game->start();
-        game->cleanUp();
+    while (playAgain) {
+        shared_ptr<TextDisplay> td = make_shared<TextDisplay>();
+        Race userChoice = Race::SHADE;
+        if(getUserInput(userChoice) == -1) return 0;
+
+        try{
+            shared_ptr<Game> game = make_shared<Game>("assets/level-empty.txt", 0, userChoice);
+            game->attach(td);
+            game->getPlayer()->attach(game);
+            playAgain = game->start();
+        }
+        catch(...) {
+            shared_ptr<Game> game = make_shared<Game>();
+            game->getPlayer()->attach(game);
+            game->attach(td);
+            playAgain = game->start();
+        }
     }
 }

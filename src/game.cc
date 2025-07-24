@@ -40,7 +40,7 @@ size_t Game::getCurrentLevelIndex() {
     return currentLevelIndex;
 }
 
-void Game::updateLoop() {
+bool Game::updateLoop() {
     while(run) {
         updateScan(refCurrentLevel());
         if (refCurrentLevel().isPlayerOnStairs()) {
@@ -48,12 +48,15 @@ void Game::updateLoop() {
                 .at(refCurrentLevel().getStairsLocation())
                 ->setEntity(nullptr);
             ++currentLevelIndex;
-            if (currentLevelIndex == NUMBER_OF_LEVELS) run = false;
+            if (currentLevelIndex == NUMBER_OF_LEVELS) return false;
             else refCurrentLevel().setActiveLevel(player);
         } else if (player->getStatus().action == Entity::Action::QUIT) {
-            run = false;
+            return false;
+        } else if (player->getStatus().action == Entity::Action::RESTART) {
+            return true;
         }
     }
+    return false;
 }
 
 void Game::notify(Subject &whoFrom) {
@@ -70,7 +73,7 @@ Level &Game::refCurrentLevel() {
 // basically our main() function
 //
 // mostly temporary for now
-void Game::start() {
+bool Game::start() {
     Level &mainLevel {*levels[0]};
     mainLevel.setActiveLevel(player);
     // static const Vec2 location {3,3};
@@ -79,7 +82,9 @@ void Game::start() {
     //     mainLevel.getGrid().at(location)
     // );
 
-    updateLoop();
+    bool playAgain = updateLoop();
+    cleanUp();
+    return playAgain;
 }
 
 void Game::cleanUp() {
