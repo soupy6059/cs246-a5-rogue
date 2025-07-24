@@ -29,6 +29,8 @@ class Game: public Subject, public Observer {
     size_t getCurrentLevelIndex();
     std::shared_ptr<Player> getPlayer();
     virtual void notify(Subject&) override;
+
+    void cleanUp();
 };
 
 #endif
