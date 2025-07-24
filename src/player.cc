@@ -14,6 +14,7 @@
 using namespace std;
 
 Player::Player(CharacterDefaults d): Character{d} {
+    appendVerb({Verb::Action::SPAWN,monostate{}});
     defaults.atk = d.atk;
     defaults.def = d.def;
     defaults.hp = d.hp;
@@ -27,6 +28,17 @@ void Player::appendVerb(Verb::Status newStatus) {
 
 Verb &Player::refVerb() {
     return verb;
+}
+
+void Player::printLevel() {
+    setStatus({Entity::Action::PRINT_LEVEL,monostate{}});
+    notifyObservers();
+}
+
+
+void Player::mainUpdate() {
+    printLevel();
+    step();
 }
 
 static const map<string,Direction> dirNameToDir {
@@ -99,9 +111,16 @@ string Player::icon() const {
 
 void Player::setHP(int n) {if (n > defaults.hp) hp = defaults.hp;}
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// these seem bugged
+// - carter lol
 void Player::setDEF(int n) {if (n <= 0) def = 1;}
 
 void Player::setATK(int n) {if (n <= 0) atk = 1;}
+
+string Player::getName() const {
+    return "PC";
+}
 
 void Player::attack(Tile& target) {
     std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(target.getEntity());

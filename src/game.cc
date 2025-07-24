@@ -42,9 +42,15 @@ size_t Game::getCurrentLevelIndex() {
 
 void Game::updateLoop() {
     while(run) {
-        notifyObservers();
         updateScan(refCurrentLevel());
     }
+}
+
+void Game::notify(Subject &whoFrom) {
+    try { dynamic_cast<Player&>(whoFrom); }
+    catch(...) { return; }
+    if(player->getStatus().action != Entity::Action::PRINT_LEVEL) return;
+    notifyObservers();
 }
 
 Level &Game::refCurrentLevel() {

@@ -19,6 +19,7 @@ class HealthPotion: public Potion {
     HealthPotion();
     virtual ~HealthPotion() = default;
     virtual void affect(Entity&) override;
+    virtual std::string getName() const override;
 };
 
 class AttackPotion: public Potion {
@@ -26,6 +27,7 @@ class AttackPotion: public Potion {
     AttackPotion();
     virtual ~AttackPotion() = default;
     virtual void affect(Entity&) override;
+    virtual std::string getName() const override;
 };
 
 class DefensePotion: public Potion {
@@ -33,6 +35,7 @@ class DefensePotion: public Potion {
     DefensePotion();
     virtual ~DefensePotion() = default;
     virtual void affect(Entity&) override;
+    virtual std::string getName() const override;
 };
 
 class PoisonPotion: public Potion {
@@ -40,6 +43,7 @@ class PoisonPotion: public Potion {
     PoisonPotion();
     virtual ~PoisonPotion() = default;
     virtual void affect(Entity&) override;
+    virtual std::string getName() const override;
 };
 
 class WeakPotion: public Potion {
@@ -47,6 +51,7 @@ class WeakPotion: public Potion {
     WeakPotion();
     virtual ~WeakPotion() = default;
     virtual void affect(Entity&) override;
+    virtual std::string getName() const override;
 };
 
 class BrittlePotion: public Potion {
@@ -54,6 +59,7 @@ class BrittlePotion: public Potion {
     BrittlePotion();
     virtual ~BrittlePotion() = default;
     virtual void affect(Entity&) override;
+    virtual std::string getName() const override;
 };
 
 #endif

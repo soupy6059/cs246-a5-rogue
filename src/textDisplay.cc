@@ -14,7 +14,7 @@ void TextDisplay::notify(Subject &whoFrom) {
     string race = "DEFAULT";
     string _ = "Race: "s + race + " \033[33;1mGold\033[0m: "s + to_string(game.getPlayer()->getGold());
     cout << setw(FLOOR_WIDTH - 10) << left << _
-         << "Floor "s << game.getCurrentLevelIndex()
+         << "Floor "s << game.getCurrentLevelIndex() + 1
          << endl;
     cout << "\033[32;1mHP\033[0m: "s << game.getPlayer()->getHP() << endl;
     cout << "\033[31;1mATK\033[0m: "s << game.getPlayer()->getATK() << endl;
@@ -24,6 +24,7 @@ void TextDisplay::notify(Subject &whoFrom) {
         cout << game.getPlayer()->refVerb().action.at(i);
         if(i < game.getPlayer()->refVerb().action.size() - 1) cout << " ";
     }
+    cout << '.';
     cout << endl;
     game.getPlayer()->refVerb().action.clear();
 }

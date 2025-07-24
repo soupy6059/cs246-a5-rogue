@@ -136,6 +136,8 @@ void Tile::notify(Entity &whoFrom) {
         });
         notifyObservers();
         break;
+    case Entity::Action::PRINT_LEVEL:
+        break;
     default:
         throw out_of_range{"bad enum"};
     }
@@ -235,8 +237,14 @@ void Tile::queryAttack(Tile &whoFrom) {
      if(!dynamic_pointer_cast<Character>(getEntity())) {
          return;
      }
-     // whoFrom // attack
-     cout << "attack is being called." << endl;
+
+     // verbAppend <=> action pretty printing
+     auto player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
+     auto target = dynamic_pointer_cast<Character>(this->getEntity());
+     if(player && target) {
+         player->appendVerb({Verb::Action::ATTACK,pair<shared_ptr<Entity>,shared_ptr<Entity>>(player,target)});
+     }
+
      dynamic_pointer_cast<Character>(whoFrom.getEntity())->attack(*this);
 }
 
