@@ -15,6 +15,7 @@ void Character::setATK(int new_atk) {atk = new_atk;}
 void Character::setDEF(int new_def) {def = new_def;}
 void Character::setACC(int new_acc) {acc = new_acc;}
 void Character::setGold(int new_gold) {gold = new_gold;}
+
 void Character::changeDeltaATK(int deltaDeltaAtk) {
     deltaAtk += deltaDeltaAtk;
 }

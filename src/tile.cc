@@ -75,8 +75,8 @@ void Tile::setType(const TileType &toType) {
 bool Tile::isCollidable() const {
     switch(getType()) {
     case TileType::FLOOR:
-    case TileType::STAIR:
     case TileType::HALLWAY:
+    case TileType::STAIR:
     case TileType::DOOR:
         return getEntity()? true : false;
     case TileType::HORIZONTAL_WALL:
@@ -194,6 +194,8 @@ void Tile::queryMovement(Tile &whoFrom) {
         player->setGold(player->getGold() + gold->getValue());
         this->setEntity(nullptr);
     }
+
+    if(!player && (getType() == Tile::TileType::STAIR || getType() == Tile::TileType::DOOR)) return;
 
     // am i collidable?
     if(isCollidable()) {
