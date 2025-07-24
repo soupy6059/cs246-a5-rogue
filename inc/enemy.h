@@ -14,7 +14,7 @@ class Enemy : public Character {
     Enemy(CharacterDefaults d);
     virtual std::string icon() const override;
     virtual void step() override;
-    void toggleCanMove();
+    static void toggleCanMove();
     bool canItMove();
 };
 
