@@ -47,6 +47,8 @@ void Troll::step() {
 Goblin::Goblin(CharacterDefaults d): Player{d} {}
 
 void Goblin::attack(Tile& target) {
+    int hit = getRand(0, 2);
+    if (!hit) return;
     const int GOBLIN_FILTHY_CAPITALIST_BONUS = 5;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
@@ -78,9 +80,11 @@ void Elf::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Drow> d = std::dynamic_pointer_cast<Drow>(c);
+    if (!c) return; // not a character
     int atk_count = (!d) ? 2 : 1;
     for (int i = 0; i < atk_count; ++i) {
-        if (!c) return; // not a character
+        int hit = getRand(0, 2);
+        if (!hit) continue;
         float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
         c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
         if (c->getHP() <= 0) {target.setEntity(nullptr);}
