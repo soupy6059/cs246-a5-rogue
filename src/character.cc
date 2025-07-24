@@ -2,19 +2,20 @@
 #include <memory>
 #include "potion.h"
 #include <cmath>
-#include <iostream>
 
 int Character::getATK() { return atk + deltaAtk; }
 int Character::getDEF() { return def + deltaDef; }
 int Character::getHP() { return hp; }
 int Character::getACC() { return acc; }
 int Character::getGold() { return gold; }
+int Character::getDamageDealt() { return damageDealt; }
 
 void Character::setHP(int new_hp) {hp = new_hp;}
 void Character::setATK(int new_atk) {atk = new_atk;}
 void Character::setDEF(int new_def) {def = new_def;}
 void Character::setACC(int new_acc) {acc = new_acc;}
 void Character::setGold(int new_gold) {gold = new_gold;}
+void Character::setDamageDealt(int damage) {damageDealt = damage;}
 
 void Character::changeDeltaATK(int deltaDeltaAtk) {
     deltaAtk += deltaDeltaAtk;
@@ -31,10 +32,17 @@ void Character::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     if (!c) return; // not a character
-    std::cout << "Good cast" << std::endl;
-    int damage = static_cast<int>(ceil((100.0f/(100.0f + static_cast<float>(c->getDEF()))) * static_cast<float>(atk)));
-    std::cout << "damage calced: " << damage << std::endl;
+    int damage = getDamage(target);
     c->setHP(c->getHP() - damage); // do damage
+    this->setDamageDealt(static_cast<int>(damage));
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
+}
+
+int Character::getDamage(Tile& target) {
+    std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
+    std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
+    if (!c) return 0; // not a character, don't do no damage
+    int damage = static_cast<int>(ceil((100.0f/(100.0f + static_cast<float>(c->getDEF()))) * static_cast<float>(atk)));
+    return damage;
 }
 

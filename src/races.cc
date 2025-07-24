@@ -23,7 +23,7 @@ void Vampire::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Dwarf> d = std::dynamic_pointer_cast<Dwarf>(c);
     if (!c) return; // not a character
-    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    float damage = getDamage(target);
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (d != nullptr) {
         c->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
@@ -54,8 +54,9 @@ void Goblin::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(c);
     if (!c) return; // not a character
-    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    float damage = getDamage(target);    
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
+    this->setDamageDealt(static_cast<int>(damage));
     if (c->getHP() <= 0) {
         target.setEntity(nullptr);
         setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
@@ -82,11 +83,13 @@ void Elf::attack(Tile& target) {
     std::shared_ptr<Drow> d = std::dynamic_pointer_cast<Drow>(c);
     if (!c) return; // not a character
     int atk_count = (!d) ? 2 : 1;
+    this->setDamageDealt(0);
     for (int i = 0; i < atk_count; ++i) {
         int hit = getRand(0, 2);
         if (!hit) continue;
-        float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
-        c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
+            float damage = getDamage(target);     
+            this->setDamageDealt(this->getDamageDealt() + static_cast<int>(damage));   
+            c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
         if (c->getHP() <= 0) {target.setEntity(nullptr);}
     }
 }
@@ -102,9 +105,9 @@ void Orc::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Goblin> g = std::dynamic_pointer_cast<Goblin>(c);
     if (!c) return; // not a character
-    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
-    if (g) {
+        float damage = getDamage(target);    if (g) {
         damage += damage / 2;
+        this->setDamageDealt(static_cast<int>(damage));
     }
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // unprecdented murder
@@ -127,8 +130,6 @@ void Merchant::togglePissed() {
 }
 
 void Merchant::step() {
-    const int MERCHANT_BASE_HP = 30;
-    if (hp < MERCHANT_BASE_HP) togglePissed();
     if (isPissed) { 
         bool canAttack = false;
         std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
@@ -140,6 +141,12 @@ void Merchant::step() {
 // Dragon
 Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
 string Dragon::icon() const { return "\033[31;1mD\033[0m";}
+void Dragon::step() {
+    // they dont move
+    bool canAttack = false;
+    std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
+    if (playerLocation != nullptr && canAttack) {attack(*playerLocation);}
+}
 
 // HAFLING
 Halfling::Halfling(CharacterDefaults d): Enemy{d} {}

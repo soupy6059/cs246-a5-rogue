@@ -9,7 +9,9 @@ class Character : public Entity {
   protected:
     int atk, def, hp, acc, gold;
     int deltaAtk = 0, deltaDef = 0;
+    int damageDealt = 0; // tracks the damage taken from being attacked
   public:
+    // applies the damage done via combat to the target
     virtual void attack(Tile& target);
 
     // getters
@@ -18,6 +20,9 @@ class Character : public Entity {
     int getHP();
     int getACC();
     int getGold();
+    int getDamageDealt();
+    // returns the damage that "would" be done upon attacking
+    virtual int getDamage(Tile& target);
 
     // setters
     virtual void setATK(int new_atk);
@@ -25,6 +30,7 @@ class Character : public Entity {
     virtual void setHP(int new_hp); // to maintain maximums
     void setACC(int new_acc);
     void setGold(int new_gold);
+    void setDamageDealt(int damage);
 
     void changeDeltaATK(int deltaDeltaAtk);
     void changeDeltaDEF(int deltaDeltaDEF);
