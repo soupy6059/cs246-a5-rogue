@@ -84,7 +84,7 @@ void HealthPotion::affect(Entity &e) {
 void AttackPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
-        character.setATK(character.getATK() + DELTA_ATK);
+        character.changeDeltaATK(DELTA_ATK);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -97,7 +97,7 @@ void AttackPotion::affect(Entity &e) {
 void DefensePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
-        character.setDEF(character.getDEF() + DELTA_DEF);
+        character.changeDeltaDEF(DELTA_DEF);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -123,7 +123,8 @@ void PoisonPotion::affect(Entity &e) {
 void WeakPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
-        character.setATK(max(0, character.getATK() - DELTA_ATK));
+        int delta = character.getATK() - max(0, character.getATK() - DELTA_ATK);
+        character.changeDeltaATK(-delta);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -137,7 +138,8 @@ void WeakPotion::affect(Entity &e) {
 void BrittlePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
-        character.setDEF(max(0, character.getDEF() - DELTA_DEF));
+        int delta = character.getDEF() - max(0, character.getDEF() - DELTA_DEF);
+        character.changeDeltaDEF(-delta);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},

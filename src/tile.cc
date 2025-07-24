@@ -10,6 +10,7 @@
 #include "verb.h"
 #include "gold.h"
 #include "player.h"
+#include "potion.h"
 
 using namespace std;
 
@@ -74,8 +75,8 @@ void Tile::setType(const TileType &toType) {
 bool Tile::isCollidable() const {
     switch(getType()) {
     case TileType::FLOOR:
-    case TileType::STAIR:
     case TileType::HALLWAY:
+    case TileType::STAIR:
     case TileType::DOOR:
         return getEntity()? true : false;
     case TileType::HORIZONTAL_WALL:
@@ -194,6 +195,8 @@ void Tile::queryMovement(Tile &whoFrom) {
         this->setEntity(nullptr);
     }
 
+    if(!player && (getType() == Tile::TileType::STAIR || getType() == Tile::TileType::DOOR)) return;
+
     // am i collidable?
     if(isCollidable()) {
         // if i am, do nothing.
@@ -211,7 +214,7 @@ void Tile::queryMovement(Tile &whoFrom) {
             break;
     }
 
-    // printing Actions
+    // print MOVEMENT
     if(player) {
         player->appendVerb(Verb::Status{
             .action = Verb::Action::MOVE,
@@ -221,13 +224,26 @@ void Tile::queryMovement(Tile &whoFrom) {
             ), 
         });
     }
-    
+
     // so they're good to move. im stealing their entity!
     whoFrom.setStatus({
         .action = Tile::Action::SWAP,
         .data = pair<Vec2,Vec2>(whoFrom.getPosition(),this->getPosition()),
     });
     whoFrom.notifyObservers();
+    setStatus({.action = Tile::Action::ADJACENT_POTION, .data = monostate{}});
+    notifyObservers();
+}
+
+void Tile::queryPotion(Tile &whoFrom) {
+    if(!dynamic_pointer_cast<Player>(whoFrom.getEntity())) return;
+    if(!dynamic_pointer_cast<Potion>(getEntity())) return;
+    auto player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
+    auto potionPtr {dynamic_pointer_cast<Potion>(getEntity())};
+    player->appendVerb({
+        .action = Verb::Action::SEES_POTION,
+        .data = pair<shared_ptr<Entity>,shared_ptr<Entity>>(player,potionPtr),
+    });
 }
 
 void Tile::queryAttack(Tile &whoFrom) {
@@ -257,6 +273,9 @@ void Tile::notify(Tile &whoFrom) {
         break;
     case Tile::Action::INTERACT:
         queryInteraction(whoFrom);
+        break;
+    case Tile::Action::ADJACENT_POTION:
+        queryPotion(whoFrom);
         break;
     case Tile::Action::ATTACK:
         queryAttack(whoFrom);
