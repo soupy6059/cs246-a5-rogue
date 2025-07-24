@@ -34,6 +34,7 @@ class Character : public Entity {
 
     void changeDeltaATK(int deltaDeltaAtk);
     void changeDeltaDEF(int deltaDeltaDEF);
+    void resetDeltaStats();
     
     Character(CharacterDefaults d);
     virtual ~Character() = default;

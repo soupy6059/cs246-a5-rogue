@@ -20,8 +20,14 @@ void Character::setDamageDealt(int damage) {damageDealt = damage;}
 void Character::changeDeltaATK(int deltaDeltaAtk) {
     deltaAtk += deltaDeltaAtk;
 }
+
 void Character::changeDeltaDEF(int deltaDeltaDEF) {
     deltaDef += deltaDeltaDEF;
+}
+
+void Character::resetDeltaStats() {
+    deltaAtk = 0;
+    deltaDef = 0;
 }
 
 Character::Character(CharacterDefaults d):
