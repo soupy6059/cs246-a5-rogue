@@ -11,6 +11,7 @@
 #include "gold.h"
 #include "player.h"
 #include "potion.h"
+#include "races.h"
 
 using namespace std;
 
@@ -44,7 +45,9 @@ void Tile::setEntity(shared_ptr<Entity> toEntity) {
     }
 
     if(!toEntity) {
-        data->entity = data->goldStorage;
+        if(dynamic_pointer_cast<Merchant>(getEntity())) {
+            data->entity = make_shared<Gold>(4);
+        } else data->entity = data->goldStorage;
         return;
     }
 
@@ -54,6 +57,11 @@ void Tile::setEntity(shared_ptr<Entity> toEntity) {
     } else {
         data->entity = toEntity;
     }
+}
+
+
+void Tile::swapTileEntities(Tile &a, Tile &b) {
+    swap(a.data->entity,b.data->entity);
 }
 
 const Tile::Status &Tile::getStatus() const {

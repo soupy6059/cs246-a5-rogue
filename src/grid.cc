@@ -60,9 +60,10 @@ void Grid::notify(Tile &whoFrom) {
         if(!self->getEntity()) { return; } // this really should throw an error, but I'm not sure how to stop the bad call itself
 
         self->getEntity()->detach(self);
-        shared_ptr<Entity> entity = self->getEntity();
-        self->setEntity(nullptr);
-        other->setEntity(entity);
+        Tile::swapTileEntities(*self, *other);
+//         shared_ptr<Entity> entity = self->getEntity();
+//         self->setEntity(nullptr);
+//         other->setEntity(entity);
         other->getEntity()->attach(other);
 
         assert(!self->getEntity());
