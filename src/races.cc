@@ -1,4 +1,5 @@
 #include "races.h"
+#include "rng.h"
 #include <memory>
 #include <cmath>
 #include <stdexcept>
@@ -91,12 +92,14 @@ Orc::Orc(CharacterDefaults d): Enemy{d} {}
 string Orc::icon() const {return "\033[31;1mO\033[0m";}
 
 void Orc::attack(Tile& target) {
+    int hit = getRand(0, 2);
+    if (!hit) return;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Goblin> g = std::dynamic_pointer_cast<Goblin>(c);
     if (!c) return; // not a character
     float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
-    if (!g) {
+    if (g) {
         damage += damage / 2;
     }
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage

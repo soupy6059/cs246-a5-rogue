@@ -109,7 +109,13 @@ string Player::icon() const {
     return "\033[94;1m@\033[0m";
 }
 
-void Player::setHP(int n) {if (n > defaults.hp) hp = defaults.hp;}
+void Player::setHP(int n) {
+    if (n > defaults.hp){
+        hp = defaults.hp;
+    } else {
+        hp = n;
+    }
+}
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // these seem bugged
