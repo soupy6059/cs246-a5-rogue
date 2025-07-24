@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "character.h"
+
 using namespace std;
 
 Verb &Verb::append(string word) {
@@ -28,17 +30,16 @@ void Verb::appendStatus(Verb::Status status) {
         auto target = get<3>(status.data).second;
         append(attacker->getName())
             .append("deals"s)
-            .append(to_string(-404))
+            .append(to_string(dynamic_pointer_cast<Character>(attacker)->getDamageDealt()))
             .append("damage"s)
             .append("to"s)
             .append(target->getName())
-            .append("("s + to_string(-404) + " HP)."s)
+            .append("("s + to_string(dynamic_pointer_cast<Character>(target)->getHP()) + " HP)."s)
             .append(target->getName())
             .append("deals"s)
-            .append(to_string(-404))
-            .append("damage"s)
+            .append(to_string(dynamic_pointer_cast<Character>(target)->getDamageDealt()))
             .append("to"s)
-            .append(attacker->getName());
+            .append(attacker->getName()); 
         } break;
     case Verb::Action::SEES_POTION:
         append(get<3>(status.data).first->getName())
