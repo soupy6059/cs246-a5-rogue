@@ -1,7 +1,6 @@
 #include "races.h"
 #include "rng.h"
 #include <memory>
-#include <iostream>
 #include <cmath>
 #include <stdexcept>
 
@@ -27,6 +26,7 @@ void Vampire::attack(Tile& target) {
     std::shared_ptr<Dwarf> d = std::dynamic_pointer_cast<Dwarf>(c);
     if (!c) return; // not a character
     float damage = getDamage(target);
+    this->setDamageDealt(static_cast<int>(damage));
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (d != nullptr) {
         c->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
@@ -118,9 +118,7 @@ void Orc::attack(Tile& target) {
     if (g) {
         damage += damage / 2;
         this->setDamageDealt(static_cast<int>(damage));
-        std::cout << "damage to goblin: " << damage << std::endl;
     }
-    std::cout << "damage to goblin: " << damage << std::endl;
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // unprecdented murder
 }
@@ -146,8 +144,8 @@ void Merchant::step() {
         bool canAttack = false;
         std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
         if (playerLocation != nullptr && canAttack) {attack(*playerLocation);}
-        else {Enemy::moveNewDir();}
-    } else {
+        else if (Enemy::canItMove()) {Enemy::moveNewDir();}
+    } else if (Enemy::canItMove()){
         Enemy::moveNewDir();
     }
 }

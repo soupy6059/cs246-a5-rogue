@@ -3,6 +3,10 @@
 #include "player.h"
 #include <cmath>
 
+bool Enemy::canMove = true;
+
+bool Enemy::canItMove() {return canMove;}
+
 void Enemy::attack(Tile& target) {
     int hit_target = getRand(0, 2);
     if (!hit_target) return;
@@ -77,7 +81,7 @@ void Enemy::step() {
     std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
     if (canAttack && playerLocation != nullptr) {
         attack(*playerLocation);
-    } else {
+    } else if (canMove) {
          moveNewDir();
     }
 }
@@ -85,3 +89,5 @@ void Enemy::step() {
 std::string Enemy::icon() const { return "\033[31;1m?\033[0m";}
 
 Enemy::Enemy(CharacterDefaults d): Character{d} {}
+
+void Enemy::toggleCanMove() {canMove = !canMove;}
