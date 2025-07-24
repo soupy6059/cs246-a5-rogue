@@ -29,6 +29,7 @@ class Player: public Character {
     virtual void setHP(int n) override;
     void setATK(int n) override;
     void setDEF(int n) override;
+    virtual int getScore() const;
     virtual void attack(Tile& t) override;
     virtual std::string getName() const override;
 };

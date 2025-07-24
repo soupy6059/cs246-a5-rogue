@@ -127,9 +127,17 @@ string Player::icon() const {
     return "\033[94;1m@\033[0m";
 }
 
+int Player::getScore() const {return getGold();}
+
 void Player::setHP(int n) {
     if (n > defaults.hp){
         hp = defaults.hp;
+    } else if (n <= 0) {
+        hp = 0;
+        setStatus(Entity::Status{
+            .action = Entity::Action::PLAYER_DEATH,
+            .data = monostate{},
+        });
     } else {
         hp = n;
     }

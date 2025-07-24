@@ -15,12 +15,12 @@ class Character : public Entity {
     virtual void attack(Tile& target);
 
     // getters
-    int getATK();
-    int getDEF();
-    int getHP();
-    int getACC();
-    int getGold();
-    int getDamageDealt();
+    int getATK() const;
+    int getDEF() const;
+    int getHP() const;
+    int getACC() const;
+    int getGold() const;
+    int getDamageDealt() const;
     // returns the damage that "would" be done upon attacking
     virtual int getDamage(Tile& target);
 
