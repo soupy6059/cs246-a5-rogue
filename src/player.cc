@@ -106,6 +106,13 @@ void Player::step() {
         });
     }
     
+    if (word == "r") {
+        setStatus(Entity::Status{
+            .action = Entity::Action::RESTART,
+            .data = monostate{},
+        });
+    }
+
     assert(thingsTried == 0 || thingsTried == 1);
     if(thingsTried == 0) return;
 

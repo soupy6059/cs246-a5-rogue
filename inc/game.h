@@ -21,11 +21,11 @@ class Game: public Subject, public Observer {
     size_t currentLevelIndex = 0;
     bool run = true;
     void updateScan(Level&);
-    void updateLoop();
+    bool updateLoop();
     public:
     Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0, Race race = Race::SHADE);
     virtual ~Game() = default;
-    void start();
+    bool start();
     Level &refCurrentLevel();
     size_t getCurrentLevelIndex();
     std::shared_ptr<Player> getPlayer();
