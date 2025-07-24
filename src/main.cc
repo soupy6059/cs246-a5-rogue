@@ -9,15 +9,13 @@
 
 using namespace std;
 
-void getUserInput(Race &startingRace) {
+int getUserInput(Race &startingRace) {
     while (true) {
-        std::string input;
-        std::cout << "Select your race with s, d, v, g, t\n or enter q to quit" << std::endl;
-        std::cin >> input;
-        if (!cin) {
-            break;
-        }
-        if (input == "q") break;
+        string input;
+        cout << "Select your race with s, d, v, g, t\n or enter q to quit" << endl;
+        getline(cin, input);
+        if (!cin) { break; }
+        if (input == "q") return -1;
         if (input == "s") {
             startingRace = Race::SHADE;
             break;
@@ -39,6 +37,8 @@ void getUserInput(Race &startingRace) {
             break;
         }
     } //while
+    cin.clear();
+    return 0;
 }
 
 int main(int argc, char **argv) {
@@ -47,8 +47,8 @@ int main(int argc, char **argv) {
 
     Log::initLogs();
     shared_ptr<TextDisplay> td = make_shared<TextDisplay>();
-    Race userChoice;
-    getUserInput(userChoice);
+    Race userChoice = Race::SHADE;
+    if(getUserInput(userChoice) == -1) return 0;
     try{
         shared_ptr<Game> game = make_shared<Game>("assets/level-empty.txt", 0, userChoice);
         game->attach(td);
