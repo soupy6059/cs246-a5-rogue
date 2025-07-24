@@ -4,6 +4,7 @@
 #include "rng.h"
 #include "potion.h"
 #include "races.h"
+#include "util.h"
 
 
 #include <iterator>
@@ -187,33 +188,20 @@ unique_ptr<Level> LevelFactory::create() {
         level->spawnAt(makeEntityWithRace(race), location);
     }
 
-    // if(auto dragonGold = dynamic_pointer_cast<DragonHoard>(gold); dragonGold) {
-    //     cout << "spawning dragon gold" << endl;
-    //     auto dragonlocation = vec2::stepvec(location, static_cast<direction>(getrand(0,static_cast<int>(direction::center))));
-    //     auto dragonEntity = makeEntityWithRace(Race::DRAGON);
-    //     while(true) {
-    //         try { 
-    //             cout << "trying to spawn dragon" << endl;
-    //             level->spawnAt(dragonEntity, dragonLocation);
-    //             cout << "spawned dragon! at " << dragonLocation << ", gold at " << location << endl;
-    //             break;
-    //         }
-    //         catch(...) {}
-    //         dragonLocation = Vec2::stepVec(location, static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
-    //     }
-    //     auto dragonPtr = dynamic_pointer_cast<Dragon>(dragonEntity);
-    //     assert(dragonPtr); 
-    //     dragonGold->setDragon(dragonPtr);
-    // }
-    
     for (unsigned int r = 0; r < FLOOR_HEIGHT; ++r) {
         for (unsigned int c = 0; c < FLOOR_WIDTH; ++c) {
             if (auto hoardptr = dynamic_pointer_cast<DragonHoard>(theGrid[r][c]->getEntity()); hoardptr) {
-                auto dragonLocation = Vec2::stepVec(Vec2{(int)r,(int)c},
-                                                    static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER))));
+                auto dragonDirection = static_cast<Direction>(getRand(0,static_cast<int>(Direction::CENTER)));
                 auto dragonptr = makeEntityWithRace(Race::DRAGON);
-                level->spawnAt(dragonptr, dragonLocation);
-                hoardptr->setDragon(dynamic_pointer_cast<Dragon>(dragonptr));
+
+                for (Direction dir = clockwise(dragonDirection); dir != dragonDirection; dir = clockwise(dir)) {
+                    Vec2 loc = Vec2::stepVec(Vec2{(int)r,(int)c}, dir);
+                    if (!theGrid[loc.x][loc.y]->isFloor() ||
+                        theGrid[loc.x][loc.y]->getEntity()) continue;
+                    level->spawnAt(dragonptr, loc);
+                    hoardptr->setDragon(dynamic_pointer_cast<Dragon>(dragonptr));
+                    break;
+                }
             }
         }
     }

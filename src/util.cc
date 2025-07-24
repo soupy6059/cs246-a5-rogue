@@ -9,6 +9,22 @@ ostream &operator<<(ostream &os, const Vec2 &v) {
     return os;
 }
 
+Direction clockwise(Direction dir) {
+    switch(dir) {
+        case Direction::NORTH: return Direction::NORTHEAST;
+        case Direction::SOUTH: return Direction::SOUTHWEST;
+        case Direction::EAST: return Direction::SOUTHEAST;
+        case Direction::WEST: return Direction::NORTHWEST;
+        case Direction::NORTHEAST: return Direction::EAST;
+        case Direction::SOUTHEAST: return Direction::SOUTH;
+        case Direction::SOUTHWEST: return Direction::WEST;
+        case Direction::NORTHWEST: return Direction::NORTH;
+        case Direction::CENTER: return Direction::CENTER;
+    default:
+        throw logic_error{"bad enum"};
+    }
+}
+
 string dirToStr(Direction dir) {
     switch(dir) {
         case Direction::NORTH: return "North";
