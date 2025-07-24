@@ -17,7 +17,8 @@ using namespace std;
 
 Level::Level(size_t rowCount, size_t colCount):
     ownedGrid{make_unique<Grid>(rowCount,colCount)},
-    playerSpawnLocation{-1,-1} {
+    playerSpawnLocation{-1,-1},
+    stairsLocation{-1,-1} {
     attachTilesToGrid();
 }
 
@@ -56,6 +57,14 @@ void Level::setSpawnLocation(Vec2 loc) {
     playerSpawnLocation = loc;
 }
 
+const Vec2 &Level::getStairsLocation() const {
+    return stairsLocation;
+}
+
+void Level::setStairsLocation(Vec2 loc) {
+    stairsLocation = loc;
+}
+
 void Level::spawnAt(const shared_ptr<Entity> entity, Vec2 loc) {
     ownedGrid->at(loc)->setEntity(entity);
     ownedGrid->at(loc)->getEntity()->attach(
@@ -84,7 +93,6 @@ unique_ptr<Level> LevelFactory::create() {
     auto theGrid = level->getGrid().getTheGrid();
 
     unsigned int goldCount = 0, potionCount = 0, enemyCount = 0;
-    Vec2 stairsLocation = Vec2{-1,-1};
 
     for (unsigned int r = 0; r < FLOOR_HEIGHT; ++r) {
         string line;
@@ -94,7 +102,7 @@ unique_ptr<Level> LevelFactory::create() {
             // Todo: spawn entities from characters in file
             theGrid[r][c]->setType(fromChar(line[c]));
             if (line[c] == '@') level->setSpawnLocation(Vec2{(int)r,(int)c});
-            else if (line[c] == '\\') stairsLocation = Vec2{(int)r,(int)c};
+            else if (line[c] == '\\') level->setStairsLocation(Vec2{(int)r,(int)c});
             else if (line[c] >= '0' && line[c] <= '9') {
                 level->spawnAt(charToLootPtr(line[c]), Vec2{(int)r,(int)c});
                 if (line[c] <= '5') ++potionCount;
@@ -119,7 +127,7 @@ unique_ptr<Level> LevelFactory::create() {
         if (rooms[playerRoom].empty()) rooms.erase(rooms.begin() + playerRoom);
     }
 
-    if (stairsLocation == Vec2{-1,-1}) {
+    if (level->getStairsLocation() == Vec2{-1,-1}) {
         // Generate stair spawn location
         size_t stairsRoom = getRand(0,rooms.size());
         if (stairsRoom == playerRoom && rooms.size() > 1)
@@ -127,12 +135,12 @@ unique_ptr<Level> LevelFactory::create() {
                 stairsRoom = getRand(0,rooms.size());
 
         idx = getRand(0,rooms[stairsRoom].size());
-        stairsLocation = rooms[stairsRoom][idx];
+        level->setStairsLocation(rooms[stairsRoom][idx]);
         rooms[stairsRoom].erase(rooms[stairsRoom].begin() + idx);
         if (rooms[stairsRoom].empty()) rooms.erase(rooms.begin() + stairsRoom);
 
-        theGrid[stairsLocation.x][stairsLocation.y]->setType(Tile::TileType::STAIR);
     }
+    level->getGrid().at(level->getStairsLocation())->setType(Tile::TileType::STAIR);
 
     size_t room;
     Vec2 location;
