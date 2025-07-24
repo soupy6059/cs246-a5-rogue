@@ -91,3 +91,6 @@ std::string Enemy::icon() const { return "\033[31;1m?\033[0m";}
 Enemy::Enemy(CharacterDefaults d): Character{d} {}
 
 void Enemy::toggleCanMove() {canMove = !canMove;}
+void Enemy::setCanMove(bool canMove) {
+    Enemy::canMove = canMove;
+}
