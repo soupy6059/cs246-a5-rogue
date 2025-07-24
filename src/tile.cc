@@ -136,7 +136,7 @@ void Tile::notify(Entity &whoFrom) {
         });
         notifyObservers();
         break;
-    case Entity::Action::CHANGE_LEVEL:
+    case Entity::Action::PRINT_LEVEL:
         break;
     default:
         throw out_of_range{"bad enum"};
@@ -194,12 +194,6 @@ void Tile::queryMovement(Tile &whoFrom) {
         this->setEntity(nullptr);
     }
 
-    if(player && getType() == Tile::TileType::STAIR) {
-        player->setStatus({Entity::Action::CHANGE_LEVEL, monostate{}});
-        player->notifyObservers();
-        return;
-    }
-
     // am i collidable?
     if(isCollidable()) {
         // if i am, do nothing.
@@ -243,8 +237,14 @@ void Tile::queryAttack(Tile &whoFrom) {
      if(!dynamic_pointer_cast<Character>(getEntity())) {
          return;
      }
-     // whoFrom // attack
-     cout << "attack is being called." << endl;
+
+     // verbAppend <=> action pretty printing
+     auto player = dynamic_pointer_cast<Player>(whoFrom.getEntity());
+     auto target = dynamic_pointer_cast<Character>(this->getEntity());
+     if(player && target) {
+         player->appendVerb({Verb::Action::ATTACK,pair<shared_ptr<Entity>,shared_ptr<Entity>>(player,target)});
+     }
+
      dynamic_pointer_cast<Character>(whoFrom.getEntity())->attack(*this);
 }
 
@@ -277,22 +277,22 @@ void Tile::notify(Subject &whoFrom) {
     catch(...) {}
 }
 
-char Tile::icon() const {
+string Tile::icon() const {
     switch(getType()) {
     case TileType::FLOOR:
-        return getEntity()? getEntity()->icon() : '.';
+        return getEntity()? getEntity()->icon() : ".";
     case TileType::STAIR:
-        return '\\';
+        return "\033[94;1m\\\033[0m";
     case TileType::HALLWAY:
-        return getEntity()? getEntity()->icon() : '#';
+        return getEntity()? getEntity()->icon() : "#";
     case TileType::DOOR:
-        return getEntity()? getEntity()->icon() : '+';
+        return getEntity()? getEntity()->icon() : "+";
     case TileType::VERTICAL_WALL:
-        return '|';
+        return "|";
     case TileType::HORIZONTAL_WALL:
-        return '-';
+        return "-";
     case TileType::VOID:
-        return ' ';
+        return " ";
     default:
        throw out_of_range{"bad enum"};
     }

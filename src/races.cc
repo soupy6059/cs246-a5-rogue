@@ -22,20 +22,24 @@ void Vampire::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Dwarf> d = std::dynamic_pointer_cast<Dwarf>(c);
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
-    c->setHP(c->getHP() - damage); // do damage
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (d != nullptr) {
         c->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
     } else {
         c->setHP(c->getHP() + DWARF_DAMAGE);
     }
-    if (c->getHP() <= 0) { target.setEntity(nullptr);} // kill if dead
+    if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
 //Troll
 
 Troll::Troll(CharacterDefaults d): Player{d} {}
 
+void Troll::step() {
+    Player::step();
+    setHP(getHP() + 5);
+}
 // NEED TO DO SOMETHING ABOUT THE FUCKING +5 HP EVERY TURN
 // GOBLIN
 
@@ -47,8 +51,8 @@ void Goblin::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(c);
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
-    c->setHP(c->getHP() - damage); // do damage
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {
         target.setEntity(nullptr);
         setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
@@ -58,16 +62,16 @@ void Goblin::attack(Tile& target) {
 
 // HUMAN 
 Human::Human(CharacterDefaults d): Enemy{d} {}
-char Human::icon() const { return 'H';}
+string Human::icon() const { return "\033[31;1mH\033[0m";}
 
 // DWARF is DEFUALT
 
 Dwarf::Dwarf(CharacterDefaults d): Enemy{d} {}
-char Dwarf::icon() const { return 'W';}
+string Dwarf::icon() const { return "\033[31;1mW\033[0m";}
 
 // ELF
 Elf::Elf(CharacterDefaults d): Enemy{d} {}
-char Elf::icon() const { return 'E';}
+string Elf::icon() const { return "\033[31;1mE\033[0m";}
 
 void Elf::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
@@ -76,34 +80,34 @@ void Elf::attack(Tile& target) {
     int atk_count = (!d) ? 2 : 1;
     for (int i = 0; i < atk_count; ++i) {
         if (!c) return; // not a character
-        int damage = ceil((100/(100 + c->getDEF())) * atk);
-        c->setHP(c->getHP() - damage); // do damage
+        float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+        c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
         if (c->getHP() <= 0) {target.setEntity(nullptr);}
     }
 }
 
 // ORC
 Orc::Orc(CharacterDefaults d): Enemy{d} {}
-char Orc::icon() const {return 'O';}
+string Orc::icon() const {return "\033[31;1mO\033[0m";}
 
 void Orc::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Goblin> g = std::dynamic_pointer_cast<Goblin>(c);
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
     if (!g) {
         damage += damage / 2;
     }
-    c->setHP(c->getHP() - damage); // do damage
-    if (c->getHP() <= 0) {target.setEntity(nullptr);}
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
+    if (c->getHP() <= 0) {target.setEntity(nullptr);} // unprecdented murder
 }
 
 // MERCHANT
 bool Merchant::isPissed = false;
 
 Merchant::Merchant(CharacterDefaults d): Enemy{d} {}
-char Merchant::icon() const {return 'M';}
+string Merchant::icon() const {return "\033[31;1mM\033[0m";}
 
 void Merchant::attack(Tile& target) {
     if (!isPissed) return;
@@ -111,16 +115,26 @@ void Merchant::attack(Tile& target) {
 }
 
 void Merchant::togglePissed() {
+    if (isPissed) return;
     isPissed = !isPissed;
 }
 
+void Merchant::step() {
+    const int MERCHANT_BASE_HP = 30;
+    if (hp < MERCHANT_BASE_HP) togglePissed();
+    if (isPissed) {
+        // attack
+    } else {
+        Enemy::step();
+    }
+}
 // Dragon
 Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
-char Dragon::icon() const { return 'D';}
+string Dragon::icon() const { return "\033[31;1mD\033[0m";}
 
 // HAFLING
 Halfling::Halfling(CharacterDefaults d): Enemy{d} {}
-char Halfling::icon() const {return 'L';}
+string Halfling::icon() const {return "\033[31;1mL\033[0m";}
 
 shared_ptr<Entity> makeEntityWithRace(Race race) {
     CharacterDefaults stats = getCharDefs(race);
@@ -177,7 +191,7 @@ CharacterDefaults getCharDefs(Race race) {
         case Race::DRAGON:
         return {150, 20, 20, 50, 0};
         case Race::MERCHANT:
-        return {30, 70, 5, 50, 0};
+        return {30, 70, 5, 50, 4};
         case Race::HALFLING:
         return {100, 15, 20, 50, 0};
         default:

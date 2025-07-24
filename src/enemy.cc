@@ -8,8 +8,8 @@ void Enemy::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     if (!c) return; // not a character
-    int damage = ceil((100/(100 + c->getDEF())) * atk);
-    c->setHP(c->getHP() - damage); // do damage
+    float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
+    c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
 }
 
@@ -53,6 +53,6 @@ void Enemy::step() {
     notifyObservers();
 }
 
-char Enemy::icon() const { return '?';}
+std::string Enemy::icon() const { return "\033[31;1m?\033[0m";}
 
 Enemy::Enemy(CharacterDefaults d): Character{d} {}

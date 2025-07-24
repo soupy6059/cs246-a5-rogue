@@ -17,8 +17,8 @@ int main(int argc, char **argv) {
     
     try{
         shared_ptr<Game> game = make_shared<Game>(args.at(1));
-        game->getPlayer()->attach(game);
         game->attach(td);
+        game->getPlayer()->attach(game);
         game->start();
     }
     catch(...) {

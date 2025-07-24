@@ -10,7 +10,6 @@ Verb &Verb::append(string word) {
 }
 
 void Verb::appendStatus(Verb::Status status) {
-    cout << "is this code runnnign?" << endl;
     if(!empty) append("and"s);
     switch(status.action) {
     case Verb::Action::SPAWN:
@@ -24,11 +23,23 @@ void Verb::appendStatus(Verb::Status status) {
             .append("moves"s)
             .append(dirToStr(get<pair<shared_ptr<Entity>,Direction>>(status.data).second));
         break;
-    case Verb::Action::ATTACK:
-        append(get<3>(status.data).first->getName())
-            .append("attacked"s)
-            .append(get<3>(status.data).second->getName());
-        break;
+    case Verb::Action::ATTACK: {
+        auto attacker = get<3>(status.data).first;
+        auto target = get<3>(status.data).second;
+        append(attacker->getName())
+            .append("deals"s)
+            .append(to_string(-404))
+            .append("damage"s)
+            .append("to"s)
+            .append(target->getName())
+            .append("("s + to_string(-404) + " HP)."s)
+            .append(target->getName())
+            .append("deals"s)
+            .append(to_string(-404))
+            .append("damage"s)
+            .append("to"s)
+            .append(attacker->getName());
+        } break;
     default:
         break;
     }

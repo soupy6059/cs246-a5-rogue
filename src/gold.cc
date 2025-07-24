@@ -12,8 +12,8 @@ using namespace std;
 Gold::Gold(int value):
     Item{}, value{value} {}
 
-char Gold::icon() const {
-    return 'G';
+string Gold::icon() const {
+    return "\033[93;1mG\033[0m";
 }
 
 int Gold::getValue() { return value; }

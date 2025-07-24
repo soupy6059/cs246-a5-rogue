@@ -9,7 +9,7 @@ class Gold: public Item {
     Gold(int value);
     int getValue();
     virtual ~Gold() = default;
-    virtual char icon() const override;
+    virtual std::string icon() const override;
     virtual void step() override;
     virtual void affect(Entity&) override;
 };

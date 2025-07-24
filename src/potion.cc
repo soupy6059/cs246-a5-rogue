@@ -47,8 +47,15 @@ WeakPotion::WeakPotion():
 BrittlePotion::BrittlePotion():
     Potion{} {}
 
-char Potion::icon() const {
-    return 'P';
+string HealthPotion::getName() const { return "BH"; }
+string AttackPotion::getName() const { return "BA"; }
+string DefensePotion::getName() const { return "BD"; }
+string PoisonPotion::getName() const { return "LH"; }
+string WeakPotion::getName() const { return "LA"; }
+string BrittlePotion::getName() const { return "LD"; }
+
+string Potion::icon() const {
+    return "\033[92;1mP\033[0m";
 }
 
 

@@ -5,12 +5,16 @@
 #include <string>
 #include <map>
 #include <cassert>
+#include <memory>
+#include <races.h>
+#include <rng.h>
 
 #include "log.h"
 
 using namespace std;
 
 Player::Player(CharacterDefaults d): Character{d} {
+    appendVerb({Verb::Action::SPAWN,monostate{}});
     defaults.atk = d.atk;
     defaults.def = d.def;
     defaults.hp = d.hp;
@@ -24,6 +28,17 @@ void Player::appendVerb(Verb::Status newStatus) {
 
 Verb &Player::refVerb() {
     return verb;
+}
+
+void Player::printLevel() {
+    setStatus({Entity::Action::PRINT_LEVEL,monostate{}});
+    notifyObservers();
+}
+
+
+void Player::mainUpdate() {
+    printLevel();
+    step();
 }
 
 static const map<string,Direction> dirNameToDir {
@@ -90,16 +105,37 @@ void Player::step() {
     notifyObservers();
 }
 
-char Player::icon() const {
-    return '@';
+string Player::icon() const {
+    return "\033[94;1m@\033[0m";
 }
 
 void Player::setHP(int n) {if (n > defaults.hp) hp = defaults.hp;}
 
-void Player::setDEF(int n) {if (n <= 0) def = 1;}
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// these seem bugged
+// - carter lol
+void Player::setDEF(int n) {
+    if (n <= 0) { def = 1; }
+    else {def = n;}
+}
 
-void Player::setATK(int n) {if (n <= 0) atk = 1;}
+void Player::setATK(int n) {
+    if (n <= 0) {atk = 1;}
+    else { atk = n;}
+}
+
+string Player::getName() const {
+    return "PC";
+}
 
 void Player::attack(Tile& target) {
-    Character::attack(target);
+    std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(target.getEntity());
+    if (h) {
+        int r = getRand(0, 2);
+        if (r) {
+            Character::attack(target);
+        }
+    } else {
+        Character::attack(target);
+    }
 }

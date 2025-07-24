@@ -19,7 +19,7 @@ private:
     virtual void mainUpdate();
 public:
     enum class Action { // im using Luke's idea
-        MOVE, NOTHING, INTERACT, ATTACK, KILL_ME, CHANGE_LEVEL,
+        MOVE, NOTHING, INTERACT, ATTACK, KILL_ME, PRINT_LEVEL,
     };
     struct Status {
         Action action;
@@ -40,7 +40,7 @@ public:
     const Status &getStatus();
     EntityImpl &getStats() const;
     void update(); 
-    virtual char icon() const = 0;
+    virtual std::string icon() const = 0;
     bool getDoubleRisk();
     void setDoubleRisk(bool);
     virtual std::string getName() const;
