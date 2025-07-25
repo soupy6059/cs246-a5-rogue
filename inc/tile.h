@@ -64,6 +64,7 @@ public: // VIRTUAL BEHAVIORS
     virtual void notify(Subject &whoFrom) override;
 
 public: // METHODS
+    static void swapTileEntities(Tile &a, Tile &b);
     void queryMovement(Tile &whoFrom);
     void queryPotion(Tile &whoFrom);
     void queryMovement(Entity &whoFrom);

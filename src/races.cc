@@ -50,7 +50,7 @@ void Troll::step() {
 }
 
 std::string Troll::getRaceName() const { return "Troll";}
-// NEED TO DO SOMETHING ABOUT THE FUCKING +5 HP EVERY TURN
+
 // GOBLIN
 
 Goblin::Goblin(CharacterDefaults d): Player{d} {}

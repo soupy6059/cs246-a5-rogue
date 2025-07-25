@@ -11,6 +11,7 @@
 #include "gold.h"
 #include "player.h"
 #include "potion.h"
+#include "races.h"
 
 using namespace std;
 
@@ -44,7 +45,19 @@ void Tile::setEntity(shared_ptr<Entity> toEntity) {
     }
 
     if(!toEntity) {
-        data->entity = data->goldStorage;
+        if(dynamic_pointer_cast<Merchant>(getEntity())) {
+            data->entity = make_shared<Gold>(4);
+        } else if(dynamic_pointer_cast<Human>(getEntity())) {
+            data->entity = make_shared<Gold>(2); 
+            for(auto observer: getObservers()) {
+                if(auto tile = dynamic_pointer_cast<Tile>(observer); tile) {
+                    if(tile->getEntity() == nullptr) {
+                        tile->setEntity(make_shared<Gold>(2));
+                        break;
+                    }
+                }
+            }
+        } else data->entity = data->goldStorage;
         return;
     }
 
@@ -54,6 +67,11 @@ void Tile::setEntity(shared_ptr<Entity> toEntity) {
     } else {
         data->entity = toEntity;
     }
+}
+
+
+void Tile::swapTileEntities(Tile &a, Tile &b) {
+    swap(a.data->entity,b.data->entity);
 }
 
 const Tile::Status &Tile::getStatus() const {
@@ -197,6 +215,9 @@ void Tile::queryMovement(Tile &whoFrom) {
             if(!dragonHoard->hasDragon()) {
                 player->setGold(player->getGold() + gold->getValue());
                 this->setEntity(nullptr);
+            } else {
+                player->appendVerb({Verb::Action::HOARD_THERE, monostate{}});
+                return;
             }
         } else {
             player->setGold(player->getGold() + gold->getValue());
