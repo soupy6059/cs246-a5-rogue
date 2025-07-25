@@ -57,18 +57,16 @@ int main(int argc, char **argv) {
             seed = stoi(args.at(2));
         }
         catch(...) {}
-
-        try{
-            shared_ptr<Game> game = make_shared<Game>(args.at(1), seed, userChoice);
-            game->attach(td);
-            game->getPlayer()->attach(game);
-            playAgain = game->start();
+        
+        shared_ptr<Game> game = nullptr;
+        try {
+            game = make_shared<Game>(args.at(1), seed, userChoice);
         }
         catch(...) {
-            shared_ptr<Game> game = make_shared<Game>();
-            game->getPlayer()->attach(game);
-            game->attach(td);
-            playAgain = game->start();
+            game = make_shared<Game>();
         }
+        game->attach(td);
+        game->getPlayer()->attach(game);
+        playAgain = game->start();
     }
 }
