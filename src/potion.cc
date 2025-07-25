@@ -114,9 +114,9 @@ BrittlePotion::BrittlePotion():
 string HealthPotion::getName() const { return getKnown()? "BH" : "unknown"; }
 string AttackPotion::getName() const { return getKnown()? "BA" : "unknown"; }
 string DefensePotion::getName() const { return getKnown()? "BD" : "unknown"; }
-string PoisonPotion::getName() const { return getKnown()? "LH" : "unknown"; }
-string WeakPotion::getName() const { return getKnown()? "LA" : "unknown"; }
-string BrittlePotion::getName() const { return getKnown()? "LD" : "unknown"; }
+string PoisonPotion::getName() const { return getKnown()? "WH" : "unknown"; }
+string WeakPotion::getName() const { return getKnown()? "WA" : "unknown"; }
+string BrittlePotion::getName() const { return getKnown()? "WD" : "unknown"; }
 
 string Potion::icon() const {
     return "\033[92;1mP\033[0m";
