@@ -25,31 +25,13 @@ Direction clockwise(Direction dir); // rotates a direction 45 deg clockwise
 
 struct Vec2 {
     int x,y;
-    Vec2 operator+(const Vec2 &other) const {
-        return Vec2{x + other.x, y + other.y};
-    }
-    Vec2 operator-(const Vec2 &other) const {
-        return Vec2{x - other.x, y - other.y};
-    }
-    bool operator==(const Vec2 &other) const {
-        return x == other.x && y == other.y;
-    }
+
+    Vec2 operator+(const Vec2 &other) const;
+    Vec2 operator-(const Vec2 &other) const;
+    bool operator==(const Vec2 &other) const;
+
     // moves a vector in a direction, by copy
-    static Vec2 stepVec(const Vec2 &v, Direction dir) {
-        switch(dir) {
-        case Direction::NORTH:     return v + Vec2{-1, 0};
-        case Direction::SOUTH:     return v + Vec2{ 1, 0};
-        case Direction::EAST:      return v + Vec2{ 0, 1};
-        case Direction::WEST:      return v + Vec2{ 0,-1};
-        case Direction::NORTHEAST: return v + Vec2{-1, 1};
-        case Direction::SOUTHEAST: return v + Vec2{ 1, 1};
-        case Direction::SOUTHWEST: return v + Vec2{ 1,-1};
-        case Direction::NORTHWEST: return v + Vec2{-1,-1};
-        case Direction::CENTER:    return v + Vec2{ 0, 0};
-        default: throw std::out_of_range{"bad enum"};
-        }
-        throw std::logic_error{"unreachable"};
-    }
+    static Vec2 stepVec(const Vec2 &v, Direction dir);
 };
 
 template<typename T> std::ostream &operator<<(std::ostream &os, const std::vector<T> &v);
