@@ -2,3 +2,4 @@ gcm.cache
 main
 log/*
 build/*
+.vscode/*
