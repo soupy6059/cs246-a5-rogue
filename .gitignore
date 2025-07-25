@@ -4,4 +4,4 @@ log/*
 build/*
 .vscode/*
 tags
-cc3k
+./cc3k
