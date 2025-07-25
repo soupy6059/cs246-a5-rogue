@@ -54,6 +54,14 @@ static const map<string,Direction> dirNameToDir {
 void Player::step() {
     string line, word;
     getline(cin, line);
+    if(cin.eof()) {
+        cin.ignore();
+        cin.clear();
+        setStatus(Entity::Status{
+            .action = Entity::Action::QUIT,
+            .data = monostate{},
+        });
+    }
     stringstream lineStream {line};
     lineStream >> word;
 

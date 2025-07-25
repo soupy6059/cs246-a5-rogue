@@ -61,9 +61,6 @@ void Grid::notify(Tile &whoFrom) {
 
         self->getEntity()->detach(self);
         Tile::swapTileEntities(*self, *other);
-//         shared_ptr<Entity> entity = self->getEntity();
-//         self->setEntity(nullptr);
-//         other->setEntity(entity);
         other->getEntity()->attach(other);
 
         assert(!self->getEntity());
