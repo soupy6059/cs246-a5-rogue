@@ -167,7 +167,7 @@ void DefensePotion::affect(Entity &e) {
 void PoisonPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
-        character.setHP(max(1, character.getHP() - DELTA_HP));
+        character.setHP(character.getHP() - DELTA_HP);
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
