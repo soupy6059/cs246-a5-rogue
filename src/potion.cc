@@ -10,6 +10,15 @@ using namespace std;
 Potion::Potion():
     Item{} {}
 
+void Potion::resetKnown() {
+    HealthPotion::setKnown(false);
+    AttackPotion::setKnown(false);
+    DefensePotion::setKnown(false);
+    PoisonPotion::setKnown(false);
+    WeakPotion::setKnown(false);
+    BrittlePotion::setKnown(false);
+}
+
 shared_ptr<Potion> Potion::makePotion(Potion::PotionType type) {
     switch (type) {
         case PotionType::HEALTH:
@@ -126,7 +135,7 @@ void HealthPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setHP(character.getHP() + DELTA_HP);
-        setKnown(true);
+        HealthPotion::setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -140,7 +149,7 @@ void AttackPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.changeDeltaATK(DELTA_ATK);
-        setKnown(true);
+        AttackPotion::setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -154,7 +163,7 @@ void DefensePotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.changeDeltaDEF(DELTA_DEF);
-        setKnown(true);
+        DefensePotion::setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -168,7 +177,7 @@ void PoisonPotion::affect(Entity &e) {
     try {
         Character &character {dynamic_cast<Character&>(e)};
         character.setHP(character.getHP() - DELTA_HP);
-        setKnown(true);
+        PoisonPotion::setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -183,7 +192,7 @@ void WeakPotion::affect(Entity &e) {
         Character &character {dynamic_cast<Character&>(e)};
         int delta = character.getATK() - max(0, character.getATK() - DELTA_ATK);
         character.changeDeltaATK(-delta);
-        setKnown(true);
+        WeakPotion::setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},
@@ -199,7 +208,7 @@ void BrittlePotion::affect(Entity &e) {
         Character &character {dynamic_cast<Character&>(e)};
         int delta = character.getDEF() - max(0, character.getDEF() - DELTA_DEF);
         character.changeDeltaDEF(-delta);
-        setKnown(true);
+        BrittlePotion::setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
             .data = monostate{},

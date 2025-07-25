@@ -7,6 +7,7 @@
 #include "gold.h"
 #include "rng.h"
 #include "races.h"
+#include "potion.h"
 
 using namespace std;
 
@@ -84,6 +85,7 @@ Level &Game::refCurrentLevel() {
 // mostly temporary for now
 bool Game::start() {
     Enemy::setCanMove(true);
+    Potion::resetKnown();
     Level &mainLevel {*levels[0]};
     mainLevel.setActiveLevel(player);
     // static const Vec2 location {3,3};
