@@ -24,7 +24,7 @@ void TextDisplay::notify(Subject &whoFrom) {
         cout << game.getPlayer()->refVerb().action.at(i);
         if(i < game.getPlayer()->refVerb().action.size() - 1) cout << " ";
     }
-    cout << '.';
+    if(!game.getPlayer()->refVerb().action.empty()) cout << '.';
     cout << endl;
     game.getPlayer()->refVerb().action.clear();
 }
