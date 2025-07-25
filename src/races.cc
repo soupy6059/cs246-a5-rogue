@@ -33,9 +33,9 @@ void Vampire::attack(Tile& target) {
     this->setDamageDealt(static_cast<int>(damage));
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     if (d != nullptr) {
-        c->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
+        this->setHP(c->getHP() - DWARF_DAMAGE); // reverse ability OOF
     } else {
-        c->setHP(c->getHP() + DWARF_DAMAGE);
+        this->setHP(c->getHP() + DWARF_DAMAGE);
     }
     if (c->getHP() <= 0) {
         this->setGold(this->getGold() + c->getGold());
