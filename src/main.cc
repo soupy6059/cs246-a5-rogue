@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
             game = make_shared<Game>(args.at(1), seed, userChoice);
         }
         catch(...) {
-            game = make_shared<Game>();
+            game = make_shared<Game>("assets/level-empty.txt", seed, userChoice);
         }
         game->attach(td);
         game->getPlayer()->attach(game);
