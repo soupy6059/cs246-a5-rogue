@@ -35,20 +35,23 @@ public:
         bool doubleRisk; // doubleRisk of updating twice (double; at risk of)
         static EntityImpl makeDefault(); // static method for easy entity making
     };
+
     Entity(const EntityImpl &data = EntityImpl::makeDefault());
     Entity(const Entity &other);
     Entity(Entity &&other);
     Entity &operator=(const Entity &other);
     Entity &operator=(Entity &&other);
     virtual ~Entity() = default;
+
     void setStatus(const Status &);
     const Status &getStatus();
     EntityImpl &getStats() const;
-    void update(); 
-    virtual std::string icon() const = 0;
     bool getDoubleRisk();
     void setDoubleRisk(bool);
+    virtual std::string icon() const = 0;
     virtual std::string getName() const; // get name for pretty printing
+
+    void update(); 
 };
 
 #endif

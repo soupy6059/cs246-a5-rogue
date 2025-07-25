@@ -25,12 +25,13 @@ class Game: public Subject, public Observer {
     public:
     Game(std::string levelFileName = "assets/level-empty.txt", int seed = 0, Race race = Race::SHADE);
     virtual ~Game() = default;
-    bool start(); // set up and begin the main update loop
+
     Level &refCurrentLevel();
     size_t getCurrentLevelIndex();
     std::shared_ptr<Player> getPlayer();
-    virtual void notify(Subject&) override;
 
+    bool start(); // set up and begin the main update loop
+    virtual void notify(Subject&) override;
     void cleanUp(); // detaches observers to avoid leaks
 };
 

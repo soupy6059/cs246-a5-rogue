@@ -19,13 +19,15 @@ class Player: public Character {
     };
     defaultStats defaults;
     public:
-    Verb &refVerb();
-    void appendVerb(Verb::Status); // appends an "action" for pretty printing
     Player(CharacterDefaults d);
     virtual ~Player() = default;
+
+
+    void appendVerb(Verb::Status); // appends an "action" for pretty printing
     virtual std::string icon() const override;
     virtual std::string getRaceName() const = 0; // get race name for pretty printing
 
+    Verb &refVerb();
     virtual void setHP(int n) override;
     void setATK(int n) override;
     void setDEF(int n) override;

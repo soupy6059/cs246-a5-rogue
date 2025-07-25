@@ -22,6 +22,7 @@ BUILDDIR = build
 SOURCES = $(wildcard $(SRCDIR)/*.cc)
 OBJECTS = $(SOURCES:$(SRCDIR)/%.cc=$(BUILDDIR)/%.o)
 
+
 # Default target
 all: $(TARGET)
 
@@ -50,6 +51,10 @@ run: $(TARGET)
 # Debug build
 debug: CXXFLAGS += -DDEBUG -g3 -O0
 debug: $(TARGET)
+
+zip:
+	rm cc3k.zip
+	zip -r cc3k.zip *
 
 # Declare phony targets
 .PHONY: all clean rebuild install run debug release help

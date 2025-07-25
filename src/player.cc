@@ -51,6 +51,7 @@ static const map<string,Direction> dirNameToDir {
     {"sw",Direction::SOUTHWEST},
     {"se",Direction::SOUTHEAST},
 };
+
 void Player::step() {
     string line, word;
     getline(cin, line);
@@ -124,6 +125,9 @@ void Player::step() {
     if (word == "f") {
         Enemy::toggleCanMove();
     }
+
+    // DLC INPUTS?
+
 
     assert(thingsTried == 0 || thingsTried == 1);
     if(thingsTried == 0) return;
