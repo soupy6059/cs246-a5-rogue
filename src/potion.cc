@@ -4,6 +4,7 @@
 
 #include "util.h"
 #include "character.h"
+#include "races.h"
 
 using namespace std;
 
@@ -121,11 +122,18 @@ string Potion::icon() const {
 static const int DELTA_HP = 10;
 static const int DELTA_ATK = 5;
 static const int DELTA_DEF = DELTA_ATK;
+static const float DROW_POTION_AMP = 1.5f;
 
 void HealthPotion::affect(Entity &e) {
     try {
-        Character &character {dynamic_cast<Character&>(e)};
-        character.setHP(character.getHP() + DELTA_HP);
+        try {
+            Drow &drow {dynamic_cast<Drow&>(e)};
+            drow.setHP(drow.getHP() + static_cast<int>(DELTA_HP * DROW_POTION_AMP));
+        }
+        catch(const bad_cast &ex) {
+            Character &character {dynamic_cast<Character&>(e)};
+            character.setHP(character.getHP() + DELTA_HP);
+        }
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
@@ -138,8 +146,14 @@ void HealthPotion::affect(Entity &e) {
 
 void AttackPotion::affect(Entity &e) {
     try {
-        Character &character {dynamic_cast<Character&>(e)};
-        character.changeDeltaATK(DELTA_ATK);
+        try {
+            Drow &drow {dynamic_cast<Drow&>(e)};
+            drow.changeDeltaATK(static_cast<int>(DELTA_ATK * DROW_POTION_AMP));
+        }
+        catch(const bad_cast &ex) {
+            Character &character {dynamic_cast<Character&>(e)};
+            character.changeDeltaATK(DELTA_ATK);
+        }
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
@@ -152,8 +166,14 @@ void AttackPotion::affect(Entity &e) {
 
 void DefensePotion::affect(Entity &e) {
     try {
-        Character &character {dynamic_cast<Character&>(e)};
-        character.changeDeltaDEF(DELTA_DEF);
+        try {
+            Drow &drow {dynamic_cast<Drow&>(e)};
+            drow.changeDeltaDEF(static_cast<int>(DELTA_DEF * DROW_POTION_AMP));
+        }
+        catch(const bad_cast &ex) {
+            Character &character {dynamic_cast<Character&>(e)};
+            character.changeDeltaDEF(DELTA_DEF);
+        }
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
@@ -166,8 +186,14 @@ void DefensePotion::affect(Entity &e) {
 
 void PoisonPotion::affect(Entity &e) {
     try {
-        Character &character {dynamic_cast<Character&>(e)};
-        character.setHP(max(1, character.getHP() - DELTA_HP));
+        try {
+            Drow &drow {dynamic_cast<Drow&>(e)};
+            drow.setHP(static_cast<int>(drow.getHP() - DELTA_HP * DROW_POTION_AMP));
+        }
+        catch(const bad_cast &ex) {
+            Character &character {dynamic_cast<Character&>(e)};
+            character.setHP(character.getHP() - DELTA_HP);
+        }
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
@@ -180,9 +206,16 @@ void PoisonPotion::affect(Entity &e) {
 
 void WeakPotion::affect(Entity &e) {
     try {
-        Character &character {dynamic_cast<Character&>(e)};
-        int delta = character.getATK() - max(0, character.getATK() - DELTA_ATK);
-        character.changeDeltaATK(-delta);
+        try {
+            Drow &drow {dynamic_cast<Drow&>(e)};
+            int delta = drow.getATK() - max(0, static_cast<int>(drow.getATK() - DELTA_ATK * DROW_POTION_AMP));
+            drow.changeDeltaATK(-delta);
+        }
+        catch(const bad_cast &ex) {
+            Character &character {dynamic_cast<Character&>(e)};
+            int delta = character.getATK() - max(0, character.getATK() - DELTA_ATK);
+            character.changeDeltaATK(-delta);
+        }
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
@@ -196,9 +229,16 @@ void WeakPotion::affect(Entity &e) {
 
 void BrittlePotion::affect(Entity &e) {
     try {
-        Character &character {dynamic_cast<Character&>(e)};
-        int delta = character.getDEF() - max(0, character.getDEF() - DELTA_DEF);
-        character.changeDeltaDEF(-delta);
+        try {
+            Drow &drow {dynamic_cast<Drow&>(e)};
+            int delta = drow.getDEF() - max(0, static_cast<int>(drow.getDEF() - DELTA_DEF * DROW_POTION_AMP));
+            drow.changeDeltaATK(-delta);
+        }
+        catch(const bad_cast &ex) {
+            Character &character {dynamic_cast<Character&>(e)};
+            int delta = character.getDEF() - max(0, character.getDEF() - DELTA_DEF);
+            character.changeDeltaATK(-delta);
+        }
         setKnown(true);
         setStatus(Entity::Status{
             .action = Entity::Action::KILL_ME,
