@@ -215,6 +215,9 @@ void Tile::queryMovement(Tile &whoFrom) {
             if(!dragonHoard->hasDragon()) {
                 player->setGold(player->getGold() + gold->getValue());
                 this->setEntity(nullptr);
+            } else {
+                player->appendVerb({Verb::Action::HOARD_THERE, monostate{}});
+                return;
             }
         } else {
             player->setGold(player->getGold() + gold->getValue());

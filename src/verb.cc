@@ -47,6 +47,9 @@ void Verb::appendStatus(Verb::Status status) {
             .append("a"s)
             .append(get<3>(status.data).second->getName());
         break;
+    case Verb::Action::HOARD_THERE:
+        append("The dragon is still alive"s);
+        break;
     default:
         break;
     }

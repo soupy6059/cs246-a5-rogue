@@ -13,7 +13,7 @@
 class Verb {
 public:
     enum class Action {
-        SPAWN, ATTACK, MOVE, SEES_POTION, USES_POTION,
+        SPAWN, ATTACK, MOVE, SEES_POTION, USES_POTION, HOARD_THERE,
     };
     struct Status {
         Action action;
