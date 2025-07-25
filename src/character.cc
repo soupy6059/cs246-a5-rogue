@@ -38,7 +38,7 @@ void Character::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     if (!c) {
-        this->setDamageDealt(0);
+        this->setDamageDealt(MISSED_ATK_DMG);
         return;
     } // not a character
     int damage = getDamage(target);

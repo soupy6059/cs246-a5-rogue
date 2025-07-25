@@ -163,6 +163,8 @@ void Player::attack(Tile& target) {
         int r = getRand(0, 2);
         if (r) {
             Character::attack(target);
+        } else {
+            this->setDamageDealt(MISSED_ATK_DMG);
         }
     } else {
         std::shared_ptr<Merchant> m = std::dynamic_pointer_cast<Merchant>(target.getEntity());

@@ -7,6 +7,7 @@
 
 class Character : public Entity {
   protected:
+    static const int MISSED_ATK_DMG = 0;
     int atk, def, hp, acc, gold;
     int deltaAtk = 0, deltaDef = 0;
     int damageDealt = 0; // tracks the damage taken from being attacked

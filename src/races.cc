@@ -67,7 +67,7 @@ void Goblin::attack(Tile& target) {
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(c);
     if (!c) {
-        this->setDamageDealt(0);
+        this->setDamageDealt(MISSED_ATK_DMG);
         return;
      } // not a character
     float damage = getDamage(target);    
@@ -101,9 +101,9 @@ void Elf::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Drow> d = std::dynamic_pointer_cast<Drow>(c);
+    this->setDamageDealt(MISSED_ATK_DMG);
     if (!c) return; // not a character
     int atk_count = (!d) ? 2 : 1;
-    this->setDamageDealt(0);
     for (int i = 0; i < atk_count; ++i) {
         int hit = getRand(0, 2);
         if (!hit) continue;
@@ -120,6 +120,7 @@ string Orc::icon() const {return "\033[31;1mO\033[0m";}
 
 void Orc::attack(Tile& target) {
     int hit = getRand(0, 2);
+    this->setDamageDealt(MISSED_ATK_DMG);
     if (!hit) return;
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data

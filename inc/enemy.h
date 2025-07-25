@@ -17,6 +17,7 @@ class Enemy : public Character {
     static void toggleCanMove();
     static void setCanMove(bool canMove);
     bool canItMove();
+    void setHP (int new_hp) override;
 };
 
 #endif

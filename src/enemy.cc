@@ -9,13 +9,16 @@ bool Enemy::canItMove() {return canMove;}
 
 void Enemy::attack(Tile& target) {
     int hit_target = getRand(0, 2);
-    if (!hit_target) return;
+    if (!hit_target) {
+        this->setDamageDealt(MISSED_ATK_DMG);
+        return;
+    }
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     if (!c) return; // not a character
     float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
-    c->setDamageDealt(static_cast<int>(damage));
+    this->setDamageDealt(static_cast<int>(damage));
     if (c->getHP() <= 0) {
         target.setEntity(nullptr);
     } // kill if dead
@@ -95,4 +98,12 @@ Enemy::Enemy(CharacterDefaults d): Character{d} {}
 void Enemy::toggleCanMove() {canMove = !canMove;}
 void Enemy::setCanMove(bool canMove) {
     Enemy::canMove = canMove;
+}
+
+void Enemy::setHP(int new_hp) {
+    if (new_hp < 0) { 
+        hp = 0;
+    } else {
+        hp = new_hp;
+    }
 }
