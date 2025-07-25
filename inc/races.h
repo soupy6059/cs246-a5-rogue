@@ -40,6 +40,7 @@ class Vampire : public Player {
     Vampire(CharacterDefaults d);
     void attack(Tile& t) override;
     std::string getRaceName() const override;
+    void setHP(int n) override;
 };
 
 class Troll : public Player {
