@@ -28,7 +28,7 @@ void Enemy::moveNewDir() {
         // get a random number
     int i = getRand(0, 8); //gets a number 0 to 7
     // map to direction
-    Direction dir;
+    Direction dir = Direction::CENTER;
     switch(i) {
         case 0:
         dir = Direction::NORTH;

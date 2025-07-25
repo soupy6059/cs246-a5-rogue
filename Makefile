@@ -7,7 +7,7 @@
 # └── Makefile
 
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra -g -O0
+CXXFLAGS = -std=c++20 -Wall -Wextra -g -O3
 TARGET = main
 
 # Compiler and flags
