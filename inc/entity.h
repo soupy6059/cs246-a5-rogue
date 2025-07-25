@@ -15,20 +15,25 @@ public:  // "redeclared with different access"
     struct Status;
 private:
     std::unique_ptr<EntityImpl> data; // Enabling future strong exception guarentee
-    virtual void step() = 0;
-    virtual void mainUpdate();
+    virtual void step() = 0; // pure virtual method for an entities movement
+    virtual void mainUpdate(); // virtual method for update's NonVirtualInterface
 public:
-    enum class Action { // im using Luke's idea
+    // what can a player notify about what it's doing / want's to do
+    enum class Action {
         MOVE, NOTHING, INTERACT, ATTACK, KILL_ME, PRINT_LEVEL, QUIT, RESTART, PLAYER_DEATH,
     };
+
+    // stores a status that is read on notify(Subject&)
     struct Status {
         Action action;
         std::variant<std::monostate,Direction> data;
     };
+
+    // entityImpl's data for future Strong ESLG
     struct EntityImpl {
-        Status status;
-        bool doubleRisk;
-        static EntityImpl makeDefault();
+        Status status; // status for notifyObservers
+        bool doubleRisk; // doubleRisk of updating twice (double; at risk of)
+        static EntityImpl makeDefault(); // static method for easy entity making
     };
     Entity(const EntityImpl &data = EntityImpl::makeDefault());
     Entity(const Entity &other);
@@ -43,7 +48,7 @@ public:
     virtual std::string icon() const = 0;
     bool getDoubleRisk();
     void setDoubleRisk(bool);
-    virtual std::string getName() const;
+    virtual std::string getName() const; // get name for pretty printing
 };
 
 #endif

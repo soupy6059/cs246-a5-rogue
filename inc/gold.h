@@ -11,8 +11,8 @@ class Gold: public Item {
     int getValue();
     virtual ~Gold() = default;
     virtual std::string icon() const override;
-    virtual void step() override;
-    virtual void affect(Entity&) override;
+    virtual void step() override; // cant move
+    virtual void affect(Entity&) override; // addGold(); killMe();
 };
 
 class Dragon;

@@ -8,7 +8,7 @@
 
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -g -O3
-TARGET = main
+TARGET = cc3k
 
 # Compiler and flags
 INCLUDES = -Iinc

@@ -9,8 +9,8 @@ class Potion: public Item {
     static const size_t NUMPOTIONTYPES = 6;
     enum PotionType {HEALTH, ATTACK, DEFENSE, POISON, WEAK, BRITTLE};
     Potion(); 
-    static std::shared_ptr<Potion> makePotion(PotionType type);
-    static void resetKnown();
+    static std::shared_ptr<Potion> makePotion(PotionType type); // creator for potion
+    static void resetKnown(); // reset known's on level reset
     virtual ~Potion() = default;
     virtual std::string icon() const override;
 };

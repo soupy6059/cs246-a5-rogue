@@ -12,9 +12,12 @@
 
 class Verb {
 public:
+    // each thing that can be pretty printed
     enum class Action {
         SPAWN, ATTACK, MOVE, SEES_POTION, USES_POTION, HOARD_THERE,
     };
+
+    // data and action to send to textDisplay
     struct Status {
         Action action;
         std::variant<
@@ -24,6 +27,8 @@ public:
             std::pair<std::shared_ptr<Entity>,std::shared_ptr<Entity>>
         > data;
     };
+
+    // list of strings to format then print, decided by the action & status sent
     std::vector<std::string> action;
     Verb &append(std::string);
     void appendStatus(Verb::Status);

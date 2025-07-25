@@ -7,7 +7,9 @@ class TextDisplay: public Observer {
 public:
     TextDisplay() = default;
     virtual ~TextDisplay() = default;
-    virtual void notify(Subject&) override;  
+    
+    // observing the game observing the player for printing to std::cout
+    virtual void notify(Subject&) override;
 };
 
 #endif

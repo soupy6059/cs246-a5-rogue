@@ -11,13 +11,17 @@
 
 class Tile: public Observer, public Subject {
 public: // INTERNAL TYPES
+
     enum class Action {
         MOVE_OWNED_ENTITY, NOTHING, SWAP, INTERACT, ATTACK, ADJACENT_POTION,
     };
+
+    // setStatus for notify, data is for sending data to notify(Subject)
     struct Status {
         Action action;
         std::variant<std::monostate,Direction,std::pair<Vec2,Vec2>> data;
     };
+
     enum class TileType {
         FLOOR,
         STAIR,
@@ -27,11 +31,12 @@ public: // INTERNAL TYPES
         VOID,
         DOOR,
     };
+
     struct TileImpl {
-        std::shared_ptr<Entity> entity;
-        std::shared_ptr<Entity> goldStorage;
-        Status status;
-        Vec2 position;
+        std::shared_ptr<Entity> entity; // managed entity, observes it by invariance
+        std::shared_ptr<Entity> goldStorage; // because gold stays when an entity walks over it
+        Status status; // for notify
+        Vec2 position; // position of this tile in grid, avoids undefined Vec2
         TileType type;
     };
 
@@ -39,7 +44,11 @@ private: // DATA
     std::shared_ptr<TileImpl> data;
     
 private: // PRIVATE HELPER METHODS
+    // broadcasts the inentions of managed entity,
+    // to change neighbours state, grid state, or own state
     void notify(Entity &);
+
+    // managed recieving notifications from neighbours
     void notify(Tile &);
 
 public: // CTOR & DTOR
@@ -61,16 +70,24 @@ public: // GETTERS AND SETTERS
     void setType(const TileType &);
 
 public: // VIRTUAL BEHAVIORS
+
+    // decides which notify to call based on the type of whoFrom
     virtual void notify(Subject &whoFrom) override;
 
 public: // METHODS
+
     static void swapTileEntities(Tile &a, Tile &b);
-    void queryMovement(Tile &whoFrom);
-    void queryPotion(Tile &whoFrom);
+
+    // ask tile if something is possible
     void queryMovement(Entity &whoFrom);
     void queryInteraction(Entity &whoFrom);
-    void queryInteraction(Tile &whoFrom);
-    void queryAttack(Tile &whoFrom);
+
+    // do something if possible
+    void queryInteraction(Tile &whoFrom); // handles if gold or potion affect is called
+    void queryAttack(Tile &whoFrom); // them->entity->attack(this->entity)
+    void queryMovement(Tile &whoFrom); // tileSwap(this->entity, them->entity)
+    void queryPotion(Tile &whoFrom); // potion->affect(this->entity)
+
     Direction getRelativeDirection(const Tile &) const;
     bool pointingAt(const Tile &) const;
     bool isCollidable() const;

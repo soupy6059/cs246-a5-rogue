@@ -31,8 +31,8 @@ class Level {
 
     Grid &getGrid() const;
 
-    const Vec2 &getSpawnLocation() const;
-    void setSpawnLocation(Vec2 loc);
+    const Vec2 &getSpawnLocation() const; // of player
+    void setSpawnLocation(Vec2 loc); // of player
 
     const Vec2 &getStairsLocation() const;
     void setStairsLocation(Vec2 loc);
@@ -41,15 +41,19 @@ class Level {
 
     void spawnAt(const std::shared_ptr<Entity> entity, Vec2 loc);
 
-    void setActiveLevel(const std::shared_ptr<Player> player);
+    void setActiveLevel(const std::shared_ptr<Player> player); // puts the player in a level
 };
 
 class LevelFactory {
     const std::string file;
+
+    // lists of all valid spawn locals divided by room
     std::vector<std::vector<Vec2>> getRooms(const Level &level);
     public:
     LevelFactory(const std::string &file = "assets/level-empty.txt"); // loads "default.level"
     virtual ~LevelFactory() = default;
+
+    // from the Creator{abstract} Design Pattern
     std::unique_ptr<Level> create();
 };
 

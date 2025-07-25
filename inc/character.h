@@ -31,10 +31,16 @@ class Character : public Entity {
     virtual void setHP(int new_hp); // to maintain maximums
     void setACC(int new_acc);
     void setGold(int new_gold);
+
+    // used for pretty printing the action,
+    // maintains a damage value somewhere in state that it
+    // can look at.
     void setDamageDealt(int damage);
 
     void changeDeltaATK(int deltaDeltaAtk);
     void changeDeltaDEF(int deltaDeltaDEF);
+
+    // resets the altered potion values
     void resetDeltaStats();
     
     Character(CharacterDefaults d);

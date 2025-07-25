@@ -21,7 +21,7 @@ enum class Direction {
 
 std::string dirToStr(Direction dir);
 
-Direction clockwise(Direction dir);
+Direction clockwise(Direction dir); // rotates a direction 45 deg clockwise
 
 struct Vec2 {
     int x,y;
@@ -34,6 +34,7 @@ struct Vec2 {
     bool operator==(const Vec2 &other) const {
         return x == other.x && y == other.y;
     }
+    // moves a vector in a direction, by copy
     static Vec2 stepVec(const Vec2 &v, Direction dir) {
         switch(dir) {
         case Direction::NORTH:     return v + Vec2{-1, 0};
