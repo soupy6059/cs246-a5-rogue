@@ -25,7 +25,10 @@ void Vampire::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Dwarf> d = std::dynamic_pointer_cast<Dwarf>(c);
-    if (!c) return; // not a character
+    if (!c) { 
+        this->setDamageDealt(0);
+        return;
+     } // not a character
     float damage = getDamage(target);
     this->setDamageDealt(static_cast<int>(damage));
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
@@ -34,7 +37,10 @@ void Vampire::attack(Tile& target) {
     } else {
         c->setHP(c->getHP() + DWARF_DAMAGE);
     }
-    if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
+    if (c->getHP() <= 0) {
+        this->setGold(this->getGold() + c->getGold());
+        target.setEntity(nullptr);
+    } // kill if dead
     std::shared_ptr<Merchant> m = std::dynamic_pointer_cast<Merchant>(target.getEntity());
     if (m) m->togglePissed();
 }
@@ -60,11 +66,15 @@ void Goblin::attack(Tile& target) {
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
     std::shared_ptr<Halfling> h = std::dynamic_pointer_cast<Halfling>(c);
-    if (!c) return; // not a character
+    if (!c) {
+        this->setDamageDealt(0);
+        return;
+     } // not a character
     float damage = getDamage(target);    
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     this->setDamageDealt(static_cast<int>(damage));
     if (c->getHP() <= 0) {
+        this->setGold(this->getGold() + c->getGold());
         target.setEntity(nullptr);
         setGold(getGold() + GOBLIN_FILTHY_CAPITALIST_BONUS);
     }
@@ -235,19 +245,19 @@ CharacterDefaults getCharDefs(Race race) {
         case Race::GOBLIN:
         return {110, 15, 20, 100, 0};
         case Race::HUMAN:
-        return {140, 20, 20, 50, 4};
+        return {140, 20, 20, 50, 0};
         case Race::DWARF:
-        return {100, 20, 30, 50, 0};
+        return {100, 20, 30, 50, getRand(1, 3)};
         case Race::ELF:
-        return {140, 30, 10, 50, 0};
+        return {140, 30, 10, 50, getRand(1, 3)};
         case Race::ORC:
-        return {180, 30, 25, 50, 0};
+        return {180, 30, 25, 50, getRand(1, 3)};
         case Race::DRAGON:
         return {150, 20, 20, 50, 0};
         case Race::MERCHANT:
-        return {30, 70, 5, 50, 4};
+        return {30, 70, 5, 50, 0};
         case Race::HALFLING:
-        return {100, 15, 20, 50, 0};
+        return {100, 15, 20, 50, getRand(1, 3)};
         default:
         throw logic_error("Not implemented!");
     }

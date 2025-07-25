@@ -16,7 +16,9 @@ void Enemy::attack(Tile& target) {
     float damage = ceil((100/(100 + static_cast<float>(c->getDEF()))) * static_cast<float>(atk));
     c->setHP(c->getHP() - static_cast<int>(damage)); // do damage
     c->setDamageDealt(static_cast<int>(damage));
-    if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
+    if (c->getHP() <= 0) {
+        target.setEntity(nullptr);
+    } // kill if dead
 }
 
 void Enemy::moveNewDir() {

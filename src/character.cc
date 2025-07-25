@@ -37,11 +37,17 @@ void Character::attack(Tile& target) {
     // get information about the entity being attacked
     std::shared_ptr<Entity> t = target.getEntity(); // grab the entity
     std::shared_ptr<Character> c = std::dynamic_pointer_cast<Character>(t); //get character data
-    if (!c) return; // not a character
+    if (!c) {
+        this->setDamageDealt(0);
+        return;
+    } // not a character
     int damage = getDamage(target);
     c->setHP(c->getHP() - damage); // do damage
     this->setDamageDealt(static_cast<int>(damage));
-    if (c->getHP() <= 0) {target.setEntity(nullptr);} // kill if dead
+    if (c->getHP() <= 0) {
+        this->setGold(this->getGold() + c->getGold());
+        target.setEntity(nullptr);
+    } // kill if dead
 }
 
 int Character::getDamage(Tile& target) {
