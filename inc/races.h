@@ -99,10 +99,12 @@ class Merchant : public Enemy {
 };
 
 class Dragon : public Enemy {
+    std::weak_ptr<Entity> myGold;
 public:
     Dragon(CharacterDefaults d);
     void step() override;
     std::string icon() const override;
+    void setGoldPile(std::shared_ptr<Entity> goldPilePointer);
     // custom move
 };
 

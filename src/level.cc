@@ -200,6 +200,7 @@ unique_ptr<Level> LevelFactory::create() {
                         theGrid[loc.x][loc.y]->getEntity()) continue;
                     level->spawnAt(dragonptr, loc);
                     hoardptr->setDragon(dynamic_pointer_cast<Dragon>(dragonptr));
+                    dynamic_pointer_cast<Dragon>(dragonptr)->setGoldPile(hoardptr);
                     break;
                 }
             }
