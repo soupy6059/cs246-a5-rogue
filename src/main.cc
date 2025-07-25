@@ -12,7 +12,7 @@ using namespace std;
 int getUserInput(Race &startingRace) {
     while (true) {
         string input;
-        cout << "Select your race with s, d, v, g, t\n or enter q to quit" << endl;
+        cout << "Select your race with s, d, v, g, t\nor enter q to quit" << endl;
         getline(cin, input);
         if (!cin) { return -1; }
         if (input == "q") return -1;

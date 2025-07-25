@@ -151,12 +151,37 @@ void Merchant::step() {
     }
 }
 // Dragon
-Dragon::Dragon(CharacterDefaults d): Enemy{d} {}
+Dragon::Dragon(CharacterDefaults d): Enemy{d} {
+    myGold = nullptr;
+}
+void Dragon::setGoldPile(std::shared_ptr<Entity> goldPointer) {myGold = goldPointer;}
+
 string Dragon::icon() const { return "\033[31;1mD\033[0m";}
+
+// find player around gold pile
+std::shared_ptr<Tile> playerNextToHoard(bool& found, std::shared_ptr<Entity> hoardPTR) {
+    for (auto observer : hoardPTR->getObservers()) {
+        std::shared_ptr<Tile> myTile = std::dynamic_pointer_cast<Tile>(observer);
+        for (auto tileAsObserver : myTile->getObservers()) {
+            std::shared_ptr<Tile> neighbourTile = std::dynamic_pointer_cast<Tile>(tileAsObserver);
+            if (!neighbourTile) continue;
+            std::shared_ptr<Player> thePlayer = std::dynamic_pointer_cast<Player>(neighbourTile->getEntity());
+            if (thePlayer) {
+                found = true;
+                return neighbourTile;
+            }
+        }
+    }
+    return nullptr;
+}
+
 void Dragon::step() {
     // they dont move
     bool canAttack = false;
     std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
+    if (!canAttack) {
+        playerLocation = playerNextToHoard(canAttack, myGold);
+    }
     if (playerLocation != nullptr && canAttack) {attack(*playerLocation);}
 }
 
@@ -164,6 +189,7 @@ void Dragon::step() {
 Halfling::Halfling(CharacterDefaults d): Enemy{d} {}
 string Halfling::icon() const {return "\033[31;1mL\033[0m";}
 
+// General use functions
 shared_ptr<Entity> makeEntityWithRace(Race race) {
     CharacterDefaults stats = getCharDefs(race);
     switch (race) {
