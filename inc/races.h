@@ -99,7 +99,7 @@ class Merchant : public Enemy {
 };
 
 class Dragon : public Enemy {
-    std::shared_ptr<Entity> myGold;
+    std::weak_ptr<Entity> myGold;
 public:
     Dragon(CharacterDefaults d);
     void step() override;

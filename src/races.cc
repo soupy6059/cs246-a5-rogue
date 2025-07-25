@@ -151,8 +151,7 @@ void Merchant::step() {
     }
 }
 // Dragon
-Dragon::Dragon(CharacterDefaults d): Enemy{d} {
-    myGold = nullptr;
+Dragon::Dragon(CharacterDefaults d): Enemy{d}, myGold{} {
 }
 void Dragon::setGoldPile(std::shared_ptr<Entity> goldPointer) {myGold = goldPointer;}
 
@@ -180,7 +179,8 @@ void Dragon::step() {
     bool canAttack = false;
     std::shared_ptr<Tile> playerLocation = playerTile(canAttack);
     if (!canAttack) {
-        playerLocation = playerNextToHoard(canAttack, myGold);
+        if (!myGold.lock()) return;
+        playerLocation = playerNextToHoard(canAttack, myGold.lock());
     }
     if (playerLocation != nullptr && canAttack) {attack(*playerLocation);}
 }
