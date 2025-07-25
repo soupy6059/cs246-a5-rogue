@@ -51,9 +51,15 @@ int main(int argc, char **argv) {
         shared_ptr<TextDisplay> td = make_shared<TextDisplay>();
         Race userChoice = Race::SHADE;
         if(getUserInput(userChoice) == -1) return 0;
+        
+        int seed = 0;
+        try {
+            seed = stoi(args.at(2));
+        }
+        catch(...) {}
 
         try{
-            shared_ptr<Game> game = make_shared<Game>("assets/level-empty.txt", 0, userChoice);
+            shared_ptr<Game> game = make_shared<Game>(args.at(1), seed, userChoice);
             game->attach(td);
             game->getPlayer()->attach(game);
             playAgain = game->start();
