@@ -217,7 +217,9 @@ vector<vector<Vec2>> LevelFactory::getRooms(const Level &level) { // LeetCode 20
 
     for (size_t r = 0; r < FLOOR_HEIGHT; ++r) {
         for (size_t c = 0; c < FLOOR_WIDTH; ++c) {
-            if (visited[r][c] || !grid[r][c]->isFloor()) continue;
+            if (visited[r][c]
+            || !grid[r][c]->isFloor()
+            || grid[r][c]->getEntity()) continue;
 
             rooms.push_back(vector<Vec2>{});
             rooms.back().emplace_back(r,c);
