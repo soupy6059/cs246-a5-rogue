@@ -11,6 +11,15 @@ using namespace std;
 Potion::Potion():
     Item{} {}
 
+void Potion::resetKnown() {
+    HealthPotion::setKnown(false);
+    AttackPotion::setKnown(false);
+    DefensePotion::setKnown(false);
+    PoisonPotion::setKnown(false);
+    WeakPotion::setKnown(false);
+    BrittlePotion::setKnown(false);
+}
+
 shared_ptr<Potion> Potion::makePotion(Potion::PotionType type) {
     switch (type) {
         case PotionType::HEALTH:
@@ -146,6 +155,7 @@ void HealthPotion::affect(Entity &e) {
 
 void AttackPotion::affect(Entity &e) {
     try {
+
         try {
             Drow &drow {dynamic_cast<Drow&>(e)};
             drow.changeDeltaATK(static_cast<int>(DELTA_ATK * DROW_POTION_AMP));

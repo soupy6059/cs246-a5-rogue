@@ -11,9 +11,9 @@ using namespace std;
 void TextDisplay::notify(Subject &whoFrom) {
     Game &game = dynamic_cast<Game&>(whoFrom);
     game.refCurrentLevel().getGrid().print(cout);
-    string race = "DEFAULT";
+    string race = game.getPlayer()->getRaceName();
     string _ = "Race: "s + race + " \033[33;1mGold\033[0m: "s + to_string(game.getPlayer()->getGold());
-    cout << setw(FLOOR_WIDTH - 10) << left << _
+    cout << setw(FLOOR_WIDTH) << left << _
          << "Floor "s << game.getCurrentLevelIndex() + 1
          << endl;
     cout << "\033[32;1mHP\033[0m: "s << game.getPlayer()->getHP() << endl;
