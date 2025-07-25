@@ -83,6 +83,7 @@ void Level::setActiveLevel(const shared_ptr<Player> player) {
 }
 
 // Helper methods for LevelFactory (implemented below):
+static Vec2 getNextSpawnLocation(vector<vector<Vec2>> &rooms);
 static Potion::PotionType randomPotionType();
 static shared_ptr<Gold> randomGoldType();
 static Race randomEnemyType();
@@ -91,6 +92,7 @@ static shared_ptr<Entity> charToEnemyPtr(char c);
 
 LevelFactory::LevelFactory(const string &file):
     file{file} {}
+
 
 unique_ptr<Level> LevelFactory::create() {
     ifstream in{file};
@@ -130,9 +132,10 @@ unique_ptr<Level> LevelFactory::create() {
         // spawn the player upon changing levels).
         playerRoom = getRand(0,rooms.size());
         idx = getRand(0,rooms[playerRoom].size());
-        level->setSpawnLocation(rooms[playerRoom][idx]);
         rooms[playerRoom].erase(rooms[playerRoom].begin() + idx);
         if (rooms[playerRoom].empty()) rooms.erase(rooms.begin() + playerRoom);
+
+        level->setSpawnLocation(rooms[playerRoom][idx]);
     }
 
     if (level->getStairsLocation() == Vec2{-1,-1}) {
@@ -150,42 +153,21 @@ unique_ptr<Level> LevelFactory::create() {
         level->getGrid().at(level->getStairsLocation())->setType(Tile::TileType::STAIR);
     }
 
-    size_t room;
-    Vec2 location;
-
     // Generate potions
     for (; potionCount < MAX_POTIONS; ++potionCount) {
-        room = getRand(0, rooms.size());
-        idx = getRand(0, rooms[room].size());
-        location = rooms[room][idx];
-        rooms[room].erase(rooms[room].begin() + idx);
-        if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
-
         Potion::PotionType type = randomPotionType();
-        level->spawnAt(Potion::makePotion(type), location);
+        level->spawnAt(Potion::makePotion(type), getNextSpawnLocation(rooms));
     }
 
     // Generate gold
     for (; goldCount < MAX_GOLD; ++goldCount) {
-        room = getRand(0, rooms.size());
-        idx = getRand(0, rooms[room].size());
-        location = rooms[room][idx];
-        rooms[room].erase(rooms[room].begin() + idx);
-        if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
-       
-        level->spawnAt(randomGoldType(), location);
+        level->spawnAt(randomGoldType(), getNextSpawnLocation(rooms));
     }
 
     // Generate entities
     for (; enemyCount < MAX_ENEMIES; ++enemyCount) {
-        room = getRand(0, rooms.size());
-        idx = getRand(0, rooms[room].size());
-        location = rooms[room][idx];
-        rooms[room].erase(rooms[room].begin() + idx);
-        if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
-
         Race race = randomEnemyType();
-        level->spawnAt(makeEntityWithRace(race), location);
+        level->spawnAt(makeEntityWithRace(race), getNextSpawnLocation(rooms));
     }
 
     for (unsigned int r = 0; r < FLOOR_HEIGHT; ++r) {
@@ -255,6 +237,17 @@ vector<vector<Vec2>> LevelFactory::getRooms(const Level &level) { // LeetCode 20
     }
 
     return rooms;
+}
+
+// Randomly selects the next spawning location
+static Vec2 getNextSpawnLocation(vector<vector<Vec2>> &rooms) {
+    int room = getRand(0, rooms.size());
+    int idx = getRand(0, rooms[room].size());
+    Vec2 location = rooms[room][idx];
+    rooms[room].erase(rooms[room].begin() + idx);
+    if (rooms[room].empty()) rooms.erase(rooms.begin() + room);
+
+    return location;
 }
 
 static Potion::PotionType randomPotionType() {
