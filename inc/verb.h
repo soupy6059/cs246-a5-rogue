@@ -24,7 +24,6 @@ public:
             std::pair<std::shared_ptr<Entity>,std::shared_ptr<Entity>>
         > data;
     };
-    bool empty = true;
     std::vector<std::string> action;
     Verb &append(std::string);
     void appendStatus(Verb::Status);
