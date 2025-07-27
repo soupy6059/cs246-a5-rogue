@@ -59,12 +59,8 @@ int main(int argc, char **argv) {
         catch(...) {}
         
         shared_ptr<Game> game = nullptr;
-        try {
-            game = make_shared<Game>(args.at(1), seed, userChoice);
-        }
-        catch(...) {
-            game = make_shared<Game>("assets/level-empty.txt", seed, userChoice);
-        }
+        try { game = make_shared<Game>(args.at(1), seed, userChoice); }
+        catch(...) { game = make_shared<Game>("assets/level-empty.txt", seed, userChoice); }
         game->attach(td);
         game->getPlayer()->attach(game);
         playAgain = game->start();
