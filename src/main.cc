@@ -53,9 +53,7 @@ int main(int argc, char **argv) {
         if(getUserInput(userChoice) == -1) return 0;
         
         int seed = 0;
-        try {
-            seed = stoi(args.at(2));
-        }
+        try { seed = stoi(args.at(2)); }
         catch(...) {}
         
         shared_ptr<Game> game = nullptr;
